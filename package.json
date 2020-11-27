@@ -1,0 +1,26 @@
+{
+  "name": "ba-mq5",
+  "version": "1.0.0",
+  "description": "Wiki: [Presentation](https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/wikis/Presentation:-Common-Terms-as-Media-Features)",
+  "main": "",
+  "directories": {
+    "doc": "docs",
+    "example": "example"
+  },
+  "dependencies": {
+    "jest": "^26.6.3",
+    "save": "^2.4.0",
+    "ts-jest": "^26.4.4",
+    "typescript": "^4.1.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5.git"
+  },
+  "author": "",
+  "license": "ISC"
+}
