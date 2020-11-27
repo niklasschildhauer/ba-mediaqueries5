@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <link rel="sdf">
+    <script src="script/reader/reader.js"></script>
+
+
+    <style>
+        @prefers(max-idth: 300px) {
+            p {
+                background: #0E2560;
+            }
+        }
+    </style>
+</head>
+<body>
+<p><a class="skiplink" href="#main">Skip to content</a></p>
+
+
+<p>Das ist ein Test hier</p>
+
+<picture>
+    <source media="(min-width:465px)" srcset="RezeptGulasch.png">
+    <img src="" alt="" />
+</picture>
+
+
+<script>
+    let styleText = ""
+    let stylesSheets = document.querySelectorAll('link');
+    for (var i = stylesSheets.length; i--;) {
+        if(stylesSheets[i].getAttribute('rel') === 'stylesheet') {
+            let link = stylesSheets[i].getAttribute('href')
+            this.loadCSSContent(link)
+                .then(function(text) {
+                    var manager = new Manager(text)
+                    styleText = styleText + text;
+                })
+        }
+    }
+
+    //var manager = new Manager(text)
+
+    async function loadCSSContent(link) {
+        return await fetch(link, {
+            method: 'get'
+        })
+            .then( function (response) {
+                return response.text()
+            })
+    }
+</script>
+
+</body>
+</html>

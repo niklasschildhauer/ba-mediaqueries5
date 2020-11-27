@@ -1,0 +1,55 @@
+body {
+    background: #7bd0c1;
+}
+
+@media (displaySkiplinks) {
+    body {
+        background12: #5e7d00;
+    }
+}
+
+@media (max-width: 300px) {
+    body {
+        background12: #5e7d00;
+    }
+}
+
+@media screen and (displaySkiplinks) and (max-width: 300px) and (audioDescriptionEnabled: true ) {
+    body {
+        background12: gold;
+    }
+}
+
+@media screen and (not audioDescriptionEnabled) {
+    body {
+        background12: firebrick;
+    }
+}
+
+@media not screen and (displaySkiplinks) and (max-width: 300px) and (audioDescriptionEnabled: true ) {
+    body {
+        background12: firebrick;
+    }
+}
+
+@media (displaySkiplinks: never) {
+    .skiplink {
+        display: none;
+    }
+}
+
+
+@media (displaySkiplinks: onfocus) {
+    .skiplink:not(:focus) {
+        position: absolute;
+        height: 1px;
+        width: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        clip-path: inset(100%);
+        white-space: nowrap;
+    }
+}
+
+
+
