@@ -9,4 +9,5 @@ import * as View from './view/UserPreferenceViewController'
 
 console.log("Test");
 
-let manager = new Manager.test();
+let manager: Manager.ManagerSingelton = new Manager.ManagerSingelton();
+console.log("Hallo");

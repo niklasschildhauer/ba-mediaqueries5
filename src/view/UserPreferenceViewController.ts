@@ -16,7 +16,7 @@ export class UserPreferenceViewController implements IUserPreferenceViewControll
 
     refreshView(): void {
         console.log("refreshView");
-        this.delegate.setUserPreferences("Hallo");
+        this.delegate.setUserPreferences("Hallo über das Delegate");
     }
 
 }

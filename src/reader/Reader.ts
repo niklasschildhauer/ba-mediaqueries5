@@ -1,3 +1,4 @@
+/*
 enum CommonTermsMediaFeatures {
     displaySkiplinks = "displaySkiplinks",
     audioDescriptionEnabled = "audioDescriptionEnabled"
@@ -195,11 +196,11 @@ export function test2(): boolean {
     return true
 }
 
-/*
+/!*
 window.onload = () => {
     main();
     console.log("Gestartet!")
-}*/
+}*!/
 function main() {
     // let styleText = ""
     // let stylesSheets = document.querySelectorAll('link');
@@ -284,3 +285,4 @@ function getArrayOfTextBetweenBrackets(text: string, firstBracket: string, lastB
 
 
 // can be deleted
+*/
