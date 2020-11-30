@@ -35,7 +35,7 @@ const styleString =
     "    }\n" +
     "}\n"
 
-import { Manager, test2 } from './reader';
+import { Manager, test2 } from './Reader';
 // let manager = new Manager(styleString);
 //
 // manager.readCSS()
