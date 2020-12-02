@@ -36,10 +36,10 @@ const styleString =
     "}\n"
 
 import { Manager, test2 } from './Reader';
-// let manager = new Manager(styleString);
+// let coordinator = new Manager(styleString);
 //
-// manager.readCSS()
-// manager.addCSS()
+// coordinator.readCSS()
+// coordinator.addCSS()
 
 test('test1',async () => {
     expect(test2()).toBe(true);

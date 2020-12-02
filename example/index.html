@@ -41,13 +41,13 @@
             let link = stylesSheets[i].getAttribute('href')
             this.loadCSSContent(link)
                 .then(function(text) {
-                    var manager = new Manager(text)
+                    var coordinator = new Manager(text)
                     styleText = styleText + text;
                 })
         }
     }
 
-    //var manager = new Manager(text)
+    //var coordinator = new Manager(text)
 
     async function loadCSSContent(link) {
         return await fetch(link, {

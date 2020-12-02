@@ -1,3 +1,24 @@
+export interface IReader<T> {
+    read(string: string): void
+    get(): T;
+}
+
+
+
+export class CSSReader implements IReader<IMediaDescriptor> {
+
+    public constructor() {
+    }
+
+    get(): IMediaDescriptor {
+        return "Hallo";
+    }
+
+    read(string: string): void {
+    }
+
+}
+
 /*
 enum CommonTermsMediaFeatures {
     displaySkiplinks = "displaySkiplinks",
@@ -216,7 +237,7 @@ function main() {
     // }
     // console.log(styleText);
 
-    //var manager = new Manager(text)
+    //var coordinator = new Manager(text)
 
 }
 async function loadCSSContent(link) {

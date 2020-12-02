@@ -1,6 +1,6 @@
 import * as View from '../view/UserPreferenceViewController';
 
-export class ManagerSingelton implements View.UserPreferenceViewDelegate{
+export class ScriptCoordinator implements View.UserPreferenceViewDelegate{
     private UserPreferenceViewController: View.IUserPreferenceViewController;
 
     public constructor() {
