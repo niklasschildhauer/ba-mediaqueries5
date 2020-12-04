@@ -24,12 +24,6 @@ export interface IUserPreference {
 
 }
 
-export interface IUserProfile {
-    userPreferences: IUserPreference[]
-    doesMatch(mediaFeature: IMediaFeature): boolean
-}
-
-
 export enum CommonTerm {
     displaySkiplinks = "displaySkiplinks",
     audioDescriptionEnabled = "audioDescriptionEnabled",

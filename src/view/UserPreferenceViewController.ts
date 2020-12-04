@@ -18,5 +18,4 @@ export class UserPreferenceViewController implements IUserPreferenceViewControll
         console.log("refreshView");
         this.delegate.setUserPreferences("Hallo über das Delegate", this);
     }
-
 }
