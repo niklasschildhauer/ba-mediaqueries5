@@ -2,12 +2,13 @@ import * as Model from "../model/Model";
 import {CommonTerm, IMediaFeature, IMediaQuery, IUserPreference} from "../model/Model";
 
 export interface IUserPreferenceProfile {
-    userPreferences: Model.IUserPreference[]
-    doesMediaFeatureMatch(mediaFeature: Model.IMediaFeature): boolean
+    userPreferences: Model.IUserPreference[];
+    doesMediaFeatureMatch(mediaFeature: Model.IMediaFeature): boolean;
+    doesMediaQueryMatch(mediaQuery: Model.IMediaQuery): boolean;
 }
 
 export interface  UserProfileDelegate {
-    didUpdateProfile(): void
+    didUpdateProfile(): void;
 }
 
 export class UserPreferenceProfile implements IUserPreferenceProfile {

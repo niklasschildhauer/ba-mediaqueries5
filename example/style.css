@@ -4,31 +4,31 @@ body {
 
 @media (displaySkiplinks) {
     body {
-        background12: #5e7d00;
+        background: #5e7d00;
     }
 }
 
 @media (max-width: 300px) {
     body {
-        background12: #5e7d00;
+        background: #5e7d00;
     }
 }
 
 @media screen and (displaySkiplinks) and (max-width: 300px) and (audioDescriptionEnabled: true ) {
     body {
-        background12: gold;
+        background: gold;
     }
 }
 
 @media screen and (not audioDescriptionEnabled) {
     body {
-        background12: firebrick;
+        background: firebrick;
     }
 }
 
 @media not screen and (displaySkiplinks) and (max-width: 300px) and (audioDescriptionEnabled: true ) {
     body {
-        background12: firebrick;
+        background: firebrick;
     }
 }
 
