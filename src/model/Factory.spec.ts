@@ -57,9 +57,9 @@ test('Media Descriptor Factory - createMediaDescriptorFromMQStringAndBodyString 
 
     let model = new Model.MediaDescriptor(unsupportedMediaQuery, supportedMediaQuery, body, false)
     expect(result.body).toBe(model.body);
-    expect(result.negated).toBe(model.negated);
-    expect(result.supportedMediaQuery).toBe(model.supportedMediaQuery);
-    expect(result.unsupportedMediaQuery).toStrictEqual(model.unsupportedMediaQuery);
+    expect(result.mediaQuery.negated).toBe(model.mediaQuery.negated);
+    expect(result.mediaQuery.supportedMediaQuery).toBe(model.mediaQuery.supportedMediaQuery);
+    expect(result.mediaQuery.unSupportedMediaQuery).toStrictEqual(model.mediaQuery.unSupportedMediaQuery);
 });
 
 test('Media Descriptor Factory - createMediaDescriptorFromMQStringAndBodyString #2', () => {
@@ -71,9 +71,9 @@ test('Media Descriptor Factory - createMediaDescriptorFromMQStringAndBodyString 
 
     let model = new Model.MediaDescriptor(unsupportedMediaQuery, supportedMediaQuery, body, false)
     expect(result.body).toBe(model.body);
-    expect(result.negated).toBe(model.negated);
-    expect(result.supportedMediaQuery).toBe(model.supportedMediaQuery);
-    expect(result.unsupportedMediaQuery).toStrictEqual(model.unsupportedMediaQuery);
+    expect(result.mediaQuery.negated).toBe(model.mediaQuery.negated);
+    expect(result.mediaQuery.supportedMediaQuery).toBe(model.mediaQuery.supportedMediaQuery);
+    expect(result.mediaQuery.unSupportedMediaQuery).toStrictEqual(model.mediaQuery.unSupportedMediaQuery);
 });
 
 test('Media Descriptor Factory - createMediaDescriptorFromMQStringAndBodyString #3', () => {
@@ -85,9 +85,9 @@ test('Media Descriptor Factory - createMediaDescriptorFromMQStringAndBodyString 
 
     let model = new Model.MediaDescriptor(unsupportedMediaQuery, supportedMediaQuery, body, false)
     expect(result.body).toBe(model.body);
-    expect(result.negated).toBe(model.negated);
-    expect(result.supportedMediaQuery).toBe(model.supportedMediaQuery);
-    expect(result.unsupportedMediaQuery).toStrictEqual(model.unsupportedMediaQuery);
+    expect(result.mediaQuery.negated).toBe(model.mediaQuery.negated);
+    expect(result.mediaQuery.supportedMediaQuery).toBe(model.mediaQuery.supportedMediaQuery);
+    expect(result.mediaQuery.unSupportedMediaQuery).toStrictEqual(model.mediaQuery.unSupportedMediaQuery);
 });
 
 test('Media Descriptor Factory - createMediaDescriptorFromMQStringAndBodyString #3', () => {
@@ -99,9 +99,9 @@ test('Media Descriptor Factory - createMediaDescriptorFromMQStringAndBodyString 
 
     let model = new Model.MediaDescriptor(unsupportedMediaQuery, supportedMediaQuery, body, true)
     expect(result.body).toBe(model.body);
-    expect(result.negated).toBe(model.negated);
-    expect(result.supportedMediaQuery).toBe(model.supportedMediaQuery);
-    expect(result.unsupportedMediaQuery).toStrictEqual(model.unsupportedMediaQuery);
+    expect(result.mediaQuery.negated).toBe(model.mediaQuery.negated);
+    expect(result.mediaQuery.supportedMediaQuery).toBe(model.mediaQuery.supportedMediaQuery);
+    expect(result.mediaQuery.unSupportedMediaQuery).toStrictEqual(model.mediaQuery.unSupportedMediaQuery);
 });
 
 test('Media Descriptor Factory - createMediaDescriptorFromMQStringAndBodyString #3', () => {
@@ -114,9 +114,9 @@ test('Media Descriptor Factory - createMediaDescriptorFromMQStringAndBodyString 
 
     let model = new Model.MediaDescriptor(unsupportedMediaQuery, supportedMediaQuery, body, false)
     expect(result.body).toBe(model.body);
-    expect(result.negated).toBe(model.negated);
-    expect(result.supportedMediaQuery).toBe(model.supportedMediaQuery);
-    expect(result.unsupportedMediaQuery).toStrictEqual(model.unsupportedMediaQuery);
+    expect(result.mediaQuery.negated).toBe(model.mediaQuery.negated);
+    expect(result.mediaQuery.supportedMediaQuery).toBe(model.mediaQuery.supportedMediaQuery);
+    expect(result.mediaQuery.unSupportedMediaQuery).toStrictEqual(model.mediaQuery.unSupportedMediaQuery);
 });
 
 test('Media Descriptor Factory - createMediaDescriptorFromCSSString #1', () => {

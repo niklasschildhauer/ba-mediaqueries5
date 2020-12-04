@@ -1,16 +1,21 @@
 import * as common from '../common/utility'
 
 export interface IMediaDescriptor {
-    unsupportedMediaQuery: IMediaFeature[]
-    supportedMediaQuery: string | null
-    negated: boolean
-    body: string
+    mediaQuery: IMediaQuery
+    body: string;
+}
+
+export interface IMediaQuery {
+    unSupportedMediaQuery: IMediaFeature[];
+    supportedMediaQuery: string | null;
+    negated: boolean;
+
 }
 
 export interface IMediaFeature {
-    mediaFeature: CommonTerm
-    value: string
-    negated: boolean
+    mediaFeature: CommonTerm;
+    value: string;
+    negated: boolean;
 }
 
 
@@ -19,8 +24,8 @@ export interface ISourceTag {
 }
 
 export interface IUserPreference {
-    mediaFeature: CommonTerm
-    value: string
+    mediaFeature: CommonTerm;
+    value: string;
 
 }
 
@@ -50,17 +55,27 @@ export class CommonTermUtil {
     }
 }
 
-export class MediaDescriptor implements IMediaDescriptor {
-    body: string;
+export class MediaQuery implements IMediaQuery {
     negated: boolean;
+    unSupportedMediaQuery: IMediaFeature[];
     supportedMediaQuery: string | null;
-    unsupportedMediaQuery: IMediaFeature[];
 
-    constructor(unsupportedMediaQuery: IMediaFeature[], supportedMediaQuery: string | null, body: string, negated: boolean) {
-        this.body = body;
+
+    constructor(unSupportedMediaQuery: IMediaFeature[], supportedMediaQuery: string | null, negated: boolean) {
         this.negated = negated;
         this.supportedMediaQuery = supportedMediaQuery;
-        this.unsupportedMediaQuery = unsupportedMediaQuery;
+        this.unSupportedMediaQuery = unSupportedMediaQuery;
+    }
+
+}
+
+export class MediaDescriptor implements IMediaDescriptor {
+    mediaQuery: IMediaQuery;
+    body: string;
+
+    constructor(unSupportedMediaQuery: IMediaFeature[], supportedMediaQuery: string | null, body: string, negated: boolean) {
+        this.mediaQuery = new MediaQuery(unSupportedMediaQuery, supportedMediaQuery, negated);
+        this.body = body;
     }
 }
 
@@ -76,6 +91,17 @@ export class MediaFeature implements IMediaFeature {
         this.negated = negated;
         this. value = value;
     }
+}
+
+export class UserPreference implements IUserPreference {
+    mediaFeature: CommonTerm;
+    value: string;
+
+    constructor(mediaFeature: CommonTerm, value: string) {
+        this.mediaFeature = mediaFeature;
+        this.value = value;
+    }
+
 }
 
 

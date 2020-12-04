@@ -1,20 +1,20 @@
 import * as View from '../view/UserPreferenceViewController';
 import * as Reader from '../reader/CSSReader'
 import * as Model  from "../model/Model";
-import * as User from "../user/UserProfile"
+import * as User from "../user/UserPreferenceProfile"
 import {IMediaDescriptor} from "../model/Model";
 
 export class ScriptCoordinator implements View.UserPreferenceViewDelegate, Reader.CSSReaderDelegate, User.UserProfileDelegate{
     private UserPreferenceViewController: View.IUserPreferenceViewController;
     private CSSReader: Reader.IReader<Model.IMediaDescriptor>;
-    private UserProfile: User.IUserProfile;
+    private UserProfile: User.IUserPreferenceProfile;
 
     public constructor() {
         console.log("Hello World");
         console.log("-----------");
         this.UserPreferenceViewController = new View.UserPreferenceViewController(this);
         this.CSSReader = new Reader.CSSReader(this);
-        this.UserProfile = new User.UserProfile(this);
+        this.UserProfile = new User.UserPreferenceProfile(this);
     }
 
     public addCSSCode(string: string) {
