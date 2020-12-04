@@ -166,10 +166,6 @@ export class Manager implements IManager {
         document.head.appendChild(style);
     }
 
-    private getBodyOfMediaQueryAt(index: number) : string {
-        return getTextBetweenBrackets(this.plainCSS.slice(index), "{", "}");
-    }
-
     public test(): number {
         return 3
     }
@@ -235,24 +231,6 @@ async function loadCSSContent(link) {
 }
 
 // Utilities
-function getTextBetweenBrackets(text: string, firstBracket: string, lastBracket: string) : string {
-    let string = text.slice(text.indexOf(firstBracket) + 2); // delete first bracket and linespace
-
-    let openBracketsCount = 1;
-    for (var i = 0; i < string.length; i++) {
-        if (string.charAt(i) === firstBracket) {
-            openBracketsCount = openBracketsCount + 1;
-        }
-        if (string.charAt(i) === lastBracket) {
-            openBracketsCount = openBracketsCount - 1;
-        }
-        if(openBracketsCount === 0) {
-            return string.slice(0, i);
-        }
-    }
-    return string
-}
-
 
 function containsCommonTermMediaFeature(query: string) : boolean {
     let contains = false ;

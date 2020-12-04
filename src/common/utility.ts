@@ -15,3 +15,21 @@ export function removeUnimportantCharactersFrom(string: string): string {
 
     return result;
 }
+
+export function getTextBetweenBrackets(text: string, firstBracket: string, lastBracket: string) : string {
+    let string = text.slice(text.indexOf(firstBracket) + 1) ; // delete first bracket
+
+    let openBracketsCount = 1;
+    for (var i = 0; i < string.length; i++) {
+        if (string.charAt(i) === firstBracket) {
+            openBracketsCount = openBracketsCount + 1;
+        }
+        if (string.charAt(i) === lastBracket) {
+            openBracketsCount = openBracketsCount - 1;
+        }
+        if(openBracketsCount === 0) {
+            return string.slice(0, i);
+        }
+    }
+    return string
+}

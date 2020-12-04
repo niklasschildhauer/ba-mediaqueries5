@@ -3,7 +3,28 @@ import * as common from '../common/utility'
 import {removeUnimportantCharactersFrom} from "../common/utility";
 
 export class MediaDescriptorFactory {
-    public static createMediaDescriptorFrom(mediaQuery: string, body: string): IMediaDescriptor {
+    public static createMediaDescriptorsFromCSSString(cssCode: string): IMediaDescriptor[] {
+        const regex = new RegExp("@media.(.*?).\\{", "g")
+
+        let matches = cssCode.matchAll(regex);
+        let result = matches.next();
+        let mediaDescriptors = []
+        while (!result.done) {
+            if (result.value[1] != undefined && result.value.index != undefined) {
+                let queryString = result.value[1];
+                let queryIndex = result.value.index;
+                if (CommonTermUtil.containsCommonTermMediaFeature(queryString)[0]) {
+                    let body = common.getTextBetweenBrackets(cssCode.slice(queryIndex), "{", "}");
+                    mediaDescriptors.push(this.createMediaDescriptorFromMQStringAndBodyString(queryString, body));
+                }
+            }
+            result = matches.next();
+        }
+
+        return mediaDescriptors;
+    }
+
+    public static createMediaDescriptorFromMQStringAndBodyString(mediaQuery: string, body: string): IMediaDescriptor {
         let query = mediaQuery;
         let negated: boolean
 
@@ -27,7 +48,16 @@ export class MediaDescriptorFactory {
         console.log(negated)
         console.log("---------------");
 
-        return new MediaDescriptor(unsupportedMediaQuery, supportedMediaQuery.join("and"), body, negated)
+        let supportedMediaQueryString: string | null = supportedMediaQuery.join("and")
+        if (negated) {
+            supportedMediaQueryString = "not " + supportedMediaQueryString
+        }
+
+        if (supportedMediaQueryString == "") {
+            supportedMediaQueryString = null;
+        }
+
+        return new MediaDescriptor(unsupportedMediaQuery, supportedMediaQueryString, body, negated)
     }
 
     // checks if the media Query is negated or not.
@@ -64,17 +94,9 @@ export class MediaFeatureFactory {
 
 
         let mediaFeature = CommonTermUtil.containsCommonTermMediaFeature(conditionString)[1];
-        // let mediaFeatureArray = conditionString.match("\\((.*?)\\)");
-        // console.log(mediaFeatureArray);
-        // if(mediaFeatureArray != null){
-        //     console.log(mediaFeatureArray[1]);
-        //     console.log(CommonTermUtil.containsCommonTermMediaFeature(mediaFeatureArray[1]));
-        //     mediaFeature = CommonTermUtil.containsCommonTermMediaFeature(mediaFeatureArray[1])[1];
-        // }
-        // console.log(mediaFeature);
 
         if(mediaFeature == null || mediaFeature == undefined) {
-            throw new Error('There is no matching common term.');
+            throw new Error('There is no matching common term: ' + conditionString);
         }
         return new MediaFeature(mediaFeature, negated, value);
     }

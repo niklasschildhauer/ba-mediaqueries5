@@ -2,7 +2,7 @@ import * as common from '../common/utility'
 
 export interface IMediaDescriptor {
     unsupportedMediaQuery: IMediaFeature[]
-    supportedMediaQuery: string
+    supportedMediaQuery: string | null
     negated: boolean
     body: string
 }
@@ -59,10 +59,10 @@ export class CommonTermUtil {
 export class MediaDescriptor implements IMediaDescriptor {
     body: string;
     negated: boolean;
-    supportedMediaQuery: string;
+    supportedMediaQuery: string | null;
     unsupportedMediaQuery: IMediaFeature[];
 
-    constructor(unsupportedMediaQuery: IMediaFeature[], supportedMediaQuery: string, body: string, negated: boolean) {
+    constructor(unsupportedMediaQuery: IMediaFeature[], supportedMediaQuery: string | null, body: string, negated: boolean) {
         this.body = body;
         this.negated = negated;
         this.supportedMediaQuery = supportedMediaQuery;
