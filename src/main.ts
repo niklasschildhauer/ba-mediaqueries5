@@ -13,5 +13,5 @@ console.log("Test");
 let manager: Coordinator.ScriptCoordinator = new Coordinator.ScriptCoordinator();
 console.log("Hallo");
 
-let reader: CSSReader.CSSReader = new CSSReader.CSSReader()
+// let reader: CSSReader.CSSReader = new CSSReader.CSSReader()
 
