@@ -3,7 +3,7 @@ export interface IUserPreferenceViewController {
 }
 
 export interface UserPreferenceViewDelegate {
-    setUserPreferences(string: string): void
+    setUserPreferences(string: string, from: IUserPreferenceViewController): void
 }
 
 export class UserPreferenceViewController implements IUserPreferenceViewController {
@@ -16,7 +16,7 @@ export class UserPreferenceViewController implements IUserPreferenceViewControll
 
     refreshView(): void {
         console.log("refreshView");
-        this.delegate.setUserPreferences("Hallo über das Delegate");
+        this.delegate.setUserPreferences("Hallo über das Delegate", this);
     }
 
 }
