@@ -13,7 +13,7 @@ test('Media Feature Factory - createMediaFeatureFrom #1', () => {
 test('Media Feature Factory - createMediaFeatureFrom #2', () => {
     expect(function() {
         Factory.MediaFeatureFactory.createMediaFeatureFrom("(picto: true)");
-    }).toThrow(new Error('There is no matching common term.'));
+    }).toThrow(new Error('There is no matching common term: (picto)'));
 });
 
 test('Media Feature Factory - createMediaFeatureFrom #3', () => {
@@ -140,6 +140,33 @@ test('Media Descriptor Factory - createMediaDescriptorFromCSSString #1', () => {
 
     expect(result).toStrictEqual([model1, model2]);
 });
+
+test('Media Descriptor Factory - createMediaDescriptorFromCSSString #2', () => {
+    let css = "@media not screen and not (displaySkiplinks: onfocus) and (signLanguage: gsd) and (signLanguage: 'fsd') {" +
+        "body { background: black; }" +
+        "}" +
+        "\n" +
+        "@media print (pictogramsEnabled) and not (sessionTimeout: 2.4) {" +
+        "body { background: yellow; }" +
+        "}"
+    let body1 = "body { background: black; }"
+    let body2 = "body { background: yellow; }"
+    let unsupportedMediaQuery1 = [new Model.MediaFeature(CommonTerm.displaySkiplinks, true, "onfocus"),
+                                new Model.MediaFeature(CommonTerm.signLanguage, false, "gsd"),
+                                new Model.MediaFeature(CommonTerm.signLanguage, false, "fsd")];
+    let unsupportedMediaQuery2 = [new Model.MediaFeature(CommonTerm.pictogramsEnabled, false, "true"),
+                                new Model.MediaFeature(CommonTerm.sessionTimeout, true, "2.4"),];
+    let supportedMediaQuery1 = "not screen ";
+    let supportedMediaQuery2 = "print ";
+
+    let result = Factory.MediaDescriptorFactory.createMediaDescriptorsFromCSSString(css);
+
+    let model1 = new Model.MediaDescriptor(unsupportedMediaQuery1, supportedMediaQuery1, body1, true);
+    let model2 = new Model.MediaDescriptor(unsupportedMediaQuery2, null, body2, false);
+
+    expect(result).toStrictEqual([model1, model2]);
+});
+
 
 
 
