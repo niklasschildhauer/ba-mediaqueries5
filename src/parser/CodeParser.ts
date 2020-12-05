@@ -26,7 +26,7 @@ export class CodeParser implements ICodeParser {
     private createCSSCode(): string {
         let cssStyle: string[] = []
         let mediaDescriptors = this.cssReader.get()
-        for (var i = 0; i < mediaDescriptors.length; i++) {
+        for (let i = 0; i < mediaDescriptors.length; i++) {
             let mediaDescriptor = mediaDescriptors[i]
             if(this.userProfile.doesMediaQueryMatch(mediaDescriptor.mediaQuery)) {
                 let cssCode = mediaDescriptor.body

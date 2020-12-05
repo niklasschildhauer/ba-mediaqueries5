@@ -1,26 +1,42 @@
-.controls {
-    display: flex;
-    padding-bottom: 30px;
+#user-preference-view-wrapper {
+    position: absolute;
+    border-radius: 2vh;
+    right: 2vh;
+    top: 2vh;
+    height: 96vh;
+    width: 336px;
+    background-color: gray;
+    /* Add the blur effect */
+    backdrop-filter: blur(10px);
 }
 
-h3 {
-    padding-right: 40px;
+@media (max-width: 350px) {
+    #user-preference-view-wrapper {
+        width: 96vw;
+    }
 }
 
-.switch {
+.user-preference-view-one-day-story-div > img {
+    width: calc(336px / 3);
+}
+
+
+
+/* Rounded sliders */
+.user-preference-view-switch {
     position: relative;
     display: inline-block;
     width: 60px;
     height: 34px;
 }
 
-.switch input {
+.user-preference-view-switch input {
     opacity: 0;
     width: 0;
     height: 0;
 }
 
-.slider {
+.user-preference-view-slider {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -32,7 +48,7 @@ h3 {
     transition: .4s;
 }
 
-.slider:before {
+.user-preference-view-slider:before {
     position: absolute;
     content: "";
     height: 26px;
@@ -44,25 +60,24 @@ h3 {
     transition: .4s;
 }
 
-input:checked+.slider {
+input:checked+.user-preference-view-slider {
     background-color: #2196F3;
 }
 
-input:focus+.slider {
+input:focus+.user-preference-view-slider {
     box-shadow: 0 0 1px #2196F3;
 }
 
-input:checked+.slider:before {
+input:checked+.user-preference-view-slider:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
 }
 
-/* Rounded sliders */
-.slider.round {
+.user-preference-view-slider.round {
     border-radius: 34px;
 }
 
-.slider.round:before {
+.user-preference-view-slider.round:before {
     border-radius: 50%;
 }
