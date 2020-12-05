@@ -21,7 +21,6 @@ export class ScriptCoordinator implements View.UserPreferenceViewDelegate, Reade
     public addCSSCode(string: string) {
         this.CSSReader.read(string);
         console.log(this.CSSReader.get());
-        this.CodeParser.parse();
     }
 
     // DELEGATE FUNCTIONS
@@ -29,9 +28,9 @@ export class ScriptCoordinator implements View.UserPreferenceViewDelegate, Reade
         console.log(string);
     }
 
-    didResetMediaDescriptors(from: Reader.CSSReader): void {
-        console.log("reset CSS Code!");
-        throw new Error("Reset CSS Code");
+    didUpdateMediaDescriptors(from: Reader.CSSReader): void {
+        this.CodeParser.parse();
+        console.log("update CSS Code!");
     }
 
     didUpdateProfile(): void {

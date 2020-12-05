@@ -7,16 +7,17 @@ export interface IReader<T> {
 }
 
 export interface CSSReaderDelegate {
-    didResetMediaDescriptors(from: CSSReader): void
+    didUpdateMediaDescriptors(from: CSSReader): void
 }
 
 export class CSSReader implements IReader<Model.IMediaDescriptor> {
     private mediaDescriptors: Model.IMediaDescriptor[] = []
-    private plainCSSString: string = ""
+    private plainCSS: string[] = []
     private delegate: CSSReaderDelegate
 
     constructor(delegate: CSSReaderDelegate) {
         this.delegate = delegate;
+        this.readAutomatic();
     }
 
     public get(): Model.IMediaDescriptor[] {
@@ -24,20 +25,50 @@ export class CSSReader implements IReader<Model.IMediaDescriptor> {
     }
 
     public read(string: string): void {
-        this.plainCSSString = this.plainCSSString + "\n" + string;
-        this.refresh()
+        if (!this.plainCSS.includes(string)) {
+            this.plainCSS.push(string);
+            this.refresh()
+        } else {
+            console.log("CSS Code is already included");
+        }
+    }
+
+    private async readAutomatic(): Promise<void> {
+        let stylesSheets = document.querySelectorAll('link');
+        for (let i = stylesSheets.length; i--;) {
+            if (stylesSheets[i].getAttribute('rel') === 'stylesheet') {
+                let link = stylesSheets[i].getAttribute('href')
+                let text = await this.loadCSSFile(link)
+                    .then(function (text) {
+                        return text;
+                    })
+                this.read(text);
+            }
+        }
     }
 
     private refresh(): void {
-        this.mediaDescriptors = [];
-        this.mediaDescriptors = Factory.MediaDescriptorFactory.createMediaDescriptorsFromCSSString(this.plainCSSString);
+        if(this.plainCSS.length != 0) {
+            let plainCSSCodeString = this.plainCSS.reverse().join("\n");
+            this.mediaDescriptors = Factory.MediaDescriptorFactory.createMediaDescriptorsFromCSSString(plainCSSCodeString);
+        }
+        this.delegate.didUpdateMediaDescriptors(this);
     }
 
     private reset(): void {
         this.mediaDescriptors = [];
-        this.plainCSSString = "";
-        this.delegate.didResetMediaDescriptors(this);
+        this.plainCSS = [];
+        this.refresh();
     }
+
+    private async loadCSSFile(link: any) {
+        return await fetch(link, {
+            method: 'get'
+        }).then( function (response) {
+            return response.text()
+        })
+    }
+
 
 }
 

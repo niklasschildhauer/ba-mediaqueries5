@@ -9,6 +9,7 @@ export interface ICodeParser {
 export class CodeParser implements ICodeParser {
     private userProfile: Profile.IUserPreferenceProfile;
     private cssReader: IReader<IMediaDescriptor>;
+    private styleId = "common-terms-media-queries";
 
 
     constructor(userPreferenceProfile: Profile.IUserPreferenceProfile, cssReader: IReader<IMediaDescriptor>) {
@@ -17,6 +18,7 @@ export class CodeParser implements ICodeParser {
     }
 
     parse(): void {
+        this.resetCSSCode();
         let cssCode = this.createCSSCode();
         this.parseCSSCode(cssCode);
     }
@@ -40,8 +42,15 @@ export class CodeParser implements ICodeParser {
 
     private parseCSSCode(cssCode: string): void {
         const style = document.createElement('style');
-        style.setAttribute("id", "common-terms-media-queries");
+        style.setAttribute("id", this.styleId);
         style.innerHTML = cssCode;
         document.head.appendChild(style);
+    }
+
+    private resetCSSCode(): void {
+        const style = document.getElementById(this.styleId);
+        if(style != null){
+            style.remove();
+        }
     }
 }
