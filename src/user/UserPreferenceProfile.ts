@@ -2,9 +2,10 @@ import * as Model from "../model/Model";
 import {CommonTerm, IMediaFeature, IMediaQuery, IUserPreference} from "../model/Model";
 
 export interface IUserPreferenceProfile {
-    userPreferences: Model.IUserPreference[];
     doesMediaFeatureMatch(mediaFeature: Model.IMediaFeature): boolean;
     doesMediaQueryMatch(mediaQuery: Model.IMediaQuery): boolean;
+    getValueForMediaFeature(mediaFeature: Model.CommonTerm): string;
+    getUserPreferences(): Model.UserPreference[];
 }
 
 export interface  UserProfileDelegate {
@@ -12,7 +13,7 @@ export interface  UserProfileDelegate {
 }
 
 export class UserPreferenceProfile implements IUserPreferenceProfile {
-    userPreferences: Model.IUserPreference[];
+    private userPreferences: Model.IUserPreference[];
     delegate: UserProfileDelegate;
 
     constructor(delegate: UserProfileDelegate) {
@@ -38,7 +39,7 @@ export class UserPreferenceProfile implements IUserPreferenceProfile {
         return true;
     }
 
-    doesMediaQueryMatch(mediaQuery: Model.IMediaQuery) {
+    doesMediaQueryMatch(mediaQuery: Model.IMediaQuery): boolean {
         for (var i = 0; i < mediaQuery.unSupportedMediaQuery.length; i++) {
             let mediaFeature = mediaQuery.unSupportedMediaQuery[i];
             let matchValue = this.doesMediaFeatureMatch(mediaFeature)
@@ -49,16 +50,35 @@ export class UserPreferenceProfile implements IUserPreferenceProfile {
         }
         return true
     }
+
+    getValueForMediaFeature(mediaFeature: Model.CommonTerm): string {
+        for (let i = 0; i < this.userPreferences.length; i++) {
+            if(this.userPreferences[i].mediaFeature == mediaFeature) {
+                return this.userPreferences[i].value;
+            }
+        }
+        // else return the default value
+        for (let i = 0; i < defaultPreferences.length; i++) {
+            if(defaultPreferences[i].mediaFeature == mediaFeature) {
+                return this.userPreferences[i].value;
+            }
+        }
+        return "";
+    }
+
+    getUserPreferences(): Model.UserPreference[] {
+        return this.userPreferences;
+    }
 }
 
 let defaultPreferences = [new Model.UserPreference(CommonTerm.audioDescriptionEnabled, "false"),
     new Model.UserPreference(CommonTerm.captionsEnabled, "false"),
     new Model.UserPreference(CommonTerm.displaySkiplinks, "never"),
-    new Model.UserPreference(CommonTerm.extendedSessionTimeout, "false"),
-    new Model.UserPreference(CommonTerm.pictogramsEnabled, "false"),
+    new Model.UserPreference(CommonTerm.extendedSessionTimeout, "true"),
+    new Model.UserPreference(CommonTerm.pictogramsEnabled, "true"),
     new Model.UserPreference(CommonTerm.selfVoicingEnabled, "false"),
     new Model.UserPreference(CommonTerm.sessionTimeout, "1"),
-    new Model.UserPreference(CommonTerm.signLanguage, ""),
+    new Model.UserPreference(CommonTerm.signLanguage, "gsdh"),
     new Model.UserPreference(CommonTerm.signLanguageEnabled, "false"),
     new Model.UserPreference(CommonTerm.tableOfContents, "false")
 ];

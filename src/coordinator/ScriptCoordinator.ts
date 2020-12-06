@@ -12,9 +12,9 @@ export class ScriptCoordinator implements View.UserPreferenceViewDelegate, Reade
     public constructor() {
         console.log("Hello World");
         console.log("-----------");
-        this.UserPreferenceViewController = new View.UserPreferenceViewController(this);
         this.CSSReader = new Reader.CSSReader(this);
         this.UserProfile = new User.UserPreferenceProfile(this);
+        this.UserPreferenceViewController = new View.UserPreferenceViewController(this, this.UserProfile);
         this.CodeParser = new Parser.CodeParser(this.UserProfile, this.CSSReader);
     }
 

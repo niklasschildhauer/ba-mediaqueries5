@@ -1,4 +1,5 @@
 import {CommonTerm, OneDayStoriesPeople, SkipLinkValues, UserPreference} from "../model/Model";
+import {UserPreferenceProfile} from "../user/UserPreferenceProfile";
 
 interface IHTMLElementModel<T> {
     type: string;
@@ -147,7 +148,7 @@ class OneDayStoryView {
 }
 
 export interface OneDayStoriesWrapperDelegate {
-    didSelectHuman(human: OneDayStoriesPeople): void;
+    didSelectHuman(human: OneDayStoriesPeople, from: OneDayStoriesWrapperView): void;
 }
 
 export class OneDayStoriesWrapperView {
@@ -179,7 +180,7 @@ export class OneDayStoriesWrapperView {
         let element = new HTMLBasicElement("div", "one-day-stories-wrapper", null);
         for (let i = 0; i < this.oneDayStoriesViews.length; i++) {
             this.oneDayStoriesViews[i].element.addClickEventListener(() =>{
-                this.delegate.didSelectHuman(this.oneDayStoriesViews[i].name);
+                this.delegate.didSelectHuman(this.oneDayStoriesViews[i].name, this);
             })
             element.appendChild(this.oneDayStoriesViews[i].element);
         }
@@ -249,15 +250,15 @@ export class RadioButtonView {
 }
 
 
-interface ICommonTermListEntry<T, A> {
+interface ICommonTermListEntry<T> {
     element: HTMLBasicElement;
     commonTerm: CommonTerm;
 
     getValue(): string;
-    setValue(value: A): void;
+    setValue(value: string): void;
 }
 
-class CommonTermListEntryBooleanView implements ICommonTermListEntry<SwitchControlView, boolean>{
+class CommonTermListEntryBooleanView implements ICommonTermListEntry<SwitchControlView>{
     private label: HTMLTextElement;
     private input: SwitchControlView
     public commonTerm: CommonTerm;
@@ -274,8 +275,13 @@ class CommonTermListEntryBooleanView implements ICommonTermListEntry<SwitchContr
         this.element = element;
     }
 
-    public setValue(value: boolean): void {
-        this.input.setCheckedValue(value);
+    public setValue(value: string): void {
+        if(value == "true") {
+            this.input.setCheckedValue(true);
+        } else {
+            this.input.setCheckedValue(false);
+        }
+
     }
 
     public getValue(): string {
@@ -284,7 +290,7 @@ class CommonTermListEntryBooleanView implements ICommonTermListEntry<SwitchContr
 
 }
 
-class CommonTermListEntryTextInputView implements ICommonTermListEntry<HTMLUserInputElement, string>{
+class CommonTermListEntryTextInputView implements ICommonTermListEntry<HTMLUserInputElement>{
     private label: HTMLTextElement;
     private input: HTMLUserInputElement;
     public commonTerm: CommonTerm;
@@ -310,7 +316,7 @@ class CommonTermListEntryTextInputView implements ICommonTermListEntry<HTMLUserI
     }
 }
 
-class CommonTermListEntryRadioInputView implements ICommonTermListEntry<RadioButtonView, string>{
+class CommonTermListEntryRadioInputView implements ICommonTermListEntry<RadioButtonView>{
     private label: HTMLTextElement;
     private input: RadioButtonView;
     public commonTerm: CommonTerm;
@@ -369,7 +375,6 @@ export class ListWrapperView {
             element.appendChild(this.listEntries[i].element);
         }
         this.element = element;
-        this.setDefaultValues();
     }
 
     getAllPreferences(): UserPreference[] {
@@ -380,19 +385,11 @@ export class ListWrapperView {
         return preferences;
     }
 
-    setDefaultValues() {
-        this.audioDescriptionListEntry.setValue(false);
-        this.captionsEnabledListEntry.setValue(false);
-        this.pictogramsEnabledListEntry.setValue(false);
-        this.tableOfContentsListEntry.setValue(false);
-        this.selfVoicingEnabledListEntry.setValue(false);
-        this.signLanguageEnabledListEntry.setValue(false);
-
-        this.sessionTimeout.setValue("");
-        this.signLanguage.setValue("");
-
-        this.displaySkiplinks.setValue("never");
+    setPreferences(preference: UserPreference): void {
+        for (let i = 0; i < this.listEntries.length; i++) {
+            if(preference.mediaFeature == this.listEntries[i].commonTerm) {
+                this.listEntries[i].setValue(preference.value);
+            }
+        }
     }
-
-    
 }

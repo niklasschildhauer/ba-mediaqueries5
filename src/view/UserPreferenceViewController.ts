@@ -6,7 +6,8 @@ import {
     OneDayStoriesWrapperDelegate
 } from './UserPreferenceViews';
 
-import { OneDayStoriesPeople } from '../model/Model';
+import {CommonTerm, OneDayStoriesPeople} from '../model/Model';
+import {IUserPreferenceProfile, UserPreferenceProfile} from "../user/UserPreferenceProfile";
 
 export interface IUserPreferenceViewController {
     refreshView(): void;
@@ -18,6 +19,7 @@ export interface UserPreferenceViewDelegate {
 
 export class UserPreferenceViewController implements IUserPreferenceViewController, OneDayStoriesWrapperDelegate {
     delegate: UserPreferenceViewDelegate;
+    private userProfile: IUserPreferenceProfile
 
     private wrapper = new HTMLBasicElement("div", "wrapper", null);
     private headlineWrapper = new HTMLBasicElement("div", "headline-wrapper", null);
@@ -27,8 +29,9 @@ export class UserPreferenceViewController implements IUserPreferenceViewControll
     private oneDayStoriesWrapper = new OneDayStoriesWrapperView(this);
     private listWrapper = new ListWrapperView();
 
-    public constructor(delegate: UserPreferenceViewDelegate) {
+    public constructor(delegate: UserPreferenceViewDelegate, userProfile: IUserPreferenceProfile) {
         this.delegate = delegate;
+        this.userProfile = userProfile;
 
         this.refreshView();
         this.createView();
@@ -51,11 +54,17 @@ export class UserPreferenceViewController implements IUserPreferenceViewControll
     }
 
     refreshView(): void {
-        console.log("refreshView");
-        this.delegate.setUserPreferences("Hallo über das Delegate", this);
+        this.setUserPreferences();
     }
 
-    didSelectHuman(human: OneDayStoriesPeople): void {
+    private setUserPreferences() {
+        let preferences = this.userProfile.getUserPreferences();
+        for (let i = 0; i < preferences.length; i++) {
+            this.listWrapper.setPreferences(preferences[i]);
+        }
+    }
+
+    didSelectHuman(human: OneDayStoriesPeople, from: OneDayStoriesWrapperView): void {
         console.log("Did select hier " + human);
     }
 }
