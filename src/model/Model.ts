@@ -105,7 +105,7 @@ export enum CommonTerm {
     sessionTimeout = "sessionTimeout"
 }
 
-export enum OneDayStoriesPeople {
+export enum Persona {
     alexander = "Alexander",
     anna = "Anna",
     carole = "Carole",

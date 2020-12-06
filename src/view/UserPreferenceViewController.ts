@@ -1,12 +1,12 @@
 import {
     HTMLBasicElement,
     HTMLTextElement,
-    OneDayStoriesWrapperView,
+    PersonasWrapperView,
     ListWrapperView,
-    OneDayStoriesWrapperDelegate
+    PersonasWrapperDelegate
 } from './UserPreferenceViews';
 
-import {CommonTerm, OneDayStoriesPeople} from '../model/Model';
+import {CommonTerm, Persona} from '../model/Model';
 import {IUserPreferenceProfile, UserPreferenceProfile} from "../user/UserPreferenceProfile";
 
 export interface IUserPreferenceViewController {
@@ -17,7 +17,7 @@ export interface UserPreferenceViewDelegate {
     setUserPreferences(string: string, from: IUserPreferenceViewController): void
 }
 
-export class UserPreferenceViewController implements IUserPreferenceViewController, OneDayStoriesWrapperDelegate {
+export class UserPreferenceViewController implements IUserPreferenceViewController, PersonasWrapperDelegate {
     delegate: UserPreferenceViewDelegate;
     private userProfile: IUserPreferenceProfile
 
@@ -26,7 +26,7 @@ export class UserPreferenceViewController implements IUserPreferenceViewControll
     private settingsSubHeading =  new HTMLTextElement("h3", null, null, "SETTINGS");
     private userPreferencesHeading =  new HTMLTextElement("h1", null, null, "User Preferences");
 
-    private oneDayStoriesWrapper = new OneDayStoriesWrapperView(this);
+    private personaWrapper = new PersonasWrapperView(this);
     private listWrapper = new ListWrapperView();
 
     public constructor(delegate: UserPreferenceViewDelegate, userProfile: IUserPreferenceProfile) {
@@ -41,7 +41,7 @@ export class UserPreferenceViewController implements IUserPreferenceViewControll
     private createView(): void {
         this.headlineWrapper.appendChildren([this.settingsSubHeading, this.userPreferencesHeading])
         this.wrapper.appendChild(this.headlineWrapper);
-        this.wrapper.appendChild(this.oneDayStoriesWrapper.element);
+        this.wrapper.appendChild(this.personaWrapper.element);
         this.wrapper.appendChild(this.listWrapper.element);
 
     }
@@ -64,7 +64,7 @@ export class UserPreferenceViewController implements IUserPreferenceViewControll
         }
     }
 
-    didSelectHuman(human: OneDayStoriesPeople, from: OneDayStoriesWrapperView): void {
+    didSelectPersona(human: Persona, from: PersonasWrapperView): void {
         console.log("Did select hier " + human);
     }
 }

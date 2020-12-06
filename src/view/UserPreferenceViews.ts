@@ -1,4 +1,4 @@
-import {CommonTerm, OneDayStoriesPeople, SkipLinkValues, UserPreference} from "../model/Model";
+import {CommonTerm, Persona, SkipLinkValues, UserPreference} from "../model/Model";
 import {UserPreferenceProfile} from "../user/UserPreferenceProfile";
 
 interface IHTMLElementModel<T> {
@@ -127,13 +127,13 @@ export class HTMLUserInputElement implements IHTMLElementModel<HTMLInputElement>
 
 }
 
-class OneDayStoryView {
+class PersonaView {
     private imageElement: HTMLImageElement;
     private nameElement: HTMLTextElement;
     public element: HTMLBasicElement;
-    public name: OneDayStoriesPeople;
+    public name: Persona;
 
-    constructor(name: OneDayStoriesPeople, imageSource: string) {
+    constructor(name: Persona, imageSource: string) {
         this.imageElement = new HTMLImageElement("img",
             null,
             "one-day-story-image",
@@ -147,22 +147,22 @@ class OneDayStoryView {
     }
 }
 
-export interface OneDayStoriesWrapperDelegate {
-    didSelectHuman(human: OneDayStoriesPeople, from: OneDayStoriesWrapperView): void;
+export interface PersonasWrapperDelegate {
+    didSelectPersona(persona: Persona, from: PersonasWrapperView): void;
 }
 
-export class OneDayStoriesWrapperView {
-    private alexanderODSView = new OneDayStoryView(OneDayStoriesPeople.alexander, "https://gpii.eu/mq-5/assets/Alexander.png");
-    private annaODSView = new OneDayStoryView(OneDayStoriesPeople.anna, "https://gpii.eu/mq-5/assets/Anna.png");
-    private caroleODSView = new OneDayStoryView(OneDayStoriesPeople.carole, "https://gpii.eu/mq-5/assets/Carole.png");
-    private larsODSView = new OneDayStoryView(OneDayStoriesPeople.lars, "https://gpii.eu/mq-5/assets/Lars.png");
-    private mariaODSView = new OneDayStoryView(OneDayStoriesPeople.maria, "https://gpii.eu/mq-5/assets/Maria.png");
-    private maryODSView = new OneDayStoryView(OneDayStoriesPeople.mary, "https://gpii.eu/mq-5/assets/Mary.png");
-    private monikaODSView = new OneDayStoryView(OneDayStoriesPeople.monika, "https://gpii.eu/mq-5/assets/Monika.png");
-    private susanODSView = new OneDayStoryView(OneDayStoriesPeople.susan, "https://gpii.eu/mq-5/assets/Susan.png");
-    private tomODSView = new OneDayStoryView(OneDayStoriesPeople.tom, "https://gpii.eu/mq-5/assets/Tom.png");
+export class PersonasWrapperView {
+    private alexanderODSView = new PersonaView(Persona.alexander, "https://gpii.eu/mq-5/assets/Alexander.png");
+    private annaODSView = new PersonaView(Persona.anna, "https://gpii.eu/mq-5/assets/Anna.png");
+    private caroleODSView = new PersonaView(Persona.carole, "https://gpii.eu/mq-5/assets/Carole.png");
+    private larsODSView = new PersonaView(Persona.lars, "https://gpii.eu/mq-5/assets/Lars.png");
+    private mariaODSView = new PersonaView(Persona.maria, "https://gpii.eu/mq-5/assets/Maria.png");
+    private maryODSView = new PersonaView(Persona.mary, "https://gpii.eu/mq-5/assets/Mary.png");
+    private monikaODSView = new PersonaView(Persona.monika, "https://gpii.eu/mq-5/assets/Monika.png");
+    private susanODSView = new PersonaView(Persona.susan, "https://gpii.eu/mq-5/assets/Susan.png");
+    private tomODSView = new PersonaView(Persona.tom, "https://gpii.eu/mq-5/assets/Tom.png");
 
-    private oneDayStoriesViews = [this.alexanderODSView,
+    private personaViews = [this.alexanderODSView,
         this.annaODSView,
         this.caroleODSView,
         this.larsODSView,
@@ -174,15 +174,15 @@ export class OneDayStoriesWrapperView {
 
     public element: HTMLBasicElement
 
-    private delegate: OneDayStoriesWrapperDelegate;
+    private delegate: PersonasWrapperDelegate;
 
-    constructor(delegate: OneDayStoriesWrapperDelegate) {
+    constructor(delegate: PersonasWrapperDelegate) {
         let element = new HTMLBasicElement("div", "one-day-stories-wrapper", null);
-        for (let i = 0; i < this.oneDayStoriesViews.length; i++) {
-            this.oneDayStoriesViews[i].element.addClickEventListener(() =>{
-                this.delegate.didSelectHuman(this.oneDayStoriesViews[i].name, this);
+        for (let i = 0; i < this.personaViews.length; i++) {
+            this.personaViews[i].element.addClickEventListener(() =>{
+                this.delegate.didSelectPersona(this.personaViews[i].name, this);
             })
-            element.appendChild(this.oneDayStoriesViews[i].element);
+            element.appendChild(this.personaViews[i].element);
         }
         this.element = element;
         this.delegate = delegate;
