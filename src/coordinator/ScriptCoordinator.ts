@@ -2,12 +2,17 @@ import * as View from '../view/UserPreferenceViewController';
 import * as Reader from '../reader/CSSReader';
 import * as Model  from "../model/Model";
 import * as User from "../user/UserPreferenceProfile";
-import * as Parser from "../parser/CodeParser";
-export class ScriptCoordinator implements View.UserPreferenceViewDelegate, Reader.CSSReaderDelegate, User.UserProfileDelegate{
+import * as Parser from "../parser/CSSCodeParser";
+import * as Network from "../network/NetworkAPI";
+import {JSVariableParser} from "../parser/VariableParser";
+
+export class ScriptCoordinator implements View.UserPreferenceViewDelegate, Reader.CSSReaderDelegate, User.UserProfileDelegate, Network.NetworkAPIDelegate{
     private UserPreferenceViewController: View.IUserPreferenceViewController;
     private CSSReader: Reader.IReader<Model.IMediaDescriptor>;
     private UserProfile: User.IUserPreferenceProfile;
-    private CodeParser: Parser.ICodeParser;
+    private CodeParser: Parser.IParser;
+    private NetworkAPI: Network.INetworkAPI;
+    private JSVariableParser: Parser.IParser;
 
     public constructor() {
         console.log("Hello World");
@@ -15,7 +20,9 @@ export class ScriptCoordinator implements View.UserPreferenceViewDelegate, Reade
         this.CSSReader = new Reader.CSSReader(this);
         this.UserProfile = new User.UserPreferenceProfile(this);
         this.UserPreferenceViewController = new View.UserPreferenceViewController(this, this.UserProfile);
-        this.CodeParser = new Parser.CodeParser(this.UserProfile, this.CSSReader);
+        this.CodeParser = new Parser.CSSCodeParser(this.UserProfile, this.CSSReader);
+        this.NetworkAPI = new Network.NetworkAPI(this);
+        this.JSVariableParser = new JSVariableParser(this.UserProfile);
     }
 
     public addCSSCode(string: string) {
@@ -36,6 +43,9 @@ export class ScriptCoordinator implements View.UserPreferenceViewDelegate, Reade
     didUpdateProfile(): void {
         console.log("Update Profile!");
         throw new Error("Update Profile");
+    }
+
+    didLoadPreferenceSet(preferences: Model.UserPreference[], from: Network.INetworkAPI): void {
     }
 
 }

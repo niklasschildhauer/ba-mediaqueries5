@@ -50,5 +50,5 @@ export class NetworkAPI implements  INetworkAPI {
     }
 }
 
-private const alexanderPreferences = "http://registry.gpii.eu/common/highContrastEnabled\": true,\n" +
+const alexanderPreferences = "http://registry.gpii.eu/common/highContrastEnabled\": true,\n" +
     "    \"http://registry.gpii.eu/common/highContrastTheme\": \"white-black\""

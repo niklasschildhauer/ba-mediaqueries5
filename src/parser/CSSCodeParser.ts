@@ -2,11 +2,11 @@ import * as Profile from "../user/UserPreferenceProfile";
 import {IReader} from "../reader/CSSReader";
 import {IMediaDescriptor} from "../model/Model";
 
-export interface ICodeParser {
+export interface IParser {
     parse(): void;
 }
 
-export class CodeParser implements ICodeParser {
+export class CSSCodeParser implements IParser {
     private userProfile: Profile.IUserPreferenceProfile;
     private cssReader: IReader<IMediaDescriptor>;
     private styleId = "common-terms-media-queries";
