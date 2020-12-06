@@ -29,18 +29,6 @@ export interface IUserPreference {
 
 }
 
-export enum CommonTerm {
-    displaySkiplinks = "displaySkiplinks",
-    audioDescriptionEnabled = "audioDescriptionEnabled",
-    captionsEnabled = "captionsEnabled",
-    pictogramsEnabled = "pictogramsEnabled",
-    selfVoicingEnabled = "selfVoicingEnabled",
-    tableOfContents = "tableOfContents",
-    extendedSessionTimeout = "extendedSessionTimeout",
-    signLanguageEnabled = "signLanguageEnabled",
-    signLanguage = "signLanguage",
-    sessionTimeout = "sessionTimeout"
-}
 
 export class CommonTermUtil {
     public static  containsCommonTermMediaFeature(query: string): [boolean, CommonTerm | null] {
@@ -102,6 +90,37 @@ export class UserPreference implements IUserPreference {
         this.value = value;
     }
 
+}
+
+export enum CommonTerm {
+    displaySkiplinks = "displaySkiplinks",
+    audioDescriptionEnabled = "audioDescriptionEnabled",
+    captionsEnabled = "captionsEnabled",
+    pictogramsEnabled = "pictogramsEnabled",
+    selfVoicingEnabled = "selfVoicingEnabled",
+    tableOfContents = "tableOfContents",
+    extendedSessionTimeout = "extendedSessionTimeout",
+    signLanguageEnabled = "signLanguageEnabled",
+    signLanguage = "signLanguage",
+    sessionTimeout = "sessionTimeout"
+}
+
+export enum OneDayStoriesPeople {
+    alexander = "Alexander",
+    anna = "Anna",
+    carole = "Carole",
+    lars = "Lars",
+    maria = "Maria",
+    mary = "Mary",
+    monika = "Monika",
+    susan = "Susan",
+    tom = "Tom"
+}
+
+export enum SkipLinkValues {
+    onfocus = "onfocus",
+    always = "always",
+    never = "never"
 }
 
 
