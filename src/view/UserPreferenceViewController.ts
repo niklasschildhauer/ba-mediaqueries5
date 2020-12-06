@@ -76,15 +76,15 @@ class HTMLImageElement extends HTMLBasicElement {
     }
 }
 
-class HTMLCheckboxElement implements IHTMLElementModel<HTMLInputElement> {
+class HTMLUserInputElement implements IHTMLElementModel<HTMLInputElement> {
     class: string | null = null;
     element: HTMLInputElement;
     id: string | null = null;
     type: string = "input";
 
-    constructor(id: string | null, classString: string | null) {
+    constructor(type: string, id: string | null, classString: string | null) {
         let element =  document.createElement(this.type) as HTMLInputElement;
-        element.setAttribute("type", "checkbox");
+        element.setAttribute("type", type);
 
         if(id != "" && id != null) {
             this.id = "user-preference-view-" + id;
@@ -166,11 +166,11 @@ class OneDayStoriesWrapperView {
 
 class SwitchControlView {
     public element: HTMLBasicElement;
-    private checkBoxElement: HTMLCheckboxElement;
+    private checkBoxElement: HTMLUserInputElement;
     private spanElement: HTMLBasicElement;
 
     constructor(name: string) {
-        this.checkBoxElement = new HTMLCheckboxElement(name + "-switcher", "input");
+        this.checkBoxElement = new HTMLUserInputElement("checkbox", name + "-switcher", "switch-input");
         this.checkBoxElement.setCheckedValue(true);
         this.spanElement = new HTMLBasicElement("span", null, "slider round");
 
@@ -179,29 +179,91 @@ class SwitchControlView {
     }
 
     public setCheckedValue(value: boolean) {
-        //this.checkBoxElement.setCheckedValue(value);
+        this.checkBoxElement.setCheckedValue(value);
     }
 }
 
-class CommonTermListEntryBooleanView {
+class RadioButtonView {
+    public inputs: HTMLUserInputElement[];
+    public element: HTMLBasicElement
+
+    constructor(name: string, values: string[]) {
+        this.element = new HTMLBasicElement("div", null, "radio-label");
+        this.inputs = [];
+        for (let i = 0; i < values.length; i++) {
+            let input = new HTMLUserInputElement("radio", name + "-radio", "radio-input");
+            input.setAttribute("name", name);
+            input.setAttribute("value", values[i]);
+
+            let label = new HTMLTextElement("label", null, null, values[i]);
+            label.setAttribute("for", values[i]);
+            this.element.appendChildren([input, label]);
+            this.inputs.push(input);
+        }
+    }
+}
+
+
+interface ICommonTermListEntry<T> {
+    element: HTMLBasicElement;
+    commonTerm: CommonTerm;
+}
+
+class CommonTermListEntryBooleanView implements ICommonTermListEntry<SwitchControlView>{
     private label: HTMLTextElement;
-    private switch: SwitchControlView
+    private input: SwitchControlView
     public commonTerm: CommonTerm;
     public element: HTMLBasicElement;
 
 
     constructor(name: string, commonTerm: CommonTerm) {
         this.label = new HTMLTextElement("p", null, "list-entry-label", name);
-        this.switch = new SwitchControlView(commonTerm);
+        this.input = new SwitchControlView(commonTerm);
         this.commonTerm = commonTerm;
 
-        let element = new HTMLBasicElement("div", null, "ct-boolean-list-entry-div");
-        element.appendChildren([this.label, this.switch.element]);
+        let element = new HTMLBasicElement("div", null, "ct-list-entry-div");
+        element.appendChildren([this.label, this.input.element]);
         this.element = element;
     }
 
     public setCheckedValue(value: boolean) {
-        this.switch.setCheckedValue(value);
+        this.input.setCheckedValue(value);
+    }
+}
+
+class CommonTermListEntryTextInputView implements ICommonTermListEntry<HTMLUserInputElement>{
+    private label: HTMLTextElement;
+    private input: HTMLUserInputElement;
+    public commonTerm: CommonTerm;
+    public element: HTMLBasicElement;
+
+
+    constructor(name: string, commonTerm: CommonTerm) {
+        this.label = new HTMLTextElement("p", null, "list-entry-label", name);
+        this.input = new HTMLUserInputElement("text", commonTerm + "-input", "text-input");
+        this.commonTerm = commonTerm;
+
+        let element = new HTMLBasicElement("div", null, "ct-list-entry-div");
+        element.appendChildren([this.label, this.input]);
+        this.element = element;
+    }
+}
+
+class CommonTermListEntryRadioInputView implements ICommonTermListEntry<RadioButtonView>{
+    private label: HTMLTextElement;
+    private input: RadioButtonView;
+    public commonTerm: CommonTerm;
+    public element: HTMLBasicElement;
+
+
+    constructor(name: string, commonTerm: CommonTerm, values: string[]) {
+        this.label = new HTMLTextElement("p", null, "list-entry-label", name);
+        this.input = new RadioButtonView(name, values);
+        this.commonTerm = commonTerm;
+
+        let element = new HTMLBasicElement("div", null, "ct-list-entry-div");
+        element.appendChildren([this.label, this.input.element]);
+        this.element = element;
     }
 }
 
@@ -212,6 +274,12 @@ class ListWrapperView {
     private tableOfContentsListEntry = new CommonTermListEntryBooleanView("Table of Contents", CommonTerm.audioDescriptionEnabled);
     private selfVoicingEnabledListEntry = new CommonTermListEntryBooleanView("Self-Voicing Enabled", CommonTerm.audioDescriptionEnabled);
     private signLanguageEnabledListEntry = new CommonTermListEntryBooleanView("Sign Language Enabled", CommonTerm.audioDescriptionEnabled);
+
+    private sessionTimeout = new CommonTermListEntryTextInputView("Session Timeout", CommonTerm.sessionTimeout);
+    private signLanguage = new CommonTermListEntryTextInputView("Sign Language", CommonTerm.signLanguage);
+
+    private displaySkiplinks = new CommonTermListEntryRadioInputView("Display Skiplinks", CommonTerm.displaySkiplinks, ["always", "never", "onfocus"]);
+
 
 
     public element: HTMLBasicElement
@@ -224,6 +292,9 @@ class ListWrapperView {
             this.tableOfContentsListEntry.element,
             this.selfVoicingEnabledListEntry.element,
             this.signLanguageEnabledListEntry.element,
+            this.signLanguage.element,
+            this.sessionTimeout.element,
+            this.displaySkiplinks.element,
         ]);
         this.element = element;
         this.audioDescriptionListEntry.setCheckedValue(true);

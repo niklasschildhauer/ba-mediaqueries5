@@ -44,7 +44,7 @@
     height: 34px;
 }
 
-.user-preference-view-switch-control .user-preference-view-input {
+.user-preference-view-switch-control .user-preference-view-switch-hinput {
     opacity: 0;
     width: 0;
     height: 0;
@@ -74,15 +74,15 @@
     transition: .4s;
 }
 
-.user-preference-view-input:checked+.user-preference-view-slider {
+.user-preference-view-switch-input:checked+.user-preference-view-slider {
     background-color: #2196F3;
 }
 
-.user-preference-view-input:focus+.user-preference-view-slider {
+.user-preference-view-switch-input:focus+.user-preference-view-slider {
     box-shadow: 0 0 1px #2196F3;
 }
 
-.user-preference-view-input:checked+.user-preference-view-slider:before {
+.user-preference-view-switch-input:checked+.user-preference-view-slider:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
