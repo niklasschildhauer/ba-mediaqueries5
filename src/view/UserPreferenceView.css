@@ -1,35 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
 #user-preference-view-wrapper {
-    position: absolute;
+    --padding: 18px;
+    --width: 315px;
+}
+
+#user-preference-view-wrapper * {
+    font-family: 'Roboto', sans-serif;
+    /*margin: 5px;*/
+}
+
+#user-preference-view-wrapper h1 {
+    font-size: 1.6em;
+}
+
+#user-preference-view-wrapper h3 {
+    font-size: 0.75em;
+    font-weight: normal;
+    letter-spacing: 0.1em;
+}
+
+#user-preference-view-wrapper {
+    position: fixed;
     border-radius: 2vh;
     right: 2vh;
     top: 2vh;
-    height: 96vh;
+    height: calc(96vh - 2 * var(--padding));
+    padding: var(--padding);
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
 
-    background-color: gray;
-    /* Add the blur effect */
-    backdrop-filter: blur(10px);
+    background-color: #E6E6E6;
 }
 
-#user-preference-view-wrapper #user-preference-view-one-day-stories-wrapper {
-    width: 336px;
+#user-preference-view-wrapper #user-preference-view-personas-wrapper {
+    /*width: calc(336px + 2 * var(--padding));*/
+    width: var(--width);
 }
 
 @media (max-width: 350px) {
-    #user-preference-view-wrapper #user-preference-view-one-day-stories-wrapper {
+    #user-preference-view-wrapper #user-preference-view-personas-wrapper {
         width: 96vw;
     }
 }
 
-#user-preference-view-one-day-stories-wrapper {
+#user-preference-view-personas-wrapper {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: stretch;
 }
 
-.user-preference-view-one-day-story-div > img {
-    width: calc(336px / 3);
+.user-preference-view-persona-div > img {
+    width: calc((var(--width) / 3) - var(--padding));
 }
 
-.user-preference-view-one-day-stories-wrapper {
+@media (max-width: 350px) {
+    .user-preference-view-persona-div > img {
+        width: calc(96vw / 3 - var(--padding));
+    }
+}
+
+.user-preference-view-persona-div {
+    padding: calc(var(--padding) / 2);
+}
+
+#user-preference-persona-selected {
+    background: #2196F3;
+    border-radius: 2vh;
+    color: white;
+    font-weight: bold;
+}
+
+.user-preference-view-persona-label {
+    margin: 5px 0 10px 0;
+    text-align: center;
+}
+
+.user-preference-view-ct-list-entry-div {
+    background: white;
+    border-radius: 2vh;
+
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 calc(var(--padding) / 2) 0 calc(var(--padding) / 2);
+    margin: 5px 0 5px 0;
+    width: calc(var(--width) - var(--padding));
 }
 
 
@@ -89,9 +147,14 @@
 }
 
 .user-preference-view-slider.round {
-    border-radius: 34px;
+    border-radius: 20px;
 }
 
 .user-preference-view-slider.round:before {
     border-radius: 50%;
+}
+
+.user-preference-view-switch-control {
+    display: flex;
+    justify-content: center;
 }

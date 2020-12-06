@@ -136,14 +136,22 @@ class PersonaView {
     constructor(name: Persona, imageSource: string) {
         this.imageElement = new HTMLImageElement("img",
             null,
-            "one-day-story-image",
+            "persona-image",
             imageSource, "Zeichnung aus den Alltagsbeschreibungen");
 
-        this.nameElement = new HTMLTextElement("p", null, "one-day-story-label", name);
-        let element = new HTMLBasicElement("div", null, "one-day-story-div");
+        this.nameElement = new HTMLTextElement("p", null, "persona-label", name);
+        let element = new HTMLBasicElement("div", null, "persona-div");
         element.appendChildren([this.imageElement, this.nameElement]);
         this.element = element;
         this.name = name;
+    }
+
+    public select(): void {
+        this.element.setAttribute("id", "user-preference-persona-selected")
+    }
+
+    public unselect(): void {
+        this.element.element.removeAttribute("id");
     }
 }
 
@@ -177,15 +185,23 @@ export class PersonasWrapperView {
     private delegate: PersonasWrapperDelegate;
 
     constructor(delegate: PersonasWrapperDelegate) {
-        let element = new HTMLBasicElement("div", "one-day-stories-wrapper", null);
+        let element = new HTMLBasicElement("div", "personas-wrapper", null);
         for (let i = 0; i < this.personaViews.length; i++) {
             this.personaViews[i].element.addClickEventListener(() =>{
                 this.delegate.didSelectPersona(this.personaViews[i].name, this);
-            })
+                this.selectPersona(this.personaViews[i]);
+            });
             element.appendChild(this.personaViews[i].element);
         }
         this.element = element;
         this.delegate = delegate;
+    }
+
+    selectPersona(persona: PersonaView): void {
+        for (let i = 0; i < this.personaViews.length; i++) {
+            this.personaViews[i].unselect();
+        }
+        persona.select();
     }
 }
 
@@ -226,7 +242,11 @@ export class RadioButtonView {
 
             let label = new HTMLTextElement("label", null, null, "" + values[i]);
             label.setAttribute("for", "" + values[i]);
-            this.element.appendChildren([input, label]);
+
+            let div = new HTMLBasicElement("div", null, "radio-div");
+            div.appendChildren([input, label]);
+
+            this.element.appendChild(div);
             this.inputs.push(input);
         }
     }

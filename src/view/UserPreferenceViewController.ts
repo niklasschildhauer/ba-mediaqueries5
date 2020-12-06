@@ -22,8 +22,8 @@ export class UserPreferenceViewController implements IUserPreferenceViewControll
     private userProfile: IUserPreferenceProfile
 
     private wrapper = new HTMLBasicElement("div", "wrapper", null);
-    private headlineWrapper = new HTMLBasicElement("div", "headline-wrapper", null);
-    private settingsSubHeading =  new HTMLTextElement("h3", null, null, "SETTINGS");
+    // private headlineWrapper = new HTMLBasicElement("div", "headline-wrapper", null);
+    // private settingsSubHeading =  new HTMLTextElement("h3", null, null, "SETTINGS");
     private userPreferencesHeading =  new HTMLTextElement("h1", null, null, "User Preferences");
 
     private personaWrapper = new PersonasWrapperView(this);
@@ -39,8 +39,8 @@ export class UserPreferenceViewController implements IUserPreferenceViewControll
     }
 
     private createView(): void {
-        this.headlineWrapper.appendChildren([this.settingsSubHeading, this.userPreferencesHeading])
-        this.wrapper.appendChild(this.headlineWrapper);
+        // this.headlineWrapper.appendChildren([this.settingsSubHeading, this.userPreferencesHeading])
+        this.wrapper.appendChild(this.userPreferencesHeading);
         this.wrapper.appendChild(this.personaWrapper.element);
         this.wrapper.appendChild(this.listWrapper.element);
 
