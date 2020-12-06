@@ -4,33 +4,47 @@
     right: 2vh;
     top: 2vh;
     height: 96vh;
-    width: 336px;
+
     background-color: gray;
     /* Add the blur effect */
     backdrop-filter: blur(10px);
 }
 
+#user-preference-view-wrapper #user-preference-view-one-day-stories-wrapper {
+    width: 336px;
+}
+
 @media (max-width: 350px) {
-    #user-preference-view-wrapper {
+    #user-preference-view-wrapper #user-preference-view-one-day-stories-wrapper {
         width: 96vw;
     }
+}
+
+#user-preference-view-one-day-stories-wrapper {
+    display: flex;
 }
 
 .user-preference-view-one-day-story-div > img {
     width: calc(336px / 3);
 }
 
+.user-preference-view-one-day-stories-wrapper {
+    display: flex;
+}
+
+
+
 
 
 /* Rounded sliders */
-.user-preference-view-switch {
+.user-preference-view-switch-control {
     position: relative;
     display: inline-block;
     width: 60px;
     height: 34px;
 }
 
-.user-preference-view-switch input {
+.user-preference-view-switch-control .user-preference-view-input {
     opacity: 0;
     width: 0;
     height: 0;
@@ -60,15 +74,15 @@
     transition: .4s;
 }
 
-input:checked+.user-preference-view-slider {
+.user-preference-view-input:checked+.user-preference-view-slider {
     background-color: #2196F3;
 }
 
-input:focus+.user-preference-view-slider {
+.user-preference-view-input:focus+.user-preference-view-slider {
     box-shadow: 0 0 1px #2196F3;
 }
 
-input:checked+.user-preference-view-slider:before {
+.user-preference-view-input:checked+.user-preference-view-slider:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);

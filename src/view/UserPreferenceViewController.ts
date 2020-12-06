@@ -1,3 +1,5 @@
+import {CommonTerm} from "../model/Model";
+
 export interface IUserPreferenceViewController {
     refreshView(): void;
 }
@@ -6,16 +8,18 @@ export interface UserPreferenceViewDelegate {
     setUserPreferences(string: string, from: IUserPreferenceViewController): void
 }
 
-interface IHTMLElementModel {
+interface IHTMLElementModel<T> {
     type: string;
     id: string | null;
     class: string | null;
-    element: HTMLElement
+    element: T
 
-    appendChild(child: IHTMLElementModel): void
+    appendChild(child: IHTMLElementModel<HTMLElement>): void
+    appendChildren(children: IHTMLElementModel<HTMLElement>[]): void
+    setAttribute(attribute: string, value: string): void
 }
 
-class HTMLBasicElement implements  IHTMLElementModel {
+class HTMLBasicElement implements  IHTMLElementModel<HTMLElement> {
     id: string | null = null;
     type: string;
     class: string | null = null;
@@ -37,22 +41,19 @@ class HTMLBasicElement implements  IHTMLElementModel {
         this.element = element;
     }
 
-    public appendChild(child: IHTMLElementModel): void {
+    public appendChild(child: IHTMLElementModel<HTMLElement>): void {
         this.element.appendChild(child.element);
     }
 
-    public appendChilds(childs: IHTMLElementModel[]): void {
-        for (let i = 0; i < childs.length; i++) {
-            this.element.appendChild(childs[i].element);
+    public appendChildren(children: IHTMLElementModel<HTMLElement>[]): void {
+        for (let i = 0; i < children.length; i++) {
+            this.element.appendChild(children[i].element);
         }
     }
 
-    public setAttribute(attribute: string, value: string) {
+    public setAttribute(attribute: string, value: string): void {
         this.element.setAttribute(attribute, value);
     }
-
-
-
 }
 
 class HTMLTextElement extends HTMLBasicElement {
@@ -75,11 +76,52 @@ class HTMLImageElement extends HTMLBasicElement {
     }
 }
 
+class HTMLCheckboxElement implements IHTMLElementModel<HTMLInputElement> {
+    class: string | null = null;
+    element: HTMLInputElement;
+    id: string | null = null;
+    type: string = "input";
+
+    constructor(id: string | null, classString: string | null) {
+        let element =  document.createElement(this.type) as HTMLInputElement;
+        element.setAttribute("type", "checkbox");
+
+        if(id != "" && id != null) {
+            this.id = "user-preference-view-" + id;
+            element.setAttribute("id", this.id);
+        }
+        if(classString != "" && classString != null) {
+            this.class = "user-preference-view-" + classString;
+            element.setAttribute("class", this.class);
+        }
+
+        this.element = element;
+    }
+
+    public setCheckedValue(value: boolean) {
+        this.element.checked = value;
+    }
+
+    public appendChild(child: IHTMLElementModel<HTMLElement>): void {
+        this.element.appendChild(child.element);
+    }
+
+    public appendChildren(children: IHTMLElementModel<HTMLElement>[]): void {
+        for (let i = 0; i < children.length; i++) {
+            this.element.appendChild(children[i].element);
+        }
+    }
+
+    public setAttribute(attribute: string, value: string): void {
+        this.element.setAttribute(attribute, value);
+    }
+
+}
 
 class OneDayStoryView {
-    imageElement: HTMLImageElement;
-    nameElement: HTMLTextElement;
-    element: HTMLBasicElement;
+    private imageElement: HTMLImageElement;
+    private nameElement: HTMLTextElement;
+    public element: HTMLBasicElement;
 
     constructor(name: string, imageSource: string) {
         this.imageElement = new HTMLImageElement("img",
@@ -89,7 +131,7 @@ class OneDayStoryView {
 
         this.nameElement = new HTMLTextElement("p", null, "one-day-story-label", name);
         let element = new HTMLBasicElement("div", null, "one-day-story-div");
-        element.appendChilds([this.imageElement, this.nameElement]);
+        element.appendChildren([this.imageElement, this.nameElement]);
         this.element = element;
     }
 }
@@ -108,8 +150,8 @@ class OneDayStoriesWrapperView {
     public element: HTMLBasicElement
 
     constructor() {
-        let element = new HTMLBasicElement("div", null, "one-day-stories-wrapper");
-        element.appendChilds([this.alexanderODSView.element,
+        let element = new HTMLBasicElement("div", "one-day-stories-wrapper", null);
+        element.appendChildren([this.alexanderODSView.element,
             this.annaODSView.element,
             this.caroleODSView.element,
             this.larsODSView.element,
@@ -120,7 +162,72 @@ class OneDayStoriesWrapperView {
             this.tomODSView.element]);
         this.element = element;
     }
+}
 
+class SwitchControlView {
+    public element: HTMLBasicElement;
+    private checkBoxElement: HTMLCheckboxElement;
+    private spanElement: HTMLBasicElement;
+
+    constructor(name: string) {
+        this.checkBoxElement = new HTMLCheckboxElement(name + "-switcher", "input");
+        this.checkBoxElement.setCheckedValue(true);
+        this.spanElement = new HTMLBasicElement("span", null, "slider round");
+
+        this.element = new HTMLBasicElement("label", null, "switch-control");
+        this.element.appendChildren([this.checkBoxElement, this.spanElement]);
+    }
+
+    public setCheckedValue(value: boolean) {
+        //this.checkBoxElement.setCheckedValue(value);
+    }
+}
+
+class CommonTermListEntryBooleanView {
+    private label: HTMLTextElement;
+    private switch: SwitchControlView
+    public commonTerm: CommonTerm;
+    public element: HTMLBasicElement;
+
+
+    constructor(name: string, commonTerm: CommonTerm) {
+        this.label = new HTMLTextElement("p", null, "list-entry-label", name);
+        this.switch = new SwitchControlView(commonTerm);
+        this.commonTerm = commonTerm;
+
+        let element = new HTMLBasicElement("div", null, "ct-boolean-list-entry-div");
+        element.appendChildren([this.label, this.switch.element]);
+        this.element = element;
+    }
+
+    public setCheckedValue(value: boolean) {
+        this.switch.setCheckedValue(value);
+    }
+}
+
+class ListWrapperView {
+    private audioDescriptionListEntry = new CommonTermListEntryBooleanView("Audio Description Enabled", CommonTerm.audioDescriptionEnabled);
+    private captionsEnabledListEntry = new CommonTermListEntryBooleanView("Captions Enabled", CommonTerm.captionsEnabled);
+    private pictogramsEnabledListEntry = new CommonTermListEntryBooleanView("Pictograms Enabled", CommonTerm.pictogramsEnabled);
+    private tableOfContentsListEntry = new CommonTermListEntryBooleanView("Table of Contents", CommonTerm.audioDescriptionEnabled);
+    private selfVoicingEnabledListEntry = new CommonTermListEntryBooleanView("Self-Voicing Enabled", CommonTerm.audioDescriptionEnabled);
+    private signLanguageEnabledListEntry = new CommonTermListEntryBooleanView("Sign Language Enabled", CommonTerm.audioDescriptionEnabled);
+
+
+    public element: HTMLBasicElement
+
+    constructor() {
+        let element = new HTMLBasicElement("div", "ct-list-wrapper", null);
+        element.appendChildren([this.audioDescriptionListEntry.element,
+            this.captionsEnabledListEntry.element,
+            this.pictogramsEnabledListEntry.element,
+            this.tableOfContentsListEntry.element,
+            this.selfVoicingEnabledListEntry.element,
+            this.signLanguageEnabledListEntry.element,
+        ]);
+        this.element = element;
+        this.audioDescriptionListEntry.setCheckedValue(true);
+    }
 }
 
 export class UserPreferenceViewController implements IUserPreferenceViewController {
@@ -132,6 +239,7 @@ export class UserPreferenceViewController implements IUserPreferenceViewControll
     private userPreferencesHeading =  new HTMLTextElement("h1", null, null, "User Preferences");
 
     private oneDayStoriesWrapper = new OneDayStoriesWrapperView();
+    private listWrapper = new ListWrapperView();
 
     public constructor(delegate: UserPreferenceViewDelegate) {
         this.delegate = delegate;
@@ -142,9 +250,10 @@ export class UserPreferenceViewController implements IUserPreferenceViewControll
     }
 
     private createView(): void {
-        this.headlineWrapper.appendChilds([this.settingsSubHeading, this.userPreferencesHeading])
+        this.headlineWrapper.appendChildren([this.settingsSubHeading, this.userPreferencesHeading])
         this.wrapper.appendChild(this.headlineWrapper);
         this.wrapper.appendChild(this.oneDayStoriesWrapper.element);
+        this.wrapper.appendChild(this.listWrapper.element);
 
     }
 
