@@ -14,7 +14,6 @@ export interface IUserPreferenceViewController {
 }
 
 export interface UserPreferenceViewDelegate {
-    setUserPreferences(string: string, from: IUserPreferenceViewController): void
 }
 
 export class UserPreferenceViewController implements IUserPreferenceViewController, PersonasWrapperDelegate {

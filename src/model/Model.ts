@@ -122,4 +122,3 @@ export enum SkipLinkValues {
     always = "always",
     never = "never"
 }
-

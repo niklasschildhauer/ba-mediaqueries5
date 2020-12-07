@@ -15,6 +15,7 @@
     <h1>Hallo</h1>
 
     <p>Das ist ein Test hier</p>
+    <button onclick="buttonAction()">Testbutton</button>
 
     <picture>
         <source media="(min-width:465px)" srcset="RezeptGulasch.png">
@@ -24,6 +25,11 @@
     <script src="../lib/bundle.js"></script>
 <script>
     console.log(window.MyNamespace);
+
+    function buttonAction() {
+        console.log("Captions Enabled: " + window.captionsEnabled);
+    }
+
 </script>
 </body>
 </html>

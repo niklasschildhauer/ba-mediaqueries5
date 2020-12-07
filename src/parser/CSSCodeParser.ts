@@ -1,6 +1,6 @@
 import * as Profile from "../user/UserPreferenceProfile";
 import {IReader} from "../reader/CSSReader";
-import {IMediaDescriptor} from "../model/Model";
+import {CommonTerm, IMediaDescriptor} from "../model/Model";
 
 export interface IParser {
     parse(): void;
@@ -37,9 +37,10 @@ export class CSSCodeParser implements IParser {
                 cssStyle.push(cssCode);
             }
         }
-        console.log("Create Code");
+        let cssString = this.createCSSVariables() + cssStyle.join("\n");
+        cssString = cssString + cssStyle.join("\n");
 
-        return cssStyle.join("\n");
+        return cssString;
 
     }
 
@@ -48,7 +49,6 @@ export class CSSCodeParser implements IParser {
         style.setAttribute("id", this.styleId);
         style.innerHTML = cssCode;
         document.head.appendChild(style);
-        console.log("Parse Code");
 
     }
 
@@ -57,7 +57,25 @@ export class CSSCodeParser implements IParser {
         if(style != null){
             style.remove();
         }
-        console.log("Reset Code");
 
+    }
+
+    private createCSSVariables(): string {
+
+        const variables = ["--audio-description-enabled: " + this.userProfile.getValueForMediaFeature(CommonTerm.audioDescriptionEnabled),
+            "--captions-enabled: " + this.userProfile.getValueForMediaFeature(CommonTerm.captionsEnabled),
+            "--self-voicing-enabled: " + this.userProfile.getValueForMediaFeature(CommonTerm.selfVoicingEnabled),
+            "--session-timeout: " + this.userProfile.getValueForMediaFeature(CommonTerm.sessionTimeout),
+            "--extended-session-timeout: " + this.userProfile.getValueForMediaFeature(CommonTerm.extendedSessionTimeout),
+            "--sign-language: " + this.userProfile.getValueForMediaFeature(CommonTerm.signLanguage),
+            "--sign-language-enabled: " + this.userProfile.getValueForMediaFeature(CommonTerm.signLanguageEnabled),
+            "--table-of-contents: " + this.userProfile.getValueForMediaFeature(CommonTerm.tableOfContents),
+            "--display-skiplinks: " + this.userProfile.getValueForMediaFeature(CommonTerm.displaySkiplinks),];
+
+        let pseudoRootClass = ":root {\n"
+        for (let i = 0; i < variables.length; i++) {
+            pseudoRootClass = pseudoRootClass + "   " + variables[i] + ";\n"
+        }
+        return pseudoRootClass + "}\n\n"
     }
 }
