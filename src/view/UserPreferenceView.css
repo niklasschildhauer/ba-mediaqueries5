@@ -110,14 +110,8 @@
     right: var(--position);
     background: var(--background-color);
     border-radius: var(--corner);
-
-    display: none;
 }
 
-#apply-button-wrapper-show {
-    display: flex;
-    justify-content: space-between;
-}
 
 
 /* Button Style */

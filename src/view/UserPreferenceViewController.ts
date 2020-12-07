@@ -78,7 +78,7 @@ export class UserPreferenceViewController implements IUserPreferenceViewControll
         console.log("Did select hier " + persona);
         this.userProfile.didSelectPersona(persona);
         this.refreshView();
-        this.applyButtonWrapper.hideButtons();
+        //this.applyButtonWrapper.hideButtons();
     }
 
     didPressApply(from: IApplyButtonWrapperView): void {
@@ -91,7 +91,7 @@ export class UserPreferenceViewController implements IUserPreferenceViewControll
 
     didEditPreferences(from: IListWrapperView): void {
         this.personaWrapper.unSelectPersona();
-        this.applyButtonWrapper.showButtons();
+        //this.applyButtonWrapper.showButtons();
         console.log("did edit preference");
     }
 }

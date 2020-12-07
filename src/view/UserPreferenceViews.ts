@@ -330,7 +330,6 @@ export class ApplyButtonWrapperView implements IApplyButtonWrapperView {
         let element = new HTMLBasicElement("div", null, "apply-button-wrapper")
         element.appendChildren([this.cancelButton, this.applyButton]);
         this.element = element;
-        this.showButtons();
     }
 
     private applyPreferences() {
@@ -341,12 +340,14 @@ export class ApplyButtonWrapperView implements IApplyButtonWrapperView {
         this.delegate.didPressCancel(this);
     }
 
+    // Not implemented
     hideButtons(): void {
-        this.element.element.removeAttribute("id");
+        //this.element.element.removeAttribute("id");
     }
 
+    // Not implemented
     showButtons(): void {
-        this.element.setAttribute("id", "apply-button-wrapper-show");
+        //this.element.setAttribute("id", "apply-button-wrapper-show");
     }
 
 }
