@@ -3,6 +3,9 @@
 #user-preference-view-wrapper {
     --padding: 18px;
     --width: 315px;
+    --position: 2vh;
+    --corner: 2vh;
+    --background-color: #E6E6E6;
 }
 
 #user-preference-view-wrapper * {
@@ -22,16 +25,16 @@
 
 #user-preference-view-wrapper {
     position: fixed;
-    border-radius: 2vh;
-    right: 2vh;
-    top: 2vh;
+    border-radius: var(--corner);
+    right: var(--position);
+    top: var(--position);
     height: calc(96vh - 2 * var(--padding));
     padding: var(--padding);
     overflow-y: scroll;
     overflow-x: hidden;
     scroll-behavior: smooth;
 
-    background-color: #E6E6E6;
+    background-color: var(--background-color);
 }
 
 #user-preference-view-wrapper #user-preference-view-personas-wrapper {
@@ -88,8 +91,72 @@
     padding: 0 calc(var(--padding) / 2) 0 calc(var(--padding) / 2);
     margin: 5px 0 5px 0;
     width: calc(var(--width) - var(--padding));
+
 }
 
+#user-preference-view-ct-list-wrapper {
+    padding-bottom: 60px;
+
+}
+
+.user-preference-view-apply-button-wrapper ~ #user-preference-view-ct-list-wrapper {
+}
+
+.user-preference-view-apply-button-wrapper {
+    position: fixed;
+    width: var(--width);
+    padding: 10px var(--padding) var(--padding) var(--padding);
+    bottom: var(--position);
+    right: var(--position);
+    background: var(--background-color);
+    border-radius: var(--corner);
+
+    display: none;
+}
+
+#apply-button-wrapper-show {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+/* Button Style */
+.user-preference-view-button {
+    border: none;
+    color: white;
+    padding: 13px 13px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: var(--corner);
+}
+
+#user-preference-view-apply-button {
+    background-color: #555555;
+    color: white;
+    border: 3px solid var(--background-color);;
+
+}
+
+#user-preference-view-apply-button:hover {
+    background-color: white;
+    color: black;
+    border: 3px solid var(--background-color);;
+}
+
+#user-preference-view-cancel-button {
+    background-color: white;
+    color: black;
+    border: 3px solid var(--background-color);;
+}
+
+#user-preference-view-cancel-button:hover {
+    background-color: firebrick;
+    color: white;
+}
 
 
 

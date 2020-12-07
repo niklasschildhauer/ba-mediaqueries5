@@ -8,6 +8,7 @@ export interface IUserPreferenceProfile {
     getValueForMediaFeature(mediaFeature: Model.CommonTerm): string;
     getUserPreferences(): Model.UserPreference[];
     didSelectPersona(persona: Model.Persona): void;
+    setUserPreferences(preferences: IUserPreference[]): void;
 }
 
 export interface  UserProfileDelegate {

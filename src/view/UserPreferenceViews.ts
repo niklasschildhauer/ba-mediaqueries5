@@ -125,9 +125,21 @@ export class HTMLUserInputElement implements IHTMLElementModel<HTMLInputElement>
         this.element.setAttribute(attribute, value);
     }
 
+    public setChangeEventListener(changeCall: () => void): void {
+        this.element.addEventListener("change", changeCall);
+    }
 }
 
-class PersonaView {
+interface IPersonaView {
+    element: HTMLBasicElement;
+    name: Persona;
+    select(): void;
+    unselect(): void;
+}
+
+
+
+class PersonaView implements IPersonaView {
     private imageElement: HTMLImageElement;
     private nameElement: HTMLTextElement;
     public element: HTMLBasicElement;
@@ -159,7 +171,12 @@ export interface PersonasWrapperDelegate {
     didSelectPersona(persona: Persona, from: PersonasWrapperView): void;
 }
 
-export class PersonasWrapperView {
+export interface IPersonasWrapperView {
+    selectPersona(persona: PersonaView): void;
+    unSelectPersona(): void;
+}
+
+export class PersonasWrapperView implements IPersonasWrapperView {
     private alexanderODSView = new PersonaView(Persona.alexander, "https://gpii.eu/mq-5/assets/Alexander.png");
     private annaODSView = new PersonaView(Persona.anna, "https://gpii.eu/mq-5/assets/Anna.png");
     private caroleODSView = new PersonaView(Persona.carole, "https://gpii.eu/mq-5/assets/Carole.png");
@@ -198,10 +215,14 @@ export class PersonasWrapperView {
     }
 
     selectPersona(persona: PersonaView): void {
+        this.unSelectPersona();
+        persona.select();
+    }
+
+    unSelectPersona(): void {
         for (let i = 0; i < this.personaViews.length; i++) {
             this.personaViews[i].unselect();
         }
-        persona.select();
     }
 }
 
@@ -225,6 +246,10 @@ export class SwitchControlView {
 
     public getCheckedValue(): boolean {
         return this.checkBoxElement.getCheckedValue();
+    }
+
+    public setChangeEventListener(changeCall: () => void): void {
+        this.checkBoxElement.setChangeEventListener(changeCall);
     }
 }
 
@@ -269,6 +294,63 @@ export class RadioButtonView {
     }
 }
 
+export class ButtonView extends HTMLBasicElement{
+
+    constructor(id: string | null, classString: string | null, label: string, functionCall: () => void) {
+        super("button", id, classString);
+        this.element.setAttribute("type", "button");
+        let textNode = document.createTextNode(label);
+        this.element.appendChild(textNode);
+
+        this.addClickEventListener(functionCall);
+    }
+
+}
+export interface ApplyButtonWrapperDelegate {
+    didPressApply(from: IApplyButtonWrapperView): void;
+    didPressCancel(from: IApplyButtonWrapperView): void;
+
+}
+
+export interface IApplyButtonWrapperView {
+    element: HTMLBasicElement;
+
+    showButtons(): void;
+    hideButtons(): void;
+}
+
+export class ApplyButtonWrapperView implements IApplyButtonWrapperView {
+    private applyButton = new ButtonView("apply-button", "button", "Apply Preferences", () => this.applyPreferences());
+    private cancelButton = new ButtonView("cancel-button", "button", "Cancel", () => this.cancel());
+    element: HTMLBasicElement;
+
+    private delegate: ApplyButtonWrapperDelegate
+    constructor(delegate: ApplyButtonWrapperDelegate) {
+        this.delegate = delegate;
+        let element = new HTMLBasicElement("div", null, "apply-button-wrapper")
+        element.appendChildren([this.cancelButton, this.applyButton]);
+        this.element = element;
+        this.showButtons();
+    }
+
+    private applyPreferences() {
+        this.delegate.didPressApply(this);
+    }
+
+    private cancel() {
+        this.delegate.didPressCancel(this);
+    }
+
+    hideButtons(): void {
+        this.element.element.removeAttribute("id");
+    }
+
+    showButtons(): void {
+        this.element.setAttribute("id", "apply-button-wrapper-show");
+    }
+
+}
+
 
 interface ICommonTermListEntry<T> {
     element: HTMLBasicElement;
@@ -285,7 +367,7 @@ class CommonTermListEntryBooleanView implements ICommonTermListEntry<SwitchContr
     public element: HTMLBasicElement;
 
 
-    constructor(name: string, commonTerm: CommonTerm) {
+    constructor(name: string, commonTerm: CommonTerm, valueChangedCall: () => void) {
         this.label = new HTMLTextElement("p", null, "list-entry-label", name);
         this.input = new SwitchControlView(commonTerm);
         this.commonTerm = commonTerm;
@@ -293,6 +375,7 @@ class CommonTermListEntryBooleanView implements ICommonTermListEntry<SwitchContr
         let element = new HTMLBasicElement("div", null, "ct-list-entry-div");
         element.appendChildren([this.label, this.input.element]);
         this.element = element;
+        this.input.setChangeEventListener(valueChangedCall);
     }
 
     public setValue(value: string): void {
@@ -317,7 +400,7 @@ class CommonTermListEntryTextInputView implements ICommonTermListEntry<HTMLUserI
     public element: HTMLBasicElement;
 
 
-    constructor(name: string, commonTerm: CommonTerm) {
+    constructor(name: string, commonTerm: CommonTerm, valueChangedCall: () => void) {
         this.label = new HTMLTextElement("p", null, "list-entry-label", name);
         this.input = new HTMLUserInputElement("text", commonTerm + "-input", "text-input");
         this.commonTerm = commonTerm;
@@ -325,6 +408,8 @@ class CommonTermListEntryTextInputView implements ICommonTermListEntry<HTMLUserI
         let element = new HTMLBasicElement("div", null, "ct-list-entry-div");
         element.appendChildren([this.label, this.input]);
         this.element = element;
+        this.input.setChangeEventListener(valueChangedCall);
+
     }
 
     public getValue(): string {
@@ -343,7 +428,7 @@ class CommonTermListEntryRadioInputView implements ICommonTermListEntry<RadioBut
     public element: HTMLBasicElement;
 
 
-    constructor(name: string, commonTerm: CommonTerm, values: string[]) {
+    constructor(name: string, commonTerm: CommonTerm, values: string[], valueChangedCall: () => void) {
         this.label = new HTMLTextElement("p", null, "list-entry-label", name);
         this.input = new RadioButtonView(name, values);
         this.commonTerm = commonTerm;
@@ -351,6 +436,9 @@ class CommonTermListEntryRadioInputView implements ICommonTermListEntry<RadioBut
         let element = new HTMLBasicElement("div", null, "ct-list-entry-div");
         element.appendChildren([this.label, this.input.element]);
         this.element = element;
+        for (let i = 0; i < this.input.inputs.length; i++) {
+            this.input.inputs[i].setChangeEventListener(valueChangedCall);
+        }
     }
 
     public getValue(): string {
@@ -362,18 +450,27 @@ class CommonTermListEntryRadioInputView implements ICommonTermListEntry<RadioBut
     }
 }
 
-export class ListWrapperView {
-    private audioDescriptionListEntry = new CommonTermListEntryBooleanView("Audio Description Enabled", CommonTerm.audioDescriptionEnabled);
-    private captionsEnabledListEntry = new CommonTermListEntryBooleanView("Captions Enabled", CommonTerm.captionsEnabled);
-    private pictogramsEnabledListEntry = new CommonTermListEntryBooleanView("Pictograms Enabled", CommonTerm.pictogramsEnabled);
-    private tableOfContentsListEntry = new CommonTermListEntryBooleanView("Table of Contents", CommonTerm.tableOfContents);
-    private selfVoicingEnabledListEntry = new CommonTermListEntryBooleanView("Self-Voicing Enabled", CommonTerm.selfVoicingEnabled);
-    private signLanguageEnabledListEntry = new CommonTermListEntryBooleanView("Sign Language Enabled", CommonTerm.signLanguageEnabled);
+export interface IListWrapperView {
+    getAllPreferences(): UserPreference[];
+    setPreferences(preference: UserPreference): void;
+}
 
-    private sessionTimeout = new CommonTermListEntryTextInputView("Session Timeout", CommonTerm.sessionTimeout);
-    private signLanguage = new CommonTermListEntryTextInputView("Sign Language", CommonTerm.signLanguage);
+export interface ListWrapperDelegate {
+    didEditPreferences(from: IListWrapperView): void;
+}
 
-    private displaySkiplinks = new CommonTermListEntryRadioInputView("Display Skiplinks", CommonTerm.displaySkiplinks, [SkipLinkValues.onfocus, SkipLinkValues.always, SkipLinkValues.never]);
+export class ListWrapperView implements  IListWrapperView {
+    private audioDescriptionListEntry = new CommonTermListEntryBooleanView("Audio Description Enabled", CommonTerm.audioDescriptionEnabled, () => this.editPreference());
+    private captionsEnabledListEntry = new CommonTermListEntryBooleanView("Captions Enabled", CommonTerm.captionsEnabled, () => this.editPreference());
+    private pictogramsEnabledListEntry = new CommonTermListEntryBooleanView("Pictograms Enabled", CommonTerm.pictogramsEnabled, () => this.editPreference());
+    private tableOfContentsListEntry = new CommonTermListEntryBooleanView("Table of Contents", CommonTerm.tableOfContents, () => this.editPreference());
+    private selfVoicingEnabledListEntry = new CommonTermListEntryBooleanView("Self-Voicing Enabled", CommonTerm.selfVoicingEnabled, () => this.editPreference());
+    private signLanguageEnabledListEntry = new CommonTermListEntryBooleanView("Sign Language Enabled", CommonTerm.signLanguageEnabled, () => this.editPreference());
+
+    private sessionTimeout = new CommonTermListEntryTextInputView("Session Timeout", CommonTerm.sessionTimeout, () => this.editPreference());
+    private signLanguage = new CommonTermListEntryTextInputView("Sign Language", CommonTerm.signLanguage, () => this.editPreference());
+
+    private displaySkiplinks = new CommonTermListEntryRadioInputView("Display Skiplinks", CommonTerm.displaySkiplinks, [SkipLinkValues.onfocus, SkipLinkValues.always, SkipLinkValues.never], () => this.editPreference());
 
     private listEntries = [this.audioDescriptionListEntry,
         this.captionsEnabledListEntry,
@@ -386,15 +483,22 @@ export class ListWrapperView {
         this.displaySkiplinks,
     ]
 
+    private delegate: ListWrapperDelegate;
+
     public element: HTMLBasicElement
 
-    constructor() {
+    constructor(delegate: ListWrapperDelegate) {
         let element = new HTMLBasicElement("div", "ct-list-wrapper", null);
 
         for (let i = 0; i < this.listEntries.length; i++) {
             element.appendChild(this.listEntries[i].element);
         }
         this.element = element;
+        this.delegate = delegate;
+    }
+
+    private editPreference(): void {
+        this.delegate.didEditPreferences(this);
     }
 
     getAllPreferences(): UserPreference[] {

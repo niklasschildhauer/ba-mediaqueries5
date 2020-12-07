@@ -3,7 +3,13 @@ import {
     HTMLTextElement,
     PersonasWrapperView,
     ListWrapperView,
-    PersonasWrapperDelegate
+    PersonasWrapperDelegate,
+    ButtonView,
+    ApplyButtonWrapperDelegate,
+    ApplyButtonWrapperView,
+    IApplyButtonWrapperView,
+    ListWrapperDelegate,
+    IListWrapperView
 } from './UserPreferenceViews';
 
 import {CommonTerm, Persona} from '../model/Model';
@@ -16,17 +22,20 @@ export interface IUserPreferenceViewController {
 export interface UserPreferenceViewDelegate {
 }
 
-export class UserPreferenceViewController implements IUserPreferenceViewController, PersonasWrapperDelegate {
+export class UserPreferenceViewController implements IUserPreferenceViewController, PersonasWrapperDelegate, ApplyButtonWrapperDelegate, ListWrapperDelegate {
     delegate: UserPreferenceViewDelegate;
     private userProfile: IUserPreferenceProfile
 
     private wrapper = new HTMLBasicElement("div", "wrapper", null);
     // private headlineWrapper = new HTMLBasicElement("div", "headline-wrapper", null);
     // private settingsSubHeading =  new HTMLTextElement("h3", null, null, "SETTINGS");
-    private userPreferencesHeading =  new HTMLTextElement("h1", null, null, "User Preferences");
+    private userPreferencesHeading = new HTMLTextElement("h1", null, null, "User Preferences");
 
     private personaWrapper = new PersonasWrapperView(this);
-    private listWrapper = new ListWrapperView();
+    private listWrapper = new ListWrapperView(this);
+
+    private applyButtonWrapper = new ApplyButtonWrapperView(this);
+
 
     public constructor(delegate: UserPreferenceViewDelegate, userProfile: IUserPreferenceProfile) {
         this.delegate = delegate;
@@ -42,6 +51,7 @@ export class UserPreferenceViewController implements IUserPreferenceViewControll
         this.wrapper.appendChild(this.userPreferencesHeading);
         this.wrapper.appendChild(this.personaWrapper.element);
         this.wrapper.appendChild(this.listWrapper.element);
+        this.wrapper.appendChild(this.applyButtonWrapper.element);
 
     }
 
@@ -63,9 +73,25 @@ export class UserPreferenceViewController implements IUserPreferenceViewControll
         }
     }
 
+    // DELEGATE FUNCTIONS
     didSelectPersona(persona: Persona, from: PersonasWrapperView): void {
         console.log("Did select hier " + persona);
         this.userProfile.didSelectPersona(persona);
         this.refreshView();
+        this.applyButtonWrapper.hideButtons();
+    }
+
+    didPressApply(from: IApplyButtonWrapperView): void {
+        this.userProfile.setUserPreferences(this.listWrapper.getAllPreferences());
+        this.refreshView();
+    }
+    didPressCancel(from: IApplyButtonWrapperView): void {
+        this.refreshView();
+    }
+
+    didEditPreferences(from: IListWrapperView): void {
+        this.personaWrapper.unSelectPersona();
+        this.applyButtonWrapper.showButtons();
+        console.log("did edit preference");
     }
 }
