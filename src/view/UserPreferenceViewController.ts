@@ -64,7 +64,9 @@ export class UserPreferenceViewController implements IUserPreferenceViewControll
         }
     }
 
-    didSelectPersona(human: Persona, from: PersonasWrapperView): void {
-        console.log("Did select hier " + human);
+    didSelectPersona(persona: Persona, from: PersonasWrapperView): void {
+        console.log("Did select hier " + persona);
+        this.userProfile.didSelectPersona(persona);
+        this.refreshView();
     }
 }

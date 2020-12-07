@@ -21,6 +21,7 @@ export class CSSCodeParser implements IParser {
         this.resetCSSCode();
         let cssCode = this.createCSSCode();
         this.parseCSSCode(cssCode);
+        console.log(this.userProfile.getUserPreferences());
     }
 
     private createCSSCode(): string {
@@ -36,6 +37,8 @@ export class CSSCodeParser implements IParser {
                 cssStyle.push(cssCode);
             }
         }
+        console.log("Create Code");
+
         return cssStyle.join("\n");
 
     }
@@ -45,6 +48,8 @@ export class CSSCodeParser implements IParser {
         style.setAttribute("id", this.styleId);
         style.innerHTML = cssCode;
         document.head.appendChild(style);
+        console.log("Parse Code");
+
     }
 
     private resetCSSCode(): void {
@@ -52,5 +57,7 @@ export class CSSCodeParser implements IParser {
         if(style != null){
             style.remove();
         }
+        console.log("Reset Code");
+
     }
 }

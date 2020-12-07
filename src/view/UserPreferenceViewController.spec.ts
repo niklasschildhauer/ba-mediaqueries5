@@ -11,5 +11,6 @@ test('running',async () => {
         }
     }
 
-    let viewController = new UserPreferenceViewController(new DelegateClass());
+
+    //let viewController = new UserPreferenceViewController(new DelegateClass(),);
 });

@@ -1,12 +1,12 @@
-import {Persona, UserPreference} from "../model/Model";
+import {CommonTerm, IUserPreference, Persona, UserPreference} from "../model/Model";
+import * as Personas from "./Personas/Personas"
 
 export interface INetworkAPI {
-    loadPreferenceSetFromPersona(persona: Persona): void;
-
+    loadPreferenceSetFromPersona(persona: Persona): IUserPreference[];
+    login(email: string, password: string): boolean;
 }
 
 export interface NetworkAPIDelegate {
-    didLoadPreferenceSet(preferences: UserPreference[], from: INetworkAPI): void;
 }
 
 export class NetworkAPI implements  INetworkAPI {
@@ -16,39 +16,67 @@ export class NetworkAPI implements  INetworkAPI {
         this.delegate = delegate;
     }
 
-    loadPreferenceSetFromPersona(persona: Persona): void {
-        let preferenceString = "";
+    login(email: string, password: string): boolean {
+        return false;
+    }
+
+    loadPreferenceSetFromPersona(persona: Persona): IUserPreference[] {
         switch (persona) {
             case Persona.alexander:
-                preferenceString = ""
-                break;
+                return this.createUserPreferencesFromOpenAPEJSON(Personas.alexanderPreferences);
             case Persona.anna:
-                preferenceString = ""
-                break;
+                return this.createUserPreferencesFromOpenAPEJSON(Personas.annaPreferences);
             case Persona.carole:
-                preferenceString = ""
-                break;
+                return this.createUserPreferencesFromOpenAPEJSON(Personas.carolePreferences);
             case Persona.lars:
-                preferenceString = ""
-                break;
+                return this.createUserPreferencesFromOpenAPEJSON(Personas.larsPreferences);
             case Persona.maria:
-                preferenceString = ""
-                break;
+                return this.createUserPreferencesFromOpenAPEJSON(Personas.mariaPreferences);
             case Persona.mary:
-                preferenceString = ""
-                break;
+                return this.createUserPreferencesFromOpenAPEJSON(Personas.maryPreferences);
             case Persona.monika:
-                preferenceString = ""
-                break;
+                return this.createUserPreferencesFromOpenAPEJSON(Personas.monikaPreferences);
             case Persona.susan:
-                preferenceString = ""
-                break;
+                return this.createUserPreferencesFromOpenAPEJSON(Personas.susanPreferences);
             case Persona.tom:
-                preferenceString = ""
+                return this.createUserPreferencesFromOpenAPEJSON(Personas.tomPreferences);
                 break;
+
+                return []
         }
     }
+
+    // hier muss noch gecheckt werden wie der Kontext heißt...
+    private createUserPreferencesFromOpenAPEJSON(json: any): IUserPreference[] {
+        let preferences = json;
+        try {
+            preferences = preferences["contexts"]["gpii-default"]["preferences"];
+        } catch (e) {
+            console.log("Could not load Preferences");
+        }
+        let preferenceSet: IUserPreference[] = [];
+        (preferences["http://registry.gpii.eu/common/signLanguage"] != undefined) ?
+            preferenceSet.push(new UserPreference(CommonTerm.signLanguage, preferences["http://registry.gpii.eu/common/signLanguage"] + "")) : "";
+        (preferences["http://registry.gpii.eu/common/signLanguageEnabled"] != undefined) ?
+            preferenceSet.push(new UserPreference(CommonTerm.signLanguageEnabled, preferences["http://registry.gpii.eu/common/signLanguageEnabled"] + "")) : "";
+        (preferences["http://registry.gpii.eu/common/pictogramsEnabled"] != undefined) ?
+            preferenceSet.push(new UserPreference(CommonTerm.pictogramsEnabled, preferences["http://registry.gpii.eu/common/pictogramsEnabled"] + "")) : "";
+        (preferences["http://registry.gpii.eu/common/audioDescriptionEnabled"] != undefined) ?
+            preferenceSet.push(new UserPreference(CommonTerm.audioDescriptionEnabled, preferences["http://registry.gpii.eu/common/audioDescriptionEnabled"] + "")) : "";
+        (preferences["http://registry.gpii.eu/common/captionsEnabled"] != undefined) ?
+            preferenceSet.push(new UserPreference(CommonTerm.captionsEnabled, preferences["http://registry.gpii.eu/common/captionsEnabled"] + "")) : "";
+        (preferences["http://registry.gpii.eu/common/tableOfContents"] != undefined) ?
+            preferenceSet.push(new UserPreference(CommonTerm.tableOfContents, preferences["http://registry.gpii.eu/common/tableOfContents"] + "")) : "";
+        (preferences["http://registry.gpii.eu/common/displaySkiplinks"] != undefined) ?
+            preferenceSet.push(new UserPreference(CommonTerm.displaySkiplinks, preferences["http://registry.gpii.eu/common/displaySkiplinks"] + "")) : "";
+        (preferences["http://registry.gpii.eu/common/sessionTimeout"] != undefined) ?
+            preferenceSet.push(new UserPreference(CommonTerm.sessionTimeout, preferences["http://registry.gpii.eu/common/sessionTimeout"] + "")) : "";
+        (preferences["http://registry.gpii.eu/common/selfVoicingEnabled"] != undefined) ?
+            preferenceSet.push(new UserPreference(CommonTerm.selfVoicingEnabled, preferences["http://registry.gpii.eu/common/selfVoicingEnabled"] + "")) : "";
+
+        return preferenceSet
+    }
+
+
 }
 
-const alexanderPreferences = "http://registry.gpii.eu/common/highContrastEnabled\": true,\n" +
-    "    \"http://registry.gpii.eu/common/highContrastTheme\": \"white-black\""

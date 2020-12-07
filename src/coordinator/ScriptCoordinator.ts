@@ -18,10 +18,10 @@ export class ScriptCoordinator implements View.UserPreferenceViewDelegate, Reade
         console.log("Hello World");
         console.log("-----------");
         this.CSSReader = new Reader.CSSReader(this);
-        this.UserProfile = new User.UserPreferenceProfile(this);
+        this.NetworkAPI = new Network.NetworkAPI(this);
+        this.UserProfile = new User.UserPreferenceProfile(this, this.NetworkAPI);
         this.UserPreferenceViewController = new View.UserPreferenceViewController(this, this.UserProfile);
         this.CodeParser = new Parser.CSSCodeParser(this.UserProfile, this.CSSReader);
-        this.NetworkAPI = new Network.NetworkAPI(this);
         this.JSVariableParser = new JSVariableParser(this.UserProfile);
     }
 
@@ -41,11 +41,6 @@ export class ScriptCoordinator implements View.UserPreferenceViewDelegate, Reade
     }
 
     didUpdateProfile(): void {
-        console.log("Update Profile!");
-        throw new Error("Update Profile");
+        this.CodeParser.parse();
     }
-
-    didLoadPreferenceSet(preferences: Model.UserPreference[], from: Network.INetworkAPI): void {
-    }
-
 }
