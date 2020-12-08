@@ -30,6 +30,17 @@
         console.log("Captions Enabled: " + window.captionsEnabled);
     }
 
+    function test() {
+        console.log("it works!!----------- ");
+
+    }
+
+    mq = window.matchCommonTermMedia("hallo");
+
+    mq.addListener("change", test);
+
+    console.log("hier kommt matches " + mq.matches())
+
 </script>
 </body>
 </html>

@@ -4,16 +4,28 @@ import {IParser} from "./CSSCodeParser";
 
 export class JSVariableParser implements IParser {
     private userProfile: Profile.IUserPreferenceProfile;
+    private eventListeners: CommonTermList[] = [];
 
     constructor(userPreferenceProfile: Profile.IUserPreferenceProfile) {
         this.userProfile = userPreferenceProfile;
         this.parse();
+        (window as any).matchCommonTermMedia = (string: string) => this.doesMediaQueryMatch(string);
+    }
+
+    doesMediaQueryMatch(string: string): CommonTermList {
+        const list = new CommonTermList();
+        this.eventListeners.push(list);
+        return list
     }
 
     parse(): void {
         let userPreferences = this.userProfile.getUserPreferences()
         for (let i = 0; i < userPreferences.length; i++) {
-           this.setJSVariableForUserPreference(userPreferences[i]);
+            this.setJSVariableForUserPreference(userPreferences[i]);
+        }
+        for (let i = 0; i < this.eventListeners.length; i++) {
+            console.log(this.eventListeners.length);
+             this.eventListeners[i].callbackFunction();
         }
     }
 
@@ -53,6 +65,26 @@ export class JSVariableParser implements IParser {
     }
 }
 
+export interface ICommonTermList {
+    addListener(event: string, callback: () => any): void;
+    matches(): boolean;
+}
+
+export class CommonTermList implements ICommonTermList {
+    callbackFunction: () => any = () => void 0;
+
+    addListener(event: string, callback: () => any): void {
+        this.callbackFunction = callback;
+    }
+
+    matches():boolean {
+        return true
+    }
+
+    constructor() {
+    }
+
+}
 
 
 
