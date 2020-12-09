@@ -100,22 +100,12 @@ export const mariaPreferences = {
     }
 }
 
-export const maryPreferences = {
-    "contexts": {
-        "gpii-default": {
-            "name": "Default preferences",
-            "preferences": {
-                "http://registry.gpii.eu/common/language": "es",
-                "http://registry.gpii.eu/common/magnifierEnabled": true,
-                "http://registry.gpii.eu/common/magnification": 2,
-                "http://registry.gpii.eu/common/tracking": [ "mouse", "caret" ],
-                "http://registry.gpii.eu/common/screenReaderTTSEnabled": true,
-                "http://registry.gpii.eu/common/screenReaderBrailleOutput": false,
-                "http://registry.gpii.eu/common/punctuationVerbosity": "some",
-                "http://registry.gpii.eu/common/selfVoicingEnabled": true,
-                "http://registry.gpii.eu/common/speechRate": 180,
-                "http://registry.gpii.eu/common/pitch": 0.7
-            }
+export const maryPreferences =  {
+    "gpii-default": {
+        "name": null,
+        "preferences": {
+            "http://terms.gpii.net/common/audioDescriptionEnabled": true,
+            "http://registry.gpii.eu/common/signLanguage": true
         }
     }
 }

@@ -102,8 +102,13 @@ export class UserPreferenceProfile implements IUserPreferenceProfile {
     }
 
     didSelectPersona(persona: Model.Persona): void {
-        this.setUserPreferences(this.network.loadPreferenceSetFromPersona(persona));
-        console.log(this.network.loadPreferenceSetFromPersona(persona));
+        this.network.loadPreferenceSetFromPersona(persona)
+            .then((result) => {
+                if(result.success) {
+                    this.setUserPreferences(result.userPreferences)
+                }
+                return result
+            })
     }
 }
 
