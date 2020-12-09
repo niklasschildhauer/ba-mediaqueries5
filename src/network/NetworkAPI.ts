@@ -55,14 +55,17 @@ export class NetworkAPI implements  INetworkAPI {
                 return new NetworkUserResultUserPreference(false, err, [])
             })
 
-        await userContextList.filter(async (context: string) => {
-            await this.client.getUserContext(context)
+        let result = await Promise.all(userContextList.map(async (context: string) => {
+                await this.client.getUserContext(context)
                 .then(result => {
                     console.log(result);
-                    let test = this.createUserPreferencesFromOpenAPEJSON(result);
-                    console.log(test);
+                    let preferences = this.createUserPreferencesFromOpenAPEJSON(result);
+                    console.log(preferences);
+                    return preferences
                 })
-        })
+        }));
+
+        console.log(result);
 
     /*    let userContexts = await this.client.getUserContexts(userContextList)
             .then((result) => {
@@ -138,15 +141,12 @@ export class NetworkAPI implements  INetworkAPI {
     // hier muss noch gecheckt werden wie der Kontext heißt...
     private createUserPreferencesFromOpenAPEJSON(json: any): IUserPreference[] {
         let preferences = json;
-        try {
+        if(preferences["contexts"] !== undefined) {
             preferences = preferences["contexts"];
-        } catch(e) {}
-        try {
+        }
+        if(preferences["gpii-default"] !== undefined) {
             preferences = preferences["gpii-default"];
-        } catch(e) {}
-        // try {
-        //     preferences = preferences["default"];
-        // } catch(e) {}
+        }
         try {
             preferences = preferences["preferences"];
         }
