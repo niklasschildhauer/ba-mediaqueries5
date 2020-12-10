@@ -518,3 +518,39 @@ export class ListWrapperView implements  IListWrapperView {
         }
     }
 }
+
+export interface ILoginWrapper {
+    showErrorMessage(text: string): void;
+}
+
+export interface LoginDelegate {
+    didTapLogin(username: string, password: string): void;
+}
+
+export class LoginWrapper implements  ILoginWrapper {
+    private usernameField = new HTMLUserInputElement("text", "openape-username", "text-input")
+    private passwordField = new HTMLUserInputElement("password", "openape-password", "text-input")
+
+    private loginButton = new ButtonView("login-button", "button", "Login", () => this.login());
+
+    private errorMessage = new HTMLTextElement("p", "error-field", null, "");
+
+    public element: HTMLBasicElement
+
+    private delegate: LoginDelegate;
+
+    constructor(delegate: LoginDelegate) {
+        this.delegate = delegate;
+
+        this.element = new HTMLBasicElement("div", "login-wrapper", null);
+        this.element.appendChildren([this.usernameField, this.passwordField, this.errorMessage, this.loginButton]);
+    }
+
+    showErrorMessage(text: string) {
+        this.errorMessage.appendText(text);
+    }
+
+    login(): void{
+        this.delegate.didTapLogin(this.usernameField.getValue(), this.passwordField.getValue());
+    }
+}

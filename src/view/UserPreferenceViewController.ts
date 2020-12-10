@@ -9,7 +9,7 @@ import {
     ApplyButtonWrapperView,
     IApplyButtonWrapperView,
     ListWrapperDelegate,
-    IListWrapperView
+    IListWrapperView, LoginWrapper, LoginDelegate
 } from './UserPreferenceViews';
 
 import {CommonTerm, Persona} from '../model/Model';
@@ -17,12 +17,13 @@ import {IUserPreferenceProfile, UserPreferenceProfile} from "../user/UserPrefere
 
 export interface IUserPreferenceViewController {
     refreshView(): void;
+    showLoginErrorMessage(message: string): void;
 }
 
 export interface UserPreferenceViewDelegate {
 }
 
-export class UserPreferenceViewController implements IUserPreferenceViewController, PersonasWrapperDelegate, ApplyButtonWrapperDelegate, ListWrapperDelegate {
+export class UserPreferenceViewController implements IUserPreferenceViewController, PersonasWrapperDelegate, ApplyButtonWrapperDelegate, ListWrapperDelegate, LoginDelegate {
     delegate: UserPreferenceViewDelegate;
     private userProfile: IUserPreferenceProfile
 
@@ -35,6 +36,8 @@ export class UserPreferenceViewController implements IUserPreferenceViewControll
     private listWrapper = new ListWrapperView(this);
 
     private applyButtonWrapper = new ApplyButtonWrapperView(this);
+
+    private loginWrapper = new LoginWrapper(this);
 
 
     public constructor(delegate: UserPreferenceViewDelegate, userProfile: IUserPreferenceProfile) {
@@ -50,9 +53,9 @@ export class UserPreferenceViewController implements IUserPreferenceViewControll
         // this.headlineWrapper.appendChildren([this.settingsSubHeading, this.userPreferencesHeading])
         this.wrapper.appendChild(this.userPreferencesHeading);
         this.wrapper.appendChild(this.personaWrapper.element);
+        this.wrapper.appendChild(this.loginWrapper.element);
         this.wrapper.appendChild(this.listWrapper.element);
         this.wrapper.appendChild(this.applyButtonWrapper.element);
-
     }
 
     private parseView(): void {
@@ -73,18 +76,22 @@ export class UserPreferenceViewController implements IUserPreferenceViewControll
         }
     }
 
+
+    showLoginErrorMessage(message: string): void {
+        this.loginWrapper.showErrorMessage(message);
+    }
+
     // DELEGATE FUNCTIONS
     didSelectPersona(persona: Persona, from: PersonasWrapperView): void {
         console.log("Did select hier " + persona);
         this.userProfile.didSelectPersona(persona);
-        this.refreshView();
         //this.applyButtonWrapper.hideButtons();
     }
 
     didPressApply(from: IApplyButtonWrapperView): void {
         this.userProfile.setUserPreferences(this.listWrapper.getAllPreferences());
-        this.refreshView();
     }
+
     didPressCancel(from: IApplyButtonWrapperView): void {
         this.refreshView();
     }
@@ -93,5 +100,9 @@ export class UserPreferenceViewController implements IUserPreferenceViewControll
         this.personaWrapper.unSelectPersona();
         //this.applyButtonWrapper.showButtons();
         console.log("did edit preference");
+    }
+
+    didTapLogin(username: string, password: string): void {
+        this.userProfile.login(username, password);
     }
 }

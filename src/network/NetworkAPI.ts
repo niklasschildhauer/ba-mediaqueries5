@@ -2,20 +2,20 @@ import {CommonTerm, IUserPreference, Persona, UserPreference} from "../model/Mod
 import * as Personas from "./Personas/Personas"
 
 export interface INetworkAPI {
-    loadPreferenceSetFromPersona(persona: Persona): Promise<INetworkUserResultUserPreference>;
-    login(email: string, password: string): boolean;
+    loadPreferenceSetFromPersona(persona: Persona): Promise<INetworkResultUserPreference>;
+    loadUserContext(username: string, password: string): Promise<INetworkResultUserPreference>;
 }
 
 export interface NetworkAPIDelegate {
 }
 
-export interface INetworkUserResultUserPreference {
+export interface INetworkResultUserPreference {
     success: boolean
     errorMessage: string | null
     userPreferences: IUserPreference[]
 }
 
-export class NetworkUserResultUserPreference implements INetworkUserResultUserPreference{
+export class NetworkUserResultUserPreference implements INetworkResultUserPreference{
     success: boolean
     errorMessage: string | null
     userPreferences: IUserPreference[]
@@ -36,7 +36,7 @@ export class NetworkAPI implements  INetworkAPI {
         this.client = new OpenAPEClient();
     }
 
-    async loadUserContext(username: string, password: string): Promise<INetworkUserResultUserPreference> {
+    async loadUserContext(username: string, password: string): Promise<INetworkResultUserPreference> {
         await this.client.login(username, password)
             .catch(function (err) {
                 return new NetworkUserResultUserPreference(false, err, [])
@@ -80,11 +80,7 @@ export class NetworkAPI implements  INetworkAPI {
     //         })
     // }
 
-    login(email: string, password: string): boolean {
-        return false;
-    }
-
-    loadPreferenceSetFromPersona(persona: Persona): Promise<INetworkUserResultUserPreference> {
+    loadPreferenceSetFromPersona(persona: Persona): Promise<INetworkResultUserPreference> {
         let userPreferences: IUserPreference[]
         switch (persona) {
             case Persona.alexander:

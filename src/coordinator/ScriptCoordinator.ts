@@ -7,32 +7,32 @@ import * as Network from "../network/NetworkAPI";
 import {JSVariableParser} from "../parser/JSVariableParser";
 
 export class ScriptCoordinator implements View.UserPreferenceViewDelegate, Reader.CSSReaderDelegate, User.UserProfileDelegate, Network.NetworkAPIDelegate{
-    private UserPreferenceViewController: View.IUserPreferenceViewController;
-    private CSSReader: Reader.IReader<Model.IMediaDescriptor>;
-    private UserProfile: User.IUserPreferenceProfile;
-    private CSSCodeParser: Parser.IParser;
-    private NetworkAPI: Network.INetworkAPI;
-    private JSVariableParser: Parser.IParser;
+    private userPreferenceViewController: View.IUserPreferenceViewController;
+    private cssReader: Reader.IReader<Model.IMediaDescriptor>;
+    private userProfile: User.IUserPreferenceProfile;
+    private cssCodeParser: Parser.IParser;
+    private networkAPI: Network.INetworkAPI;
+    private jsVariableParser: Parser.IParser;
 
     public constructor() {
         console.log("Hello World");
         console.log("-----------");
-        this.CSSReader = new Reader.CSSReader(this);
-        this.NetworkAPI = new Network.NetworkAPI(this);
-        this.UserProfile = new User.UserPreferenceProfile(this, this.NetworkAPI);
-        this.UserPreferenceViewController = new View.UserPreferenceViewController(this, this.UserProfile);
-        this.CSSCodeParser = new Parser.CSSCodeParser(this.UserProfile, this.CSSReader);
-        this.JSVariableParser = new JSVariableParser(this.UserProfile);
+        this.cssReader = new Reader.CSSReader(this);
+        this.networkAPI = new Network.NetworkAPI(this);
+        this.userProfile = new User.UserPreferenceProfile(this, this.networkAPI);
+        this.userPreferenceViewController = new View.UserPreferenceViewController(this, this.userProfile);
+        this.cssCodeParser = new Parser.CSSCodeParser(this.userProfile, this.cssReader);
+        this.jsVariableParser = new JSVariableParser(this.userProfile);
     }
 
     public addCSSCode(string: string) {
-        this.CSSReader.read(string);
-        console.log(this.CSSReader.get());
+        this.cssReader.read(string);
+        console.log(this.cssReader.get());
     }
 
     private parseCode(): void {
-        this.CSSCodeParser.parse();
-        this.JSVariableParser.parse();
+        this.cssCodeParser.parse();
+        this.jsVariableParser.parse();
     }
 
     // DELEGATE FUNCTIONS
@@ -41,8 +41,13 @@ export class ScriptCoordinator implements View.UserPreferenceViewDelegate, Reade
         console.log("update CSS Code!");
     }
 
-    didUpdateProfile(): void {
+    didUpdateProfile(from: User.IUserPreferenceProfile): void {
         this.parseCode();
+        this.userPreferenceViewController.refreshView();
+
     }
 
+    recievedLoginErrorMessage(message: string, from: User.IUserPreferenceProfile): void {
+        this.userPreferenceViewController.showLoginErrorMessage(message);
+    }
 }

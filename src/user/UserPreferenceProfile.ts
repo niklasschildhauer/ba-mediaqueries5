@@ -1,6 +1,7 @@
 import * as Model from "../model/Model";
 import {CommonTerm, IMediaFeature, IMediaQuery, IUserPreference} from "../model/Model";
 import {INetworkAPI} from "../network/NetworkAPI";
+import {UserPreferenceViewDelegate} from "../view/UserPreferenceViewController";
 
 export interface IUserPreferenceProfile {
     doesMediaFeatureMatch(mediaFeature: Model.IMediaFeature): boolean;
@@ -9,10 +10,12 @@ export interface IUserPreferenceProfile {
     getUserPreferences(): Model.UserPreference[];
     didSelectPersona(persona: Model.Persona): void;
     setUserPreferences(preferences: IUserPreference[]): void;
+    login(username: string, password: string): void;
 }
 
 export interface  UserProfileDelegate {
-    didUpdateProfile(): void;
+    didUpdateProfile(from: IUserPreferenceProfile): void;
+    recievedLoginErrorMessage(message: string, from: IUserPreferenceProfile): void;
 }
 
 export class UserPreferenceProfile implements IUserPreferenceProfile {
@@ -27,8 +30,12 @@ export class UserPreferenceProfile implements IUserPreferenceProfile {
         this.network = network;
     }
 
+    showErrorMessage(message: string, from: IUserPreferenceProfile): void {
+        throw new Error("Method not implemented.");
+    }
+
     private refresh() {
-        this.delegate.didUpdateProfile();
+        this.delegate.didUpdateProfile(this);
         console.log(this.userPreferences);
     }
 
@@ -39,6 +46,20 @@ export class UserPreferenceProfile implements IUserPreferenceProfile {
         console.log("_-----------")
 
     }
+
+    login(username: string, password: string): void {
+        this.network.loadUserContext(username, password)
+            .then((result) => {
+                if(result.success) {
+                    this.setUserPreferences(result.userPreferences)
+                }
+                if(!result.success && result.errorMessage != null) {
+                    this.delegate.recievedLoginErrorMessage(result.errorMessage, this)
+                }
+                return result
+            })
+    }
+
 
     doesMediaFeatureMatch(mediaFeature: Model.IMediaFeature): boolean {
         for (let k = 0; k < this.userPreferences.length; k++) {

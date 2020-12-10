@@ -105,7 +105,7 @@ export const maryPreferences =  {
         "name": null,
         "preferences": {
             "http://terms.gpii.net/common/audioDescriptionEnabled": true,
-            "http://registry.gpii.eu/common/signLanguage": true
+            "http://registry.gpii.eu/common/signLanguage": "nsl"
         }
     }
 }
