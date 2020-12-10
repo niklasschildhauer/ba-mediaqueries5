@@ -34,10 +34,6 @@ export class NetworkAPI implements  INetworkAPI {
     constructor(delegate: NetworkAPIDelegate) {
         this.delegate = delegate;
         this.client = new OpenAPEClient();
-        this.loadUserContext("niklas", "IlPmK#97bJ#fy").catch((err) => console.log("error " + err))
-            .then((result)=> {
-                console.log(result)
-            });
     }
 
     async loadUserContext(username: string, password: string): Promise<INetworkUserResultUserPreference> {
@@ -48,54 +44,41 @@ export class NetworkAPI implements  INetworkAPI {
 
         let userContextList = await this.client.getUserContextList()
             .then(function (result) {
-                console.log(result)
                 return result["user-context-uris"]
             })
             .catch(function (err) {
                 return new NetworkUserResultUserPreference(false, err, [])
             })
 
-        let result = await Promise.all(userContextList.map(async (context: string) => {
-                await this.client.getUserContext(context)
-                .then(result => {
-                    console.log(result);
-                    let preferences = this.createUserPreferencesFromOpenAPEJSON(result);
-                    console.log(preferences);
-                    return preferences
+        let userPreferenceArrays: IUserPreference[][] = await Promise.all(userContextList.map(async (context: string) => {
+                return await this.client.getUserContext(context)
+                    .then(result => {
+                        return this.createUserPreferencesFromOpenAPEJSON(result);
                 })
-        }));
+        }))
 
-        console.log(result);
-
-    /*    let userContexts = await this.client.getUserContexts(userContextList)
-            .then((result) => {
-                let iterator = result.entries();
-                console.log(iterator.next())
-                console.log(result[0])
-                console.log(typeof result)
-
-                return result
+        let userPreferences: IUserPreference[] = []
+        userPreferenceArrays.forEach(array => {
+            array.forEach(preference => {
+                userPreferences.push(preference);
+            })
         })
-
-        userContexts.forEach((context) => {
-            let preferences = this.createUserPreferencesFromOpenAPEJSON(context)
-            if(preferences != []) {
-                return new NetworkUserResultUserPreference(true, null, preferences)
-            }
-        })*/
-        return new NetworkUserResultUserPreference(false, "No suitable user context can be loaded", [])
+        if(userPreferences.length === 0) {
+            return new NetworkUserResultUserPreference(false, "No suitable user context can be loaded", [])
+        }
+        return new NetworkUserResultUserPreference(true, null, userPreferences);
     }
 
-    private async getUserContextId(uri: string) {
-        console.log(uri)
-        this.client.getUserContext(uri)
-            .then(function(result){
-                console.log(result)
-            })
-            .catch(function(err){
-                console.log(err)
-            })
-    }
+    // private async getUserContextId(uri: string) {
+    //     console.log(uri)
+    //     this.client.getUserContext(uri)
+    //         .then(function(result){
+    //             console.log(result)
+    //         })
+    //         .catch(function(err){
+    //             console.log(err)
+    //         })
+    // }
 
     login(email: string, password: string): boolean {
         return false;
@@ -152,28 +135,35 @@ export class NetworkAPI implements  INetworkAPI {
         }
         catch(e) {
             console.log("Could not load Preferences");
+            console.log(e);
+            return [];
+        }
+        if(preferences === undefined) {
             return [];
         }
         let preferenceSet: IUserPreference[] = [];
-        (preferences["http://registry.gpii.eu/common/signLanguage"] != undefined) ?
-            preferenceSet.push(new UserPreference(CommonTerm.signLanguage, preferences["http://registry.gpii.eu/common/signLanguage"] + "")) : "";
-        (preferences["http://registry.gpii.eu/common/signLanguageEnabled"] != undefined) ?
-            preferenceSet.push(new UserPreference(CommonTerm.signLanguageEnabled, preferences["http://registry.gpii.eu/common/signLanguageEnabled"] + "")) : "";
-        (preferences["http://registry.gpii.eu/common/pictogramsEnabled"] != undefined) ?
-            preferenceSet.push(new UserPreference(CommonTerm.pictogramsEnabled, preferences["http://registry.gpii.eu/common/pictogramsEnabled"] + "")) : "";
-        (preferences["http://registry.gpii.eu/common/audioDescriptionEnabled"] != undefined) ?
-            preferenceSet.push(new UserPreference(CommonTerm.audioDescriptionEnabled, preferences["http://registry.gpii.eu/common/audioDescriptionEnabled"] + "")) : "";
-        (preferences["http://registry.gpii.eu/common/captionsEnabled"] != undefined) ?
-            preferenceSet.push(new UserPreference(CommonTerm.captionsEnabled, preferences["http://registry.gpii.eu/common/captionsEnabled"] + "")) : "";
-        (preferences["http://registry.gpii.eu/common/tableOfContents"] != undefined) ?
-            preferenceSet.push(new UserPreference(CommonTerm.tableOfContents, preferences["http://registry.gpii.eu/common/tableOfContents"] + "")) : "";
-        (preferences["http://registry.gpii.eu/common/displaySkiplinks"] != undefined) ?
-            preferenceSet.push(new UserPreference(CommonTerm.displaySkiplinks, preferences["http://registry.gpii.eu/common/displaySkiplinks"] + "")) : "";
-        (preferences["http://registry.gpii.eu/common/sessionTimeout"] != undefined) ?
-            preferenceSet.push(new UserPreference(CommonTerm.sessionTimeout, preferences["http://registry.gpii.eu/common/sessionTimeout"] + "")) : "";
-        (preferences["http://registry.gpii.eu/common/selfVoicingEnabled"] != undefined) ?
-            preferenceSet.push(new UserPreference(CommonTerm.selfVoicingEnabled, preferences["http://registry.gpii.eu/common/selfVoicingEnabled"] + "")) : "";
-
+        try {
+            (preferences["http://registry.gpii.eu/common/signLanguage"] != undefined) ?
+                preferenceSet.push(new UserPreference(CommonTerm.signLanguage, preferences["http://registry.gpii.eu/common/signLanguage"] + "")) : "";
+            (preferences["http://registry.gpii.eu/common/signLanguageEnabled"] != undefined) ?
+                preferenceSet.push(new UserPreference(CommonTerm.signLanguageEnabled, preferences["http://registry.gpii.eu/common/signLanguageEnabled"] + "")) : "";
+            (preferences["http://registry.gpii.eu/common/pictogramsEnabled"] != undefined) ?
+                preferenceSet.push(new UserPreference(CommonTerm.pictogramsEnabled, preferences["http://registry.gpii.eu/common/pictogramsEnabled"] + "")) : "";
+            (preferences["http://registry.gpii.eu/common/audioDescriptionEnabled"] != undefined) ?
+                preferenceSet.push(new UserPreference(CommonTerm.audioDescriptionEnabled, preferences["http://registry.gpii.eu/common/audioDescriptionEnabled"] + "")) : "";
+            (preferences["http://registry.gpii.eu/common/captionsEnabled"] != undefined) ?
+                preferenceSet.push(new UserPreference(CommonTerm.captionsEnabled, preferences["http://registry.gpii.eu/common/captionsEnabled"] + "")) : "";
+            (preferences["http://registry.gpii.eu/common/tableOfContents"] != undefined) ?
+                preferenceSet.push(new UserPreference(CommonTerm.tableOfContents, preferences["http://registry.gpii.eu/common/tableOfContents"] + "")) : "";
+            (preferences["http://registry.gpii.eu/common/displaySkiplinks"] != undefined) ?
+                preferenceSet.push(new UserPreference(CommonTerm.displaySkiplinks, preferences["http://registry.gpii.eu/common/displaySkiplinks"] + "")) : "";
+            (preferences["http://registry.gpii.eu/common/sessionTimeout"] != undefined) ?
+                preferenceSet.push(new UserPreference(CommonTerm.sessionTimeout, preferences["http://registry.gpii.eu/common/sessionTimeout"] + "")) : "";
+            (preferences["http://registry.gpii.eu/common/selfVoicingEnabled"] != undefined) ?
+                preferenceSet.push(new UserPreference(CommonTerm.selfVoicingEnabled, preferences["http://registry.gpii.eu/common/selfVoicingEnabled"] + "")) : "";
+        } catch (e) {
+            console.log(e);
+        }
         return preferenceSet
     }
 
@@ -234,7 +224,6 @@ class OpenAPEClient {
             this.getUserContext(uri)
                 .then(function (result) {
                     resultData.push(result)
-                    console.log(result)
                 })
                 .catch(function (err) {
                     console.log(err)
@@ -258,7 +247,6 @@ class OpenAPEClient {
                 return response.json()
             })
             .then(function (json) {
-                console.log(json.access_token)
                 return json
             })
     }
