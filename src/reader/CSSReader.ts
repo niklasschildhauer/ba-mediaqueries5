@@ -50,7 +50,7 @@ export class CSSReader implements IReader<Model.IMediaDescriptor> {
     private refresh(): void {
         if(this.plainCSS.length != 0) {
             let plainCSSCodeString = this.plainCSS.reverse().join("\n");
-            this.mediaDescriptors = Factory.MediaDescriptorFactory.createMediaDescriptorsFromCSSString(plainCSSCodeString);
+            this.mediaDescriptors = Factory.Factory.createMediaDescriptorsFromCSSString(plainCSSCodeString);
         }
         this.delegate.didUpdateMediaDescriptors(this);
     }

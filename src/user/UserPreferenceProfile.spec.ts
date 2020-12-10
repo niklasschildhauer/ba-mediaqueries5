@@ -1,6 +1,6 @@
 import * as Model from "../model/Model";
 import {CommonTerm, MediaFeature, MediaQuery, Persona} from "../model/Model";
-import {UserPreferenceProfile, UserProfileDelegate} from "./UserPreferenceProfile";
+import {IUserPreferenceProfile, UserPreferenceProfile, UserProfileDelegate} from "./UserPreferenceProfile";
 import {NetworkAPI, NetworkAPIDelegate} from "../network/NetworkAPI";
 
 
@@ -78,6 +78,9 @@ test('User Preference Profile - setUserPreferences #1', () => {
     class DelegateClass implements  UserProfileDelegate {
         didUpdateProfile(): void {
             console.log("did update")
+        }
+
+        recievedLoginErrorMessage(message: string, from: IUserPreferenceProfile): void {
         }
     }
     // @ts-ignore

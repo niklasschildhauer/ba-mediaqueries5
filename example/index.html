@@ -30,16 +30,30 @@
         console.log("Captions Enabled: " + window.captionsEnabled);
     }
 
-    function test() {
-        console.log("it works!!----------- ");
-
-    }
-
     mq = window.matchCommonTermMedia("hallo");
-
     mq.addListener("change", test);
 
-    console.log("hier kommt matches " + mq.matches())
+    function test() {
+        console.log("it works!!----------- ");
+        console.log("hier kommt matches " + mq.matches())
+    }
+
+
+    mq2 = window.matchCommonTermMedia("screen and (audioDescriptionEnabled: false) and (max-width: 600px");
+    mq2.addListener("change", test2);
+
+    function test2() {
+        console.log("hier kommt matches 2 " + mq2.matches())
+    }
+
+    mq3 = window.matchCommonTermMedia("print and (audioDescriptionEnabled)");
+    mq3.addListener("change", test3);
+
+    function test3() {
+        console.log("hier kommt matches 3 " + mq3.matches())
+    }
+
+
 
 </script>
 </body>

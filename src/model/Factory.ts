@@ -1,8 +1,17 @@
-import {IMediaDescriptor, IMediaFeature, MediaDescriptor, CommonTermUtil, MediaFeature, CommonTerm} from "./Model";
+import {
+    IMediaDescriptor,
+    IMediaFeature,
+    MediaDescriptor,
+    CommonTermUtil,
+    MediaFeature,
+    CommonTerm,
+    ICommonTermList, CommonTermList
+} from "./Model";
 import * as common from '../common/utility'
 import {removeUnimportantCharactersFrom} from "../common/utility";
 
-export class MediaDescriptorFactory {
+
+export class Factory {
     public static createMediaDescriptorsFromCSSString(cssCode: string): IMediaDescriptor[] {
         const regex = new RegExp("@media.(.*?).\\{", "g")
 
@@ -58,6 +67,42 @@ export class MediaDescriptorFactory {
         }
 
         return new MediaDescriptor(unsupportedMediaQuery, supportedMediaQueryString, body, negated)
+    }
+
+    //Zusammenwerfen ??
+    public static createCommonTermListFromMQString(mediaQuery: string): ICommonTermList {
+        let query = mediaQuery;
+        let negated: boolean
+
+        [negated, query] = this.isMediaQueryNegated(query);
+
+        let mediaConditions = this.split(query, "and");
+        let supportedMediaQuery: string[] = [];
+        let unsupportedMediaQuery: IMediaFeature[] = [];
+        for (const condition of mediaConditions) {
+            let commonTermMediaFeature = CommonTermUtil.containsCommonTermMediaFeature(condition)
+            if (commonTermMediaFeature[0]) {
+                unsupportedMediaQuery.push(MediaFeatureFactory.createMediaFeatureFrom(condition));
+            } else {
+                supportedMediaQuery.push(condition);
+            }
+        }
+        console.log("---------------");
+        console.log(unsupportedMediaQuery);
+        console.log(supportedMediaQuery.join("and"));
+        console.log(negated)
+        console.log("---------------");
+
+        let supportedMediaQueryString: string | null = supportedMediaQuery.join("and")
+        if (negated) {
+            supportedMediaQueryString = "not " + supportedMediaQueryString
+        }
+
+        if (supportedMediaQueryString == "") {
+            supportedMediaQueryString = null;
+        }
+
+        return new CommonTermList(unsupportedMediaQuery, supportedMediaQueryString, negated)
     }
 
     // checks if the media Query is negated or not.

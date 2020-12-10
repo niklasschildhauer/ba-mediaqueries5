@@ -53,7 +53,7 @@ test('Media Descriptor Factory - createMediaDescriptorFromMQStringAndBodyString 
     let unsupportedMediaQuery = [new Model.MediaFeature(CommonTerm.displaySkiplinks, false, "always")];
     let supportedMediaQuery = "screen ";
 
-    let result = Factory.MediaDescriptorFactory.createMediaDescriptorFromMQStringAndBodyString("screen and (displaySkiplinks: always)", body);
+    let result = Factory.Factory.createMediaDescriptorFromMQStringAndBodyString("screen and (displaySkiplinks: always)", body);
 
     let model = new Model.MediaDescriptor(unsupportedMediaQuery, supportedMediaQuery, body, false)
     expect(result.body).toBe(model.body);
@@ -67,7 +67,7 @@ test('Media Descriptor Factory - createMediaDescriptorFromMQStringAndBodyString 
     let unsupportedMediaQuery = [new Model.MediaFeature(CommonTerm.displaySkiplinks, false, "always")];
     let supportedMediaQuery = "screen and (max-width: 300px)";
 
-    let result = Factory.MediaDescriptorFactory.createMediaDescriptorFromMQStringAndBodyString("screen and (displaySkiplinks: always) and (max-width: 300px)", body);
+    let result = Factory.Factory.createMediaDescriptorFromMQStringAndBodyString("screen and (displaySkiplinks: always) and (max-width: 300px)", body);
 
     let model = new Model.MediaDescriptor(unsupportedMediaQuery, supportedMediaQuery, body, false)
     expect(result.body).toBe(model.body);
@@ -81,7 +81,7 @@ test('Media Descriptor Factory - createMediaDescriptorFromMQStringAndBodyString 
     let unsupportedMediaQuery = [new Model.MediaFeature(CommonTerm.displaySkiplinks, false, "always")];
     let supportedMediaQuery = "screen and (min-width: 100px) and (max-width: 300px)";
 
-    let result = Factory.MediaDescriptorFactory.createMediaDescriptorFromMQStringAndBodyString("screen and (min-width: 100px) and (displaySkiplinks: always) and (max-width: 300px)", body);
+    let result = Factory.Factory.createMediaDescriptorFromMQStringAndBodyString("screen and (min-width: 100px) and (displaySkiplinks: always) and (max-width: 300px)", body);
 
     let model = new Model.MediaDescriptor(unsupportedMediaQuery, supportedMediaQuery, body, false)
     expect(result.body).toBe(model.body);
@@ -95,7 +95,7 @@ test('Media Descriptor Factory - createMediaDescriptorFromMQStringAndBodyString 
     let unsupportedMediaQuery = [new Model.MediaFeature(CommonTerm.displaySkiplinks, false, "always")];
     let supportedMediaQuery = "not screen and (min-width: 100px) and (max-width: 300px)";
 
-    let result = Factory.MediaDescriptorFactory.createMediaDescriptorFromMQStringAndBodyString("not screen and (min-width: 100px) and (displaySkiplinks: always) and (max-width: 300px)", body);
+    let result = Factory.Factory.createMediaDescriptorFromMQStringAndBodyString("not screen and (min-width: 100px) and (displaySkiplinks: always) and (max-width: 300px)", body);
 
     let model = new Model.MediaDescriptor(unsupportedMediaQuery, supportedMediaQuery, body, true)
     expect(result.body).toBe(model.body);
@@ -110,7 +110,7 @@ test('Media Descriptor Factory - createMediaDescriptorFromMQStringAndBodyString 
                                 new Model.MediaFeature(CommonTerm.tableOfContents, true, "true")];
     let supportedMediaQuery = null;
 
-    let result = Factory.MediaDescriptorFactory.createMediaDescriptorFromMQStringAndBodyString("(displaySkiplinks: always) and not (tableOfContents)", body);
+    let result = Factory.Factory.createMediaDescriptorFromMQStringAndBodyString("(displaySkiplinks: always) and not (tableOfContents)", body);
 
     let model = new Model.MediaDescriptor(unsupportedMediaQuery, supportedMediaQuery, body, false)
     expect(result.body).toBe(model.body);
@@ -133,7 +133,7 @@ test('Media Descriptor Factory - createMediaDescriptorFromCSSString #1', () => {
     let unsupportedMediaQuery2 = [new Model.MediaFeature(CommonTerm.pictogramsEnabled, false, "true")];
     let supportedMediaQuery1 = "not screen ";
 
-    let result = Factory.MediaDescriptorFactory.createMediaDescriptorsFromCSSString(css);
+    let result = Factory.Factory.createMediaDescriptorsFromCSSString(css);
 
     let model1 = new Model.MediaDescriptor(unsupportedMediaQuery1, supportedMediaQuery1, body1, true);
     let model2 = new Model.MediaDescriptor(unsupportedMediaQuery2, null, body2, false);
@@ -159,7 +159,7 @@ test('Media Descriptor Factory - createMediaDescriptorFromCSSString #2', () => {
     let supportedMediaQuery1 = "not screen ";
     let supportedMediaQuery2 = "print ";
 
-    let result = Factory.MediaDescriptorFactory.createMediaDescriptorsFromCSSString(css);
+    let result = Factory.Factory.createMediaDescriptorsFromCSSString(css);
 
     let model1 = new Model.MediaDescriptor(unsupportedMediaQuery1, supportedMediaQuery1, body1, true);
     let model2 = new Model.MediaDescriptor(unsupportedMediaQuery2, null, body2, false);
@@ -169,7 +169,17 @@ test('Media Descriptor Factory - createMediaDescriptorFromCSSString #2', () => {
 
 
 
+test('Media Descriptor Factory - createCommonTermListFromMQString #1', () => {
+    let unsupportedMediaQuery = [new Model.MediaFeature(CommonTerm.displaySkiplinks, false, "always")];
+    let supportedMediaQuery = "screen ";
 
+    let result = Factory.Factory.createCommonTermListFromMQString("screen and (displaySkiplinks: always)");
+
+    let model = new Model.CommonTermList(unsupportedMediaQuery, supportedMediaQuery, false)
+    expect(result.mediaQuery.negated).toBe(model.mediaQuery.negated);
+    expect(result.mediaQuery.supportedMediaQuery).toBe(model.mediaQuery.supportedMediaQuery);
+    expect(result.mediaQuery.unSupportedMediaQuery).toStrictEqual(model.mediaQuery.unSupportedMediaQuery);
+});
 
 
 

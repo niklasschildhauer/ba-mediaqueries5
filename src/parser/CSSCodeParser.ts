@@ -37,6 +37,7 @@ export class CSSCodeParser implements IParser {
                 cssStyle.push(cssCode);
             }
         }
+
         let cssString = this.createCSSVariables() + cssStyle.join("\n");
         cssString = cssString + cssStyle.join("\n");
 

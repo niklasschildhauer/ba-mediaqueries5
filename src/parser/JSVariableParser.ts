@@ -1,32 +1,59 @@
 import * as Profile from "../user/UserPreferenceProfile";
-import {CommonTerm, IUserPreference} from "../model/Model";
+import {CommonTerm, CommonTermList, ICommonTermList, IUserPreference} from "../model/Model";
 import {IParser} from "./CSSCodeParser";
+import {Factory} from "../model/Factory";
 
 export class JSVariableParser implements IParser {
     private userProfile: Profile.IUserPreferenceProfile;
-    private eventListeners: CommonTermList[] = [];
+    private commonTermLists: ICommonTermList[] = [];
 
     constructor(userPreferenceProfile: Profile.IUserPreferenceProfile) {
         this.userProfile = userPreferenceProfile;
         this.parse();
-        (window as any).matchCommonTermMedia = (string: string) => this.doesMediaQueryMatch(string);
+        (window as any).matchCommonTermMedia = (string: string) => this.createCommonTermList(string);
     }
 
-    doesMediaQueryMatch(string: string): CommonTermList {
-        const list = new CommonTermList();
-        this.eventListeners.push(list);
+    createCommonTermList(string: string): ICommonTermList {
+        const list = Factory.createCommonTermListFromMQString(string);
+        this.commonTermLists.push(list);
         return list
     }
+
 
     parse(): void {
         let userPreferences = this.userProfile.getUserPreferences()
         for (let i = 0; i < userPreferences.length; i++) {
             this.setJSVariableForUserPreference(userPreferences[i]);
         }
-        for (let i = 0; i < this.eventListeners.length; i++) {
-            console.log(this.eventListeners.length);
-             this.eventListeners[i].callbackFunction();
+        this.evaluateCommonTermLists();
+    }
+
+    private evaluateCommonTermLists(): void {
+        for (let i = 0; i < this.commonTermLists.length; i++) {
+            const matchValue = this.evaluateCommonTermList(this.commonTermLists[i]);
+            this.commonTermLists[i].setMatchValue(matchValue);
+            this.commonTermLists[i].callbackFunction();
         }
+    }
+
+    private evaluateCommonTermList(list: ICommonTermList): boolean {
+        console.log(list);
+        if(this.userProfile.doesMediaQueryMatch(list.mediaQuery)) {
+            console.log("1");
+            if(list.mediaQuery.supportedMediaQuery !== null) {
+                console.log("2");
+                return this.evaluateMediaQueryList(list.mediaQuery.supportedMediaQuery);
+            }
+            console.log("3");
+            return true;
+        }
+        console.log("4");
+        return false;
+    }
+
+    private evaluateMediaQueryList(mediaQuery: string): boolean {
+        const mediaQueryList = (window as any).matchMedia(mediaQuery)
+        return mediaQueryList.matches
     }
 
     private setJSVariableForUserPreference(userPreference: IUserPreference) {
@@ -64,47 +91,3 @@ export class JSVariableParser implements IParser {
         }
     }
 }
-
-export interface ICommonTermList {
-    addListener(event: string, callback: () => any): void;
-    matches(): boolean;
-}
-
-export class CommonTermList implements ICommonTermList {
-    callbackFunction: () => any = () => void 0;
-
-    addListener(event: string, callback: () => any): void {
-        this.callbackFunction = callback;
-    }
-
-    matches():boolean {
-        return true
-    }
-
-    constructor() {
-    }
-
-}
-
-
-
-// const x = {
-//     aInternal: 10,
-//     aListener: function(val) {},
-//     set a(val) {
-//         this.aInternal = val;
-//         this.aListener(val);
-//     },
-//     get a() {
-//         return this.aInternal;
-//     },
-//     registerListener: function(listener) {
-//         this.aListener = listener;
-//     }
-// }
-//
-// x.registerListener(function(val) {
-//     alert("Someone changed the value of x.a to " + val);
-// });
-//
-// x.a = 42;

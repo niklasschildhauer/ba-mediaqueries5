@@ -67,6 +67,38 @@ export class MediaDescriptor implements IMediaDescriptor {
     }
 }
 
+export interface ICommonTermList {
+    callbackFunction: () => any;
+    mediaQuery: IMediaQuery;
+    addListener(event: string, callback: () => any): void;
+    matches(): boolean;
+    setMatchValue(value: boolean): void;
+}
+
+export class CommonTermList implements ICommonTermList {
+    mediaQuery: IMediaQuery;
+    matchValue: boolean;
+    callbackFunction: () => any = () => void 0;
+
+    addListener(event: string, callback: () => any): void {
+        this.callbackFunction = callback;
+    }
+
+    matches():boolean {
+        return this.matchValue;
+    }
+
+    constructor(unSupportedMediaQuery: IMediaFeature[], supportedMediaQuery: string | null, negated: boolean) {
+        this.mediaQuery = new MediaQuery(unSupportedMediaQuery, supportedMediaQuery, negated);
+        this.matchValue = false
+    }
+
+    setMatchValue(value: boolean): void {
+        this.matchValue = value;
+    }
+
+}
+
 
 
 export class MediaFeature implements IMediaFeature {
