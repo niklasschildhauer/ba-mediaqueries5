@@ -17,6 +17,13 @@
     <p>Das ist ein Test hier</p>
     <button onclick="buttonAction()">Testbutton</button>
 
+    <video width="320" height="240" controls class="common-term-video">
+        <source media="print and (min-width: 600px)" src="http://techslides.com/demos/sample-videos/small.mp4" type="video/mp4">
+        <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" type="video/mp4">
+
+        Your browser does not support the video tag.
+    </video>
+
     <picture>
         <source media="(min-width:465px)" srcset="RezeptGulasch.png">
         <img src="" alt="" />
@@ -52,6 +59,9 @@
     function test3() {
         console.log("hier kommt matches 3 " + mq3.matches())
     }
+
+    let videos = document.getElementsByClassName("common-term-video");
+    console.log(videos[0].currentSrc);
 
 
 

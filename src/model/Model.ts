@@ -99,6 +99,14 @@ export class CommonTermList implements ICommonTermList {
 
 }
 
+export interface IVideoElement {
+
+}
+
+export class VideoElement implements IVideoElement {
+
+}
+
 
 
 export class MediaFeature implements IMediaFeature {

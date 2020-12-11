@@ -45,7 +45,7 @@ export class Factory {
         for (const condition of mediaConditions) {
             let commonTermMediaFeature = CommonTermUtil.containsCommonTermMediaFeature(condition)
             if (commonTermMediaFeature[0]) {
-                unsupportedMediaQuery.push(MediaFeatureFactory.createMediaFeatureFrom(condition));
+                unsupportedMediaQuery.push(this.createMediaFeatureFrom(condition));
             } else {
                 supportedMediaQuery.push(condition);
             }
@@ -82,7 +82,7 @@ export class Factory {
         for (const condition of mediaConditions) {
             let commonTermMediaFeature = CommonTermUtil.containsCommonTermMediaFeature(condition)
             if (commonTermMediaFeature[0]) {
-                unsupportedMediaQuery.push(MediaFeatureFactory.createMediaFeatureFrom(condition));
+                unsupportedMediaQuery.push(this.createMediaFeatureFrom(condition));
             } else {
                 supportedMediaQuery.push(condition);
             }
@@ -105,21 +105,6 @@ export class Factory {
         return new CommonTermList(unsupportedMediaQuery, supportedMediaQueryString, negated)
     }
 
-    // checks if the media Query is negated or not.
-    private static isMediaQueryNegated(mediaQuery: string) : [boolean, string] {
-        if (mediaQuery.slice(0, 3).match("not")) {
-            return [true, mediaQuery.slice(4)]
-        } else {
-            return [false, mediaQuery]
-        }
-    }
-
-    private static split(mediaQuery: string, between: string) : string[] {
-        return mediaQuery.split(between);
-    }
-}
-
-export class MediaFeatureFactory {
     public static createMediaFeatureFrom(condition: string): IMediaFeature {
         let conditionString = removeUnimportantCharactersFrom(condition);
 
@@ -144,5 +129,18 @@ export class MediaFeatureFactory {
             throw new Error('There is no matching common term: ' + conditionString);
         }
         return new MediaFeature(mediaFeature, negated, value);
+    }
+
+    // checks if the media Query is negated or not.
+    private static isMediaQueryNegated(mediaQuery: string) : [boolean, string] {
+        if (mediaQuery.slice(0, 3).match("not")) {
+            return [true, mediaQuery.slice(4)]
+        } else {
+            return [false, mediaQuery]
+        }
+    }
+
+    private static split(mediaQuery: string, between: string) : string[] {
+        return mediaQuery.split(between);
     }
 }

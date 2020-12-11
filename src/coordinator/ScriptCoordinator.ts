@@ -11,15 +11,15 @@ export class ScriptCoordinator implements View.UserPreferenceViewDelegate, Reade
     private cssReader: Reader.IReader<Model.IMediaDescriptor>;
     private userProfile: User.IUserPreferenceProfile;
     private cssCodeParser: Parser.IParser;
-    private networkAPI: Network.INetworkAPI;
     private jsVariableParser: Parser.IParser;
 
     public constructor() {
         console.log("Hello World");
         console.log("-----------");
+        let networkAPI = new Network.NetworkAPI(this);
+
         this.cssReader = new Reader.CSSReader(this);
-        this.networkAPI = new Network.NetworkAPI(this);
-        this.userProfile = new User.UserPreferenceProfile(this, this.networkAPI);
+        this.userProfile = new User.UserPreferenceProfile(this, networkAPI);
         this.userPreferenceViewController = new View.UserPreferenceViewController(this, this.userProfile);
         this.cssCodeParser = new Parser.CSSCodeParser(this.userProfile, this.cssReader);
         this.jsVariableParser = new JSVariableParser(this.userProfile);
