@@ -1,11 +1,3 @@
-import * as Profile from "../user/UserPreferenceProfile";
-import {IReader} from "../reader/CSSReader";
-import {CommonTerm, IMediaDescriptor} from "../model/Model";
-import {CSSCodeParser} from "./CSSCodeParser";
-import {IUserPreferenceProfile} from "../user/UserPreferenceProfile";
-import {JSVariableParser} from "./JSVariableParser";
-
-
 export interface ICodeParser {
     parse(): void;
 }

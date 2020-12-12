@@ -2,8 +2,6 @@ import * as View from '../view/UserPreferenceViewController';
 import * as Reader from '../reader/CSSReader';
 import * as Model  from "../model/Model";
 import * as User from "../user/UserPreferenceProfile";
-import * as Parser from "../parser/CSSCodeParser";
-import * as Network from "../network/NetworkAPI";
 import {JSVariableParser} from "../parser/JSVariableParser";
 import {
     IUserPreferencePresenter,
@@ -19,12 +17,11 @@ export interface ICoordinator<T> {
 }
 
 export interface IScriptCoordinator {
-    addCSSCode(string: string): void;
+    addCSSCode(code: string): void;
 }
 
 export class ScriptCoordinator implements ICoordinator<IUserPreferencePresenter>, IScriptCoordinator, Reader.CSSReaderDelegate, User.UserPreferenceProfileDelegate{
     private cssReader: Reader.IReader<Model.IMediaDescriptor>;
-    private userProfile: User.IUserPreferenceProfile;
     private codeParser: ICodeParser;
     rootViewController: View.IViewController<View.IUserPreferencePresenter>;
 
@@ -34,9 +31,9 @@ export class ScriptCoordinator implements ICoordinator<IUserPreferencePresenter>
         console.log("-----------");
 
         this.cssReader = new Reader.CSSReader(this);
-        this.userProfile = this.createUserProfile();
-        this.rootViewController = new UserPreferenceViewController(this.userProfile);
-        this.codeParser = this.createCodeParser();
+        let userProfile = this.createUserProfile()
+        this.rootViewController = new UserPreferenceViewController(userProfile);
+        this.codeParser = this.createCodeParser(userProfile);
     }
 
     private createUserProfile(): IUserPreferenceProfile {
@@ -44,9 +41,9 @@ export class ScriptCoordinator implements ICoordinator<IUserPreferencePresenter>
         return new UserPreferenceProfile(this, network);
     }
 
-    private createCodeParser(): ICodeParser {
-        let jsParser = new JSVariableParser(this.userProfile);
-        let cssParser = new CSSCodeParser(this.userProfile, this.cssReader);
+    private createCodeParser(userProfile: IUserPreferenceProfile): ICodeParser {
+        let jsParser = new JSVariableParser(userProfile);
+        let cssParser = new CSSCodeParser(userProfile, this.cssReader);
         return new CodeParser(jsParser, cssParser);
     }
 

@@ -42,7 +42,7 @@ export class JSVariableParser implements ICodeParser {
             console.log("1");
             if(list.mediaQuery.supportedMediaQuery !== null) {
                 console.log("2");
-                return this.evaluateMediaQueryList(list.mediaQuery.supportedMediaQuery);
+                return this.evaluateMediaQuery(list.mediaQuery.supportedMediaQuery);
             }
             console.log("3");
             return true;
@@ -51,7 +51,7 @@ export class JSVariableParser implements ICodeParser {
         return false;
     }
 
-    private evaluateMediaQueryList(mediaQuery: string): boolean {
+    private evaluateMediaQuery(mediaQuery: string): boolean {
         const mediaQueryList = (window as any).matchMedia(mediaQuery)
         return mediaQueryList.matches
     }

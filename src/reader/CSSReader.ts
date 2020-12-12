@@ -11,9 +11,9 @@ export interface CSSReaderDelegate {
 }
 
 export class CSSReader implements IReader<Model.IMediaDescriptor> {
-    private mediaDescriptors: Model.IMediaDescriptor[] = []
-    private plainCSS: string[] = []
-    private delegate: CSSReaderDelegate
+    private mediaDescriptors: Model.IMediaDescriptor[] = [];
+    private plainCSS: string[] = [];
+    private delegate: CSSReaderDelegate;
 
     constructor(delegate: CSSReaderDelegate) {
         this.delegate = delegate;
@@ -27,7 +27,7 @@ export class CSSReader implements IReader<Model.IMediaDescriptor> {
     public read(string: string): void {
         if (!this.plainCSS.includes(string)) {
             this.plainCSS.push(string);
-            this.refresh()
+            this.refresh();
         } else {
             console.log("CSS Code is already included");
         }
