@@ -1,12 +1,10 @@
 import * as Profile from "../user/UserPreferenceProfile";
 import {IReader} from "../reader/CSSReader";
 import {CommonTerm, IMediaDescriptor} from "../model/Model";
+import {ICodeParser} from "./CodeParser";
 
-export interface IParser {
-    parse(): void;
-}
 
-export class CSSCodeParser implements IParser {
+export class CSSCodeParser implements ICodeParser {
     private userProfile: Profile.IUserPreferenceProfile;
     private cssReader: IReader<IMediaDescriptor>;
     private styleId = "common-terms-media-queries";
@@ -21,7 +19,6 @@ export class CSSCodeParser implements IParser {
         this.resetCSSCode();
         let cssCode = this.createCSSCode();
         this.parseCSSCode(cssCode);
-        console.log(this.userProfile.getUserPreferences());
     }
 
     private createCSSCode(): string {
@@ -50,7 +47,6 @@ export class CSSCodeParser implements IParser {
         style.setAttribute("id", this.styleId);
         style.innerHTML = cssCode;
         document.head.appendChild(style);
-
     }
 
     private resetCSSCode(): void {
@@ -62,7 +58,6 @@ export class CSSCodeParser implements IParser {
     }
 
     private createCSSVariables(): string {
-
         const variables = ["--audio-description-enabled: " + this.userProfile.getValueForMediaFeature(CommonTerm.audioDescriptionEnabled),
             "--captions-enabled: " + this.userProfile.getValueForMediaFeature(CommonTerm.captionsEnabled),
             "--self-voicing-enabled: " + this.userProfile.getValueForMediaFeature(CommonTerm.selfVoicingEnabled),

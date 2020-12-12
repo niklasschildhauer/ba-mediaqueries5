@@ -172,8 +172,8 @@ export interface PersonasWrapperDelegate {
 }
 
 export interface IPersonasWrapperView {
-    selectPersona(persona: PersonaView): void;
-    unSelectPersona(): void;
+    selectPersona(persona: Persona): void;
+    unselectAllPersonas(): void;
 }
 
 export class PersonasWrapperView implements IPersonasWrapperView {
@@ -206,7 +206,6 @@ export class PersonasWrapperView implements IPersonasWrapperView {
         for (let i = 0; i < this.personaViews.length; i++) {
             this.personaViews[i].element.addClickEventListener(() =>{
                 this.delegate.didSelectPersona(this.personaViews[i].name, this);
-                this.selectPersona(this.personaViews[i]);
             });
             element.appendChild(this.personaViews[i].element);
         }
@@ -214,12 +213,15 @@ export class PersonasWrapperView implements IPersonasWrapperView {
         this.delegate = delegate;
     }
 
-    selectPersona(persona: PersonaView): void {
-        this.unSelectPersona();
-        persona.select();
+    selectPersona(persona: Persona): void {
+        for (let i = 0; i < this.personaViews.length; i++) {
+            if(this.personaViews[i].name === persona) {
+                this.personaViews[i].select();
+            }
+        }
     }
 
-    unSelectPersona(): void {
+    unselectAllPersonas(): void {
         for (let i = 0; i < this.personaViews.length; i++) {
             this.personaViews[i].unselect();
         }
@@ -519,7 +521,7 @@ export class ListWrapperView implements  IListWrapperView {
     }
 }
 
-export interface ILoginWrapper {
+export interface ILoginWrapperView {
     showErrorMessage(text: string): void;
 }
 
@@ -527,7 +529,7 @@ export interface LoginDelegate {
     didTapLogin(username: string, password: string): void;
 }
 
-export class LoginWrapper implements  ILoginWrapper {
+export class LoginWrapperView implements  ILoginWrapperView {
     private usernameField = new HTMLUserInputElement("text", "openape-username", "text-input")
     private passwordField = new HTMLUserInputElement("password", "openape-password", "text-input")
 
@@ -550,7 +552,7 @@ export class LoginWrapper implements  ILoginWrapper {
         this.errorMessage.appendText(text);
     }
 
-    login(): void{
+    private login(): void{
         this.delegate.didTapLogin(this.usernameField.getValue(), this.passwordField.getValue());
     }
 }

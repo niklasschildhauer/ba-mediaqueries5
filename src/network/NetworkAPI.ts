@@ -6,8 +6,6 @@ export interface INetworkAPI {
     loadUserContext(username: string, password: string): Promise<INetworkResultUserPreference>;
 }
 
-export interface NetworkAPIDelegate {
-}
 
 export interface INetworkResultUserPreference {
     success: boolean
@@ -28,11 +26,9 @@ export class NetworkUserResultUserPreference implements INetworkResultUserPrefer
 }
 
 export class NetworkAPI implements  INetworkAPI {
-    private delegate: NetworkAPIDelegate
     private client: OpenAPEClient
 
-    constructor(delegate: NetworkAPIDelegate) {
-        this.delegate = delegate;
+    constructor() {
         this.client = new OpenAPEClient();
     }
 

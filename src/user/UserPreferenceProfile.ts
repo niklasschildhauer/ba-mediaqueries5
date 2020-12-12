@@ -1,37 +1,33 @@
 import * as Model from "../model/Model";
-import {CommonTerm, IMediaFeature, IMediaQuery, IUserPreference} from "../model/Model";
+import {CommonTerm, IMediaFeature, IMediaQuery, IUserPreference, Persona} from "../model/Model";
 import {INetworkAPI} from "../network/NetworkAPI";
-import {UserPreferenceViewDelegate} from "../view/UserPreferenceViewController";
 
 export interface IUserPreferenceProfile {
     doesMediaFeatureMatch(mediaFeature: Model.IMediaFeature): boolean;
     doesMediaQueryMatch(mediaQuery: Model.IMediaQuery): boolean;
     getValueForMediaFeature(mediaFeature: Model.CommonTerm): string;
-    getUserPreferences(): Model.UserPreference[];
-    didSelectPersona(persona: Model.Persona): void;
+    getUserPreferences(): Model.IUserPreference[];
+    selectPersona(persona: Model.Persona): void;
     setUserPreferences(preferences: IUserPreference[]): void;
     login(username: string, password: string): void;
 }
 
-export interface  UserProfileDelegate {
+export interface  UserPreferenceProfileDelegate {
     didUpdateProfile(from: IUserPreferenceProfile): void;
+    didSelectPersona(persona: Persona, from: IUserPreferenceProfile): void;
     recievedLoginErrorMessage(message: string, from: IUserPreferenceProfile): void;
 }
 
 export class UserPreferenceProfile implements IUserPreferenceProfile {
     private userPreferences: Model.IUserPreference[];
     private network: INetworkAPI
-    delegate: UserProfileDelegate;
+    private delegate: UserPreferenceProfileDelegate;
 
-    constructor(delegate: UserProfileDelegate, network: INetworkAPI) {
+    constructor(delegate: UserPreferenceProfileDelegate, network: INetworkAPI) {
         this.userPreferences = [];
         this.setDefaultValues();
         this.delegate = delegate;
         this.network = network;
-    }
-
-    showErrorMessage(message: string, from: IUserPreferenceProfile): void {
-        throw new Error("Method not implemented.");
     }
 
     private refresh() {
@@ -101,7 +97,7 @@ export class UserPreferenceProfile implements IUserPreferenceProfile {
         return "";
     }
 
-    getUserPreferences(): Model.UserPreference[] {
+    getUserPreferences(): Model.IUserPreference[] {
         return this.userPreferences;
     }
 
@@ -122,11 +118,12 @@ export class UserPreferenceProfile implements IUserPreferenceProfile {
         this.refresh();
     }
 
-    didSelectPersona(persona: Model.Persona): void {
+    selectPersona(persona: Model.Persona): void {
         this.network.loadPreferenceSetFromPersona(persona)
             .then((result) => {
                 if(result.success) {
                     this.setUserPreferences(result.userPreferences)
+                    this.delegate.didSelectPersona(persona, this);
                 }
                 return result
             })

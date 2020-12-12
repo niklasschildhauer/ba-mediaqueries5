@@ -9,100 +9,174 @@ import {
     ApplyButtonWrapperView,
     IApplyButtonWrapperView,
     ListWrapperDelegate,
-    IListWrapperView, LoginWrapper, LoginDelegate
+    IListWrapperView, LoginWrapperView, LoginDelegate
 } from './UserPreferenceViews';
 
-import {CommonTerm, Persona} from '../model/Model';
+import {CommonTerm, IUserPreference, Persona} from '../model/Model';
 import {IUserPreferenceProfile, UserPreferenceProfile} from "../user/UserPreferenceProfile";
 
 export interface IUserPreferenceViewController {
-    refreshView(): void;
     showLoginErrorMessage(message: string): void;
+    selectPersona(persona: Persona): void;
+    unselectAllPersona(): void;
+    getAllSetPreferences(): IUserPreference[];
+    selectUserPreferences(userPreferences: IUserPreference[]): void
 }
 
-export interface UserPreferenceViewDelegate {
+export interface IViewController<T> {
+    presenter: T;
+
+    parseView(): void;
+    removeView(): void;
 }
 
-export class UserPreferenceViewController implements IUserPreferenceViewController, PersonasWrapperDelegate, ApplyButtonWrapperDelegate, ListWrapperDelegate, LoginDelegate {
-    delegate: UserPreferenceViewDelegate;
-    private userProfile: IUserPreferenceProfile
+export class UserPreferenceViewController implements IViewController<IUserPreferencePresenter>, IUserPreferenceViewController, PersonasWrapperDelegate, ApplyButtonWrapperDelegate, ListWrapperDelegate, LoginDelegate {
+    presenter: IUserPreferencePresenter;
 
-    private wrapper = new HTMLBasicElement("div", "wrapper", null);
-    // private headlineWrapper = new HTMLBasicElement("div", "headline-wrapper", null);
-    // private settingsSubHeading =  new HTMLTextElement("h3", null, null, "SETTINGS");
-    private userPreferencesHeading = new HTMLTextElement("h1", null, null, "User Preferences");
+    private element = new HTMLBasicElement("div", "wrapper", null);
+    private headline = new HTMLTextElement("h1", null, null, "User Preferences");
 
     private personaWrapper = new PersonasWrapperView(this);
     private listWrapper = new ListWrapperView(this);
-
     private applyButtonWrapper = new ApplyButtonWrapperView(this);
+    private loginWrapper = new LoginWrapperView(this);
 
-    private loginWrapper = new LoginWrapper(this);
 
+    public constructor(userProfile: IUserPreferenceProfile) {
+        this.presenter = new UserPreferencePresenter(this, userProfile);
 
-    public constructor(delegate: UserPreferenceViewDelegate, userProfile: IUserPreferenceProfile) {
-        this.delegate = delegate;
-        this.userProfile = userProfile;
-
-        this.refreshView();
         this.createView();
         this.parseView();
+        this.presenter.viewDidLoad();
     }
 
     private createView(): void {
         // this.headlineWrapper.appendChildren([this.settingsSubHeading, this.userPreferencesHeading])
-        this.wrapper.appendChild(this.userPreferencesHeading);
-        this.wrapper.appendChild(this.personaWrapper.element);
-        this.wrapper.appendChild(this.loginWrapper.element);
-        this.wrapper.appendChild(this.listWrapper.element);
-        this.wrapper.appendChild(this.applyButtonWrapper.element);
+        this.element.appendChild(this.headline);
+        this.element.appendChild(this.personaWrapper.element);
+        this.element.appendChild(this.loginWrapper.element);
+        this.element.appendChild(this.listWrapper.element);
+        this.element.appendChild(this.applyButtonWrapper.element);
     }
 
-    private parseView(): void {
+    parseView(): void {
         // View is only shown, if the script is embeed at the bottom of the body and not in the header.
         if(document.body != null || document.body != undefined) {
-            document.body.appendChild(this.wrapper.element);
+            document.body.appendChild(this.element.element);
         }
     }
 
-    refreshView(): void {
-        this.setUserPreferences();
-    }
-
-    private setUserPreferences() {
-        let preferences = this.userProfile.getUserPreferences();
-        for (let i = 0; i < preferences.length; i++) {
-            this.listWrapper.setPreferences(preferences[i]);
+    removeView(): void {
+        if(this.element.id != null) {
+            let child = document.getElementById(this.element.id)
+            if(child != null || child != undefined) {
+                document.removeChild(child);
+            }
         }
     }
 
-
+    selectUserPreferences(userPreferences: IUserPreference[]): void {
+        for (let i = 0; i < userPreferences.length; i++) {
+            this.listWrapper.setPreferences(userPreferences[i]);
+        }
+    }
     showLoginErrorMessage(message: string): void {
         this.loginWrapper.showErrorMessage(message);
     }
 
+    selectPersona(persona: Persona): void {
+        this.personaWrapper.selectPersona(persona);
+    }
+
+    unselectAllPersona(): void {
+        this.personaWrapper.unselectAllPersonas();
+    }
+
+    getAllSetPreferences(): IUserPreference[] {
+        return this.listWrapper.getAllPreferences();
+    }
+
+
     // DELEGATE FUNCTIONS
     didSelectPersona(persona: Persona, from: PersonasWrapperView): void {
         console.log("Did select hier " + persona);
-        this.userProfile.didSelectPersona(persona);
-        //this.applyButtonWrapper.hideButtons();
+        this.presenter.selectPersona(persona);
     }
 
     didPressApply(from: IApplyButtonWrapperView): void {
-        this.userProfile.setUserPreferences(this.listWrapper.getAllPreferences());
+        this.presenter.pressedApplyPreferences();
     }
 
     didPressCancel(from: IApplyButtonWrapperView): void {
-        this.refreshView();
+        this.presenter.pressedCancel();
     }
 
     didEditPreferences(from: IListWrapperView): void {
-        this.personaWrapper.unSelectPersona();
-        //this.applyButtonWrapper.showButtons();
-        console.log("did edit preference");
+        this.presenter.editPreferences();
     }
 
     didTapLogin(username: string, password: string): void {
-        this.userProfile.login(username, password);
+        this.presenter.pressedLogin(username, password);
     }
+}
+
+export interface IUserPreferencePresenter {
+
+    viewDidLoad(): void;
+    editPreferences(): void;
+    pressedCancel(): void;
+    pressedLogin(username: string, password: string): void;
+    pressedApplyPreferences(): void;
+    selectPersona(persona: Persona): void;
+    selectedPersona(persona: Persona): void;
+    showLoginErrorMessage(message: string): void;
+    reload(): void
+}
+
+export class UserPreferencePresenter implements IUserPreferencePresenter {
+    private view: IUserPreferenceViewController;
+    private userProfile: IUserPreferenceProfile;
+
+    constructor(view: IUserPreferenceViewController, userProfile: IUserPreferenceProfile) {
+        this.userProfile = userProfile;
+        this.view = view;
+    }
+
+    viewDidLoad(): void {
+        this.reload();
+    }
+    reload() {
+        this.refreshView();
+    }
+    pressedCancel(): void {
+        this.reload();
+    }
+    editPreferences(): void {
+        this.view.unselectAllPersona()
+    }
+    pressedLogin(username: string, password: string): void {
+        this.userProfile.login(username, password);
+        this.reload();
+    }
+    pressedApplyPreferences(): void {
+        this.userProfile.setUserPreferences(this.view.getAllSetPreferences());
+        this.reload();
+    }
+    selectPersona(persona: Persona): void {
+        this.userProfile.selectPersona(persona);
+    }
+    selectedPersona(persona: Persona): void {
+        this.view.unselectAllPersona();
+        this.view.selectPersona(persona);
+        this.reload();
+    }
+    showLoginErrorMessage(message: string): void {
+        this.view.showLoginErrorMessage(message);
+    }
+
+    private refreshView() {
+        this.view.selectUserPreferences(this.userProfile.getUserPreferences());
+        console.log(this.userProfile.getUserPreferences());
+    }
+
 }

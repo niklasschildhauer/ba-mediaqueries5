@@ -1,9 +1,9 @@
 import * as Profile from "../user/UserPreferenceProfile";
 import {CommonTerm, CommonTermList, ICommonTermList, IUserPreference} from "../model/Model";
-import {IParser} from "./CSSCodeParser";
 import {Factory} from "../model/Factory";
+import {ICodeParser} from "./CodeParser";
 
-export class JSVariableParser implements IParser {
+export class JSVariableParser implements ICodeParser {
     private userProfile: Profile.IUserPreferenceProfile;
     private commonTermLists: ICommonTermList[] = [];
 
@@ -13,7 +13,7 @@ export class JSVariableParser implements IParser {
         (window as any).matchCommonTermMedia = (string: string) => this.createCommonTermList(string);
     }
 
-    createCommonTermList(string: string): ICommonTermList {
+    private createCommonTermList(string: string): ICommonTermList {
         const list = Factory.createCommonTermListFromMQString(string);
         this.commonTermLists.push(list);
         return list

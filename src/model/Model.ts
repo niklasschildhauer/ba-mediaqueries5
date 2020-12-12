@@ -19,10 +19,6 @@ export interface IMediaFeature {
 }
 
 
-export interface ISourceTag {
-
-}
-
 export interface IUserPreference {
     mediaFeature: CommonTerm;
     value: string;
@@ -77,7 +73,7 @@ export interface ICommonTermList {
 
 export class CommonTermList implements ICommonTermList {
     mediaQuery: IMediaQuery;
-    matchValue: boolean;
+    private matchValue: boolean;
     callbackFunction: () => any = () => void 0;
 
     addListener(event: string, callback: () => any): void {
