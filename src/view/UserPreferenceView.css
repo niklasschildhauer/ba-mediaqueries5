@@ -152,6 +152,38 @@
     border: 3px solid var(--background-color);;
 }
 
+#user-preference-view-open-button-view {
+    position: fixed;
+    right: var(--padding);
+    top: var(--padding);
+    z-index: -200;
+    width: 140px;
+    heigt: 50px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+
+    padding: 10px;
+    border-radius: var(--corner);
+
+    transition: right 0.5s;
+    transition-timing-function: ease;
+
+    cursor: pointer;
+}
+
+#user-preference-view-show-panel-button {
+    display: flex;
+    justify-content: center;
+}
+
+#user-preference-view-open-button-view * {
+    z-index: -200;
+    margin: 0;
+    padding: 0;
+}
 
 /* Button Style */
 .user-preference-view-button {
@@ -164,7 +196,7 @@
     font-size: 16px;
     transition-duration: 0.4s;
     cursor: pointer;
-    border-radius: var(--corner);
+    border-radius: calc(2vh /2);
     margin: 0;
 }
 

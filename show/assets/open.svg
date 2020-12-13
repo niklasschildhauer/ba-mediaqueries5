@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="34px" height="34px" viewBox="0 0 34 34" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Group 4</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-4" transform="translate(0.451960, 0.500000)">
+            <g id="Group-2" fill="#000000">
+                <circle id="Oval" cx="16.0218556" cy="16.0218556" r="16.0218556"></circle>
+            </g>
+            <g id="Group-3" transform="translate(5.000000, 6.500000)" stroke="#FFFFFF" stroke-width="2">
+                <line x1="11.4167225" y1="0" x2="11.4167225" y2="19.4459922" id="Path-4" stroke-linecap="round"></line>
+                <line x1="19.4834449" y1="5.39734706e-16" x2="19.4834449" y2="19.4459922" id="Path-4-Copy" stroke-linecap="round"></line>
+                <line x1="3.35" y1="5.39734706e-16" x2="3.35" y2="19.4459922" id="Path-4-Copy-2" stroke-linecap="round"></line>
+                <circle id="Oval" fill="#000000" cx="19.4834449" cy="11.7224853" r="2.35"></circle>
+                <circle id="Oval-Copy-3" fill="#000000" cx="11.4167225" cy="6.37299609" r="2.35"></circle>
+                <circle id="Oval-Copy-4" fill="#000000" cx="3.35" cy="14.386179" r="2.35"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

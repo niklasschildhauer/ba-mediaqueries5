@@ -9,7 +9,14 @@ import {
     ApplyButtonWrapperView,
     IApplyButtonWrapperView,
     ListWrapperDelegate,
-    IListWrapperView, LoginWrapperView, LoginDelegate, ImageButtonView, HeaderWrapperView, HeaderViewDelegate, IHeaderWrapperView
+    IListWrapperView,
+    LoginWrapperView,
+    LoginDelegate,
+    ImageButtonView,
+    HeaderWrapperView,
+    HeaderViewDelegate,
+    IHeaderWrapperView,
+    ILoginWrapperView, OpenButtonViewDelegate, IOpenButtonView, OpenButtonView
 } from './UserPreferenceViews';
 
 import {CommonTerm, IUserPreference, Persona} from '../model/Model';
@@ -38,11 +45,12 @@ export interface IViewController<T> {
     removeView(): void;
 }
 
-export class UserPreferenceViewController implements IViewController<IUserPreferencePresenter>, IUserPreferenceViewController, PersonasWrapperDelegate, ApplyButtonWrapperDelegate, ListWrapperDelegate, LoginDelegate, HeaderViewDelegate {
+export class UserPreferenceViewController implements IViewController<IUserPreferencePresenter>, IUserPreferenceViewController, PersonasWrapperDelegate, ApplyButtonWrapperDelegate, ListWrapperDelegate, LoginDelegate, HeaderViewDelegate, OpenButtonViewDelegate {
     presenter: IUserPreferencePresenter;
 
     private element = new HTMLBasicElement("div", "wrapper", null);
 
+    // nicht im Schaubild // Button muss auf den Server zum download!
     private headerWrapper = new HeaderWrapperView(this)
     private personaWrapper = new PersonasWrapperView(this);
     private listWrapper = new ListWrapperView(this);
@@ -50,7 +58,7 @@ export class UserPreferenceViewController implements IViewController<IUserPrefer
     private loginWrapper = new LoginWrapperView(this);
 
     // nicht im Schaubild // Button muss auf den Server zum download!
-    private showPanelButton = new LabelButtonView("show-panel-button", "button", "Show", () => this.showPanel());
+    private showPanelButton = new OpenButtonView(this);
 
     public constructor(userProfile: IUserPreferenceProfile) {
         this.presenter = new UserPreferencePresenter(this, userProfile);
@@ -61,19 +69,19 @@ export class UserPreferenceViewController implements IViewController<IUserPrefer
     }
 
     private createView(): void {
-        // this.headlineWrapper.appendChildren([this.settingsSubHeading, this.userPreferencesHeading])
         this.element.appendChild(this.headerWrapper.element);
         this.element.appendChild(this.personaWrapper.element);
         this.element.appendChild(this.listWrapper.element);
         this.element.appendChild(this.loginWrapper.element);
         this.element.appendChild(this.applyButtonWrapper.element);
+        this.element.appendChild(this.showPanelButton.element);
     }
 
     parseView(): void {
         // View is only shown, if the script is embeed at the bottom of the body and not in the header.
         if(document.body != null || document.body != undefined) {
             document.body.appendChild(this.element.element);
-            document.body.appendChild(this.showPanelButton.element);
+            //document.body.appendChild(this.showPanelButton.element.element);
         }
 
     }
@@ -85,15 +93,24 @@ export class UserPreferenceViewController implements IViewController<IUserPrefer
                 document.removeChild(child);
             }
         }
+
+        // if(this.showPanelButton.element.id != null) {
+        //     let child = document.getElementById(this.showPanelButton.element.id)
+        //     if(child != null || child != undefined) {
+        //         document.removeChild(child);
+        //     }
+        // }
     }
 
     showPanel(): void {
         this.element.element.style.right = "2vh";
+        this.showPanelButton.element.element.style.right = "-200px";
         //this.element.element.style.right = getComputedStyle(document.documentElement).getPropertyValue('--padding');
     }
 
     hidePanel(): void {
         this.element.element.style.right =  "-400px";
+        this.showPanelButton.element.element.style.right = "2vh";
     }
 
     selectUserPreferences(userPreferences: IUserPreference[]): void {
@@ -137,12 +154,16 @@ export class UserPreferenceViewController implements IViewController<IUserPrefer
     }
 
     //Renamed!
-    didPressLogin(username: string, password: string): void {
+    didPressLogin(username: string, password: string, from: ILoginWrapperView): void {
         this.presenter.pressedLogin(username, password);
     }
     //nicht im Schaubild
     didPressHidePanel(from: IHeaderWrapperView): void {
         this.presenter.pressedHidePanel();
+    }
+    //nicht im Schaubild
+    didPressShowPanel(from: IOpenButtonView): void {
+        this.presenter.pressedShowPanel();
     }
 }
 

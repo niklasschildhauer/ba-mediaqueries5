@@ -175,6 +175,8 @@ export interface PersonasWrapperDelegate {
 }
 
 export interface IPersonasWrapperView {
+    element: HTMLBasicElement;
+
     selectPersona(persona: Persona): void;
     unselectAllPersonas(): void;
 }
@@ -499,6 +501,8 @@ class CommonTermListEntryRadioInputView implements ICommonTermListEntry<RadioBut
 }
 
 export interface IListWrapperView {
+    element: HTMLBasicElement;
+
     getAllPreferences(): UserPreference[];
     setPreferences(preference: UserPreference): void;
 }
@@ -571,7 +575,7 @@ export interface ILoginWrapperView {
 }
 
 export interface LoginDelegate {
-    didPressLogin(username: string, password: string): void;
+    didPressLogin(username: string, password: string, from: ILoginWrapperView): void;
 }
 
 export class LoginWrapperView implements  ILoginWrapperView {
@@ -601,6 +605,39 @@ export class LoginWrapperView implements  ILoginWrapperView {
     }
 
     private login(): void{
-        this.delegate.didPressLogin(this.usernameField.getValue(), this.passwordField.getValue());
+        this.delegate.didPressLogin(this.usernameField.getValue(), this.passwordField.getValue(), this);
+    }
+}
+
+export interface IOpenButtonView {
+    element: HTMLBasicElement;
+
+    showPanel(): void;
+}
+
+export interface OpenButtonViewDelegate {
+    didPressShowPanel(from: IOpenButtonView): void;
+}
+
+export class OpenButtonView implements IOpenButtonView {
+    public element: HTMLBasicElement;
+
+    private hidePanelButton = new ImageButtonView("show-panel-button", "button", "./assets/open.svg", "Open Button", () => this.showPanel());
+    private label = new HTMLTextElement("p", "show-panel-label", null, "Change User Preferences");
+
+
+    private delegate: OpenButtonViewDelegate
+    constructor(delegate: OpenButtonViewDelegate) {
+        this.delegate = delegate;
+
+        const element = new HTMLBasicElement("div", "open-button-view", null);
+        element.appendChildren([this.label, this.hidePanelButton]);
+        this.element = element;
+
+        this.element.addClickEventListener(() => this.showPanel());
+    }
+
+    showPanel(): void {
+        this.delegate.didPressShowPanel(this);
     }
 }
