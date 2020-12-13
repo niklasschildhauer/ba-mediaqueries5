@@ -136,8 +136,8 @@ export enum CommonTerm {
     selfVoicingEnabled = "selfVoicingEnabled",
     tableOfContents = "tableOfContents",
     extendedSessionTimeout = "extendedSessionTimeout",
-    signLanguageEnabled = "signLanguageEnabled",
     signLanguage = "signLanguage",
+    signLanguageEnabled = "signLanguageEnabled",
     sessionTimeout = "sessionTimeout"
 }
 

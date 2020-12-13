@@ -15,6 +15,8 @@ export class JSVariableParser implements ICodeParser {
 
     private createCommonTermList(string: string): ICommonTermList {
         const list = Factory.createCommonTermListFromMQString(string);
+        const matchValue = this.evaluateCommonTermList(list);
+        list.setMatchValue(matchValue);
         this.commonTermLists.push(list);
         return list
     }

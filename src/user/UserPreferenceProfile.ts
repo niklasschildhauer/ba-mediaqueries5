@@ -9,6 +9,7 @@ export interface IUserPreferenceProfile {
     getUserPreferences(): Model.IUserPreference[];
     selectPersona(persona: Model.Persona): void;
     setUserPreferences(preferences: IUserPreference[]): void;
+    setUserPreference(preference: IUserPreference): void; // nicht im Schaubild!!
     login(username: string, password: string): void;
 }
 
@@ -101,7 +102,7 @@ export class UserPreferenceProfile implements IUserPreferenceProfile {
         return this.userPreferences;
     }
 
-    private setUserPreference(preference: IUserPreference): void {
+    private changeUserPreference(preference: IUserPreference): void {
         for (let i = 0; i < this.userPreferences.length; i++) {
             if(this.userPreferences[i].mediaFeature == preference.mediaFeature) {
                 this.userPreferences[i] = preference
@@ -113,10 +114,16 @@ export class UserPreferenceProfile implements IUserPreferenceProfile {
     setUserPreferences(preferences: IUserPreference[]): void {
         this.setDefaultValues();
         for (let i = 0; i < preferences.length; i++) {
-            this.setUserPreference(preferences[i]);
+            this.changeUserPreference(preferences[i]);
         }
         this.refresh();
     }
+
+    setUserPreference(preference: IUserPreference): void {
+        this.changeUserPreference(preference);
+        this.refresh();
+    }
+
 
     selectPersona(persona: Model.Persona): void {
         this.network.loadPreferenceSetFromPersona(persona)
