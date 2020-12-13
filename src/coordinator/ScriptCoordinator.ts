@@ -22,6 +22,7 @@ export interface IScriptCoordinator {
     addCSSCode(code: string): void;
     setAudioDescriptionEnabledValue(value: string): void // noch nicht in Schaubild!
     setCaptionsEnabledValue(value: string): void // noch nicht in Schaubild!
+    setTableOfContentsValue(value: string): void // noch nicht in Schaubild!
     setSignLanguageValue(value: string): void // noch nicht in Schaubild!
     setSignLanguageEnabledValue(value: string): void // noch nicht in Schaubild!
     setPictogramsEnabledValue(value: string): void // noch nicht in Schaubild!
@@ -86,6 +87,9 @@ export class ScriptCoordinator implements ICoordinator<IUserPreferencePresenter>
     }
     public setDisplaySkiplinksValue(value: string): void {
         this.userProfile.setUserPreference(new UserPreference(CommonTerm.displaySkiplinks, value));
+    }
+    public setTableOfContentsValue(value: string): void {
+        this.userProfile.setUserPreference(new UserPreference(CommonTerm.tableOfContents, value));
     }
 
     private parseCode(): void {
