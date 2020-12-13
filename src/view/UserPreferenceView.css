@@ -4,6 +4,7 @@
     --padding: 18px;
     --width: 315px;
     --position: 2vh;
+    --height: 96vh;
     --corner: 2vh;
     --background-color: #E6E6E6;
 }
@@ -27,13 +28,15 @@
 #user-preference-view-wrapper {
     position: fixed;
     border-radius: var(--corner);
-    right: var(--position);
+    right: -400px;
     top: var(--position);
-    height: calc(96vh - 2 * var(--padding));
-    padding: var(--padding);
+    height: var(--height);
+    padding: 0 var(--padding);
     overflow-y: scroll;
     overflow-x: hidden;
     scroll-behavior: smooth;
+    transition: right 0.5s;
+    transition-timing-function: ease;
 
     background-color: var(--background-color);
 }
@@ -84,7 +87,7 @@
 
 .user-preference-view-ct-list-entry-div {
     background: white;
-    border-radius: 2vh;
+    border-radius: 1vh;
 
     display: flex;
     justify-content: space-between;
@@ -96,7 +99,7 @@
 }
 
 #user-preference-view-ct-list-wrapper {
-    padding-bottom: 60px;
+    padding-bottom: 30px;
 
 }
 
@@ -104,15 +107,50 @@
 }
 
 .user-preference-view-apply-button-wrapper {
-    position: fixed;
-    width: var(--width);
-    padding: 10px var(--padding) var(--padding) var(--padding);
-    bottom: var(--position);
-    right: var(--position);
+    position: sticky;
+    bottom: 0;
+    right: 0;
     background: var(--background-color);
-    border-radius: var(--corner);
+    padding-bottom: var(--padding);
+    padding-top: calc(var(--padding) / 2);
+
+    display: flex;
+    justify-content: space-between;
 }
 
+.user-preference-view-header-view-wrapper {
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    background: var(--background-color);
+    padding-top: calc(var(--padding) / 2);
+    z-index: 100;
+}
+
+#user-preference-view-hide-panel-button {
+    padding-right: 0;
+}
+
+#user-preference-view-login-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+#user-preference-view-login-wrapper * {
+    padding: 10px 0 10px 0;
+}
+#user-preference-view-login-button {
+    margin-top: 15px;
+    height: 51px;
+    background-color: #555555;
+    color: white;
+    border: 3px solid var(--background-color);
+}
+#user-preference-view-login-button:hover {
+    background-color: white;
+    color: black;
+    border: 3px solid var(--background-color);;
+}
 
 
 /* Button Style */
@@ -127,12 +165,13 @@
     transition-duration: 0.4s;
     cursor: pointer;
     border-radius: var(--corner);
+    margin: 0;
 }
 
 #user-preference-view-apply-button {
     background-color: #555555;
     color: white;
-    border: 3px solid var(--background-color);;
+    border: 3px solid var(--background-color);
 
 }
 

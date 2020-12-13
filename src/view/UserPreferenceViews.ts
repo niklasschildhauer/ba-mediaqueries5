@@ -79,7 +79,7 @@ export class HTMLUserInputElement implements IHTMLElementModel<HTMLInputElement>
     id: string | null = null;
     type: string = "input";
 
-    constructor(type: string, id: string | null, classString: string | null) {
+    constructor(type: string, id: string | null, classString: string | null, placeholder: string | null) {
         let element =  document.createElement(this.type) as HTMLInputElement;
         element.setAttribute("type", type);
 
@@ -90,6 +90,9 @@ export class HTMLUserInputElement implements IHTMLElementModel<HTMLInputElement>
         if(classString != "" && classString != null) {
             this.class = "user-preference-view-" + classString;
             element.setAttribute("class", this.class);
+        }
+        if(placeholder != "" && placeholder != null) {
+            element.setAttribute("placeholder", placeholder);
         }
 
         this.element = element;
@@ -234,7 +237,7 @@ export class SwitchControlView {
     private spanElement: HTMLBasicElement;
 
     constructor(name: string) {
-        this.checkBoxElement = new HTMLUserInputElement("checkbox", name + "-switcher", "switch-input");
+        this.checkBoxElement = new HTMLUserInputElement("checkbox", name + "-switcher", "switch-input", null);
         this.checkBoxElement.setCheckedValue(true);
         this.spanElement = new HTMLBasicElement("span", null, "slider round");
 
@@ -263,7 +266,7 @@ export class RadioButtonView {
         this.element = new HTMLBasicElement("div", null, "radio-label");
         this.inputs = [];
         for (let i = 0; i < values.length; i++) {
-            let input = new HTMLUserInputElement("radio", name + "-radio", "radio-input");
+            let input = new HTMLUserInputElement("radio", name + "-radio", "radio-input", null);
             input.setAttribute("name", name);
             input.setAttribute("value", "" + values[i]);
 
@@ -296,7 +299,20 @@ export class RadioButtonView {
     }
 }
 
-export class ButtonView extends HTMLBasicElement{
+export class ImageButtonView extends HTMLBasicElement{
+
+    constructor(id: string | null, classString: string | null, imagePath: string, altText: string, functionCall: () => void) {
+        super("span", id, classString);
+        //this.element.setAttribute("type", "button");
+        let imageNode = new HTMLImageElement("img", "close-button-image", "", imagePath, altText);
+        this.element.appendChild(imageNode.element);
+
+        this.addClickEventListener(functionCall);
+    }
+
+}
+
+export class LabelButtonView extends HTMLBasicElement{
 
     constructor(id: string | null, classString: string | null, label: string, functionCall: () => void) {
         super("button", id, classString);
@@ -322,8 +338,8 @@ export interface IApplyButtonWrapperView {
 }
 
 export class ApplyButtonWrapperView implements IApplyButtonWrapperView {
-    private applyButton = new ButtonView("apply-button", "button", "Apply Preferences", () => this.applyPreferences());
-    private cancelButton = new ButtonView("cancel-button", "button", "Cancel", () => this.cancel());
+    private applyButton = new LabelButtonView("apply-button", "button", "Apply Preferences", () => this.applyPreferences());
+    private cancelButton = new LabelButtonView("cancel-button", "button", "Cancel", () => this.cancel());
     element: HTMLBasicElement;
 
     private delegate: ApplyButtonWrapperDelegate
@@ -352,6 +368,35 @@ export class ApplyButtonWrapperView implements IApplyButtonWrapperView {
         //this.element.setAttribute("id", "apply-button-wrapper-show");
     }
 
+}
+
+// Nicht im Schaubild!
+export interface IHeaderWrapperView {
+    element: HTMLBasicElement;
+
+}
+
+export interface HeaderViewDelegate {
+    didPressHidePanel(from: IHeaderWrapperView): void;
+}
+
+export class HeaderWrapperView implements IHeaderWrapperView {
+    element: HTMLBasicElement;
+    private headline = new HTMLTextElement("h1", null, null, "User Preferences");
+    private hidePanelButton = new ImageButtonView("hide-panel-button", "button", "./assets/close.svg", "Close Button", () => this.hidePanel());
+
+
+    private delegate: HeaderViewDelegate
+    constructor(delegate: HeaderViewDelegate) {
+        this.delegate = delegate;
+        let element = new HTMLBasicElement("div", null, "header-view-wrapper")
+        element.appendChildren([this.headline, this.hidePanelButton]);
+        this.element = element;
+    }
+
+    private hidePanel() {
+        this.delegate.didPressHidePanel(this);
+    }
 }
 
 
@@ -405,7 +450,7 @@ class CommonTermListEntryTextInputView implements ICommonTermListEntry<HTMLUserI
 
     constructor(name: string, commonTerm: CommonTerm, valueChangedCall: () => void) {
         this.label = new HTMLTextElement("p", null, "list-entry-label", name);
-        this.input = new HTMLUserInputElement("text", commonTerm + "-input", "text-input");
+        this.input = new HTMLUserInputElement("text", commonTerm + "-input", "text-input", null);
         this.commonTerm = commonTerm;
 
         let element = new HTMLBasicElement("div", null, "ct-list-entry-div");
@@ -526,14 +571,17 @@ export interface ILoginWrapperView {
 }
 
 export interface LoginDelegate {
-    didTapLogin(username: string, password: string): void;
+    didPressLogin(username: string, password: string): void;
 }
 
 export class LoginWrapperView implements  ILoginWrapperView {
-    private usernameField = new HTMLUserInputElement("text", "openape-username", "text-input")
-    private passwordField = new HTMLUserInputElement("password", "openape-password", "text-input")
+    private usernameField = new HTMLUserInputElement("text", "openape-username", "text-input", "Username");
+    private usernameLabel = new HTMLTextElement("label", null, "openape-label", "Username");
+    private passwordField = new HTMLUserInputElement("password", "openape-password", "text-input", "Password");
+    private passwordLabel = new HTMLTextElement("label", null, "openape-label", "Password");
 
-    private loginButton = new ButtonView("login-button", "button", "Login", () => this.login());
+
+    private loginButton = new LabelButtonView("login-button", "button", "Login", () => this.login());
 
     private errorMessage = new HTMLTextElement("p", "error-field", null, "");
 
@@ -545,7 +593,7 @@ export class LoginWrapperView implements  ILoginWrapperView {
         this.delegate = delegate;
 
         this.element = new HTMLBasicElement("div", "login-wrapper", null);
-        this.element.appendChildren([this.usernameField, this.passwordField, this.errorMessage, this.loginButton]);
+        this.element.appendChildren([this.usernameLabel, this.usernameField, this.passwordLabel, this.passwordField, this.loginButton, this.errorMessage]);
     }
 
     showErrorMessage(text: string) {
@@ -553,6 +601,6 @@ export class LoginWrapperView implements  ILoginWrapperView {
     }
 
     private login(): void{
-        this.delegate.didTapLogin(this.usernameField.getValue(), this.passwordField.getValue());
+        this.delegate.didPressLogin(this.usernameField.getValue(), this.passwordField.getValue());
     }
 }

@@ -23,10 +23,23 @@
             align-content: center;
             justify-content: center;
         }
+
+        #user-preference-view-wrapper {
+            right: -500px;
+        }
+
+        #user-preference-view-wrapper a {
+            transition: 0.3s;
+        }
+
     </style>
 </head>
 <body>
 <h1>Video Website Example</h1>
+
+<span onclick="openNav()">open</span>
+<span onclick="closeNav()">close</span>
+
 
 <div id="video-wrapper">
     <video id="video1" preload="auto" width="480" height="360" poster="./assets/wwa.jpg"
@@ -46,6 +59,16 @@
 <script src="./script/bundle.js"></script>
 
 <script>
+    /* Set the width of the side navigation to 250px */
+    function openNav() {
+        document.getElementById("user-preference-view-wrapper").style.right = "20px";
+    }
+
+    /* Set the width of the side navigation to 0 */
+    function closeNav() {
+        document.getElementById("user-preference-view-wrapper").style.width = "0";
+    }
+
     var queryString = window.location.search;
     var urlParams = new URLSearchParams(queryString);
 

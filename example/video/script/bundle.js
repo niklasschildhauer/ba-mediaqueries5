@@ -1523,7 +1523,7 @@ var UserPreferenceViewController = /** @class */ (function () {
     UserPreferenceViewController.prototype.didEditPreferences = function (from) {
         this.presenter.editPreferences();
     };
-    UserPreferenceViewController.prototype.didTapLogin = function (username, password) {
+    UserPreferenceViewController.prototype.didPressLogin = function (username, password) {
         this.presenter.pressedLogin(username, password);
     };
     return UserPreferenceViewController;
