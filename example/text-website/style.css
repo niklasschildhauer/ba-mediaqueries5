@@ -13,6 +13,10 @@
     }
 }
 
+.credits {
+    font-size: smaller;
+}
+
 
 /* Tooltip for Pictograms Enabled */
 .tooltip {

@@ -10,6 +10,16 @@ html {
     font-size: larger;
 }
 
+.tablelink {
+    padding-left: 30px;
+}
+
+@media(tableOfContents: false) {
+    .table-of-content {
+        display: none;
+    }
+}
+
 @media(min-width: 800px) {
     html {
         padding-left: 40px;
@@ -28,5 +38,24 @@ html {
     html {
         padding-left: 25%;
         padding-right: 25%;
+    }
+}
+
+
+/*Skiplinks*/
+@media(displaySkiplinks: onfocus) {
+    .skiplink:not(:focus) {
+        position: absolute;
+        height: 1px;
+        width: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        clip-path: inset(100%);
+        white-space: nowrap;
+    }
+}
+@media(displaySkiplinks: never) {
+    .skiplinks {
+        display: none;
     }
 }

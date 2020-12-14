@@ -36,8 +36,6 @@ export class CSSCodeParser implements ICodeParser {
         }
 
         let cssString = this.createCSSVariables() + cssStyle.join("\n");
-        cssString = cssString + cssStyle.join("\n");
-
         return cssString;
 
     }

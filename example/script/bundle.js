@@ -1068,7 +1068,6 @@ var CSSCodeParser = /** @class */ (function () {
             }
         }
         var cssString = this.createCSSVariables() + cssStyle.join("\n");
-        cssString = cssString + cssStyle.join("\n");
         return cssString;
     };
     CSSCodeParser.prototype.parseCSSCode = function (cssCode) {
