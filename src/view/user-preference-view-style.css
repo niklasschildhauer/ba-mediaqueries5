@@ -6,7 +6,7 @@
     --position: 2vh;
     --height: 96vh;
     --corner: 2vh;
-    --background-color: #E6E6E6;
+    --background-color: #F2F2F2;
     --foreground-color: #000000;
     --tint-color: #1D7Bf3;
     --green-color: green;
@@ -16,15 +16,16 @@
 
 @media (prefers-color-scheme: dark) {
     #user-preference-view-wrapper {
-        --background-color: #242526;
+        --background-color: #1A2023;
         --foreground-color: #FFFFFF;
         --tint-color: #0F62CB;
-        --secondary-color: gray;
+        --secondary-color: #4A4E51;
     }
 }
 
 #user-preference-view-wrapper * {
     font-family: 'Roboto', sans-serif;
+    color: var(--foreground-color);
     /*margin: 5px;*/
 }
 
@@ -90,9 +91,13 @@
 #user-preference-persona-selected {
     background: var(--tint-color);
     border-radius: 2vh;
-    color: var(--secondary-color);
     font-weight: bold;
 }
+
+#user-preference-persona-selected > p{
+    color: white;
+}
+
 
 .user-preference-view-persona-label {
     margin: 5px 0 10px 0;
@@ -229,6 +234,7 @@
     background-color: var(--secondary-color);
     color: black;
     border: 3px solid var(--background-color);
+    color: var(--foreground-color);
 }
 
 #user-preference-view-cancel-button:hover {
@@ -272,7 +278,7 @@
     width: 26px;
     left: 4px;
     bottom: 4px;
-    background-color: var(--secondary-color);
+    background-color: white;
     -webkit-transition: .4s;
     transition: .4s;
 }
