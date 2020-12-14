@@ -1,0 +1,15 @@
+@media (selfVoicingEnabled: false) {
+    .self-voicing-controls {
+        display: none;
+    }
+    #passage-text {
+        display: none;
+    }
+}
+
+@media (selfVoicingEnabled: true) {
+    #passage-text-normal {
+        display: none;
+    }
+}
+

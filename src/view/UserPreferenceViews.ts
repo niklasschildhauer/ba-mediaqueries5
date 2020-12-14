@@ -385,7 +385,7 @@ export interface HeaderViewDelegate {
 export class HeaderWrapperView implements IHeaderWrapperView {
     element: HTMLBasicElement;
     private headline = new HTMLTextElement("h1", null, null, "User Preferences");
-    private hidePanelButton = new ImageButtonView("hide-panel-button", "button", "./assets/close.svg", "Close Button", () => this.hidePanel());
+    private hidePanelButton = new ImageButtonView("hide-panel-button", "button", "https://gpii.eu/mq-5/assets/close.svg", "Close Button", () => this.hidePanel());
 
 
     private delegate: HeaderViewDelegate
@@ -622,7 +622,7 @@ export interface OpenButtonViewDelegate {
 export class OpenButtonView implements IOpenButtonView {
     public element: HTMLBasicElement;
 
-    private hidePanelButton = new ImageButtonView("show-panel-button", "button", "./assets/open.svg", "Open Button", () => this.showPanel());
+    private hidePanelButton = new ImageButtonView("show-panel-button", "button", "https://gpii.eu/mq-5/assets/open.svg", "Open Button", () => this.showPanel());
     private label = new HTMLTextElement("p", "show-panel-label", null, "Change User Preferences");
 
 

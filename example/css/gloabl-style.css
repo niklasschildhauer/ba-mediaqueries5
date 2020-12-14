@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
+html {
+    font-family: 'Roboto', sans-serif;
+    padding-bottom: 50px;
+}
+
+#apply-button {
+    font-size: larger;
+}
+
+@media(min-width: 800px) {
+    html {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+}
+
+@media(min-width: 1200px) {
+    html {
+        padding-left: 20%;
+        padding-right: 20%;
+    }
+}
+
+@media(min-width: 1800px) {
+    html {
+        padding-left: 25%;
+        padding-right: 25%;
+    }
+}
