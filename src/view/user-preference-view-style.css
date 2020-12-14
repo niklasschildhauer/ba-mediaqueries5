@@ -2,7 +2,7 @@
 
 #user-preference-view-wrapper {
     --padding: 18px;
-    --width: 315px;
+    --width: 19.6875em;
     --position: 2vh;
     --height: 96vh;
     --corner: 2vh;
@@ -45,7 +45,7 @@
     border-radius: var(--corner);
     right: -400px;
     top: var(--position);
-    height: var(--height);
+    bottom: var(--position);
     padding: 0 var(--padding);
     overflow-y: scroll;
     overflow-x: hidden;
