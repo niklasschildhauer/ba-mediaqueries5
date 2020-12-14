@@ -56,6 +56,8 @@
     background-color: var(--background-color);
 }
 
+
+
 #user-preference-view-panel-wrapper #user-preference-view-personas-wrapper {
     /*width: calc(336px + 2 * var(--padding));*/
     width: var(--width);
@@ -240,6 +242,26 @@
 #user-preference-view-cancel-button:hover {
     background-color: firebrick;
     color: white;
+}
+
+
+
+@media (prefers-reduced-motion: reduce) {
+    #user-preference-view-open-button-view, #user-preference-view-panel-wrapper{
+        transition: none;
+    }
+}
+
+@media (prefers-contrast: high) {
+    body {
+        background: #1A2023;
+    }
+    #user-preference-view-panel-wrapper {
+        border: 3px solid #1A2023;
+    }
+}
+body {
+    background: #ff9900;
 }
 
 
