@@ -50,6 +50,8 @@ export class UserPreferenceViewController implements IViewController<IUserPrefer
 
     private element = new HTMLBasicElement("div", "wrapper", null);
 
+    private panelWrapper = new HTMLBasicElement("div", "panel-wrapper", null);
+
     // nicht im Schaubild // Button muss auf den Server zum download!
     private headerWrapper = new HeaderWrapperView(this)
     private personaWrapper = new PersonasWrapperView(this);
@@ -69,19 +71,19 @@ export class UserPreferenceViewController implements IViewController<IUserPrefer
     }
 
     private createView(): void {
-        this.element.appendChild(this.headerWrapper.element);
-        this.element.appendChild(this.personaWrapper.element);
-        this.element.appendChild(this.listWrapper.element);
-        this.element.appendChild(this.loginWrapper.element);
-        this.element.appendChild(this.applyButtonWrapper.element);
+        this.panelWrapper.appendChild(this.headerWrapper.element);
+        this.panelWrapper.appendChild(this.personaWrapper.element);
+        this.panelWrapper.appendChild(this.listWrapper.element);
+        this.panelWrapper.appendChild(this.loginWrapper.element);
+        this.panelWrapper.appendChild(this.applyButtonWrapper.element);
         this.element.appendChild(this.showPanelButton.element);
+        this.element.appendChild(this.panelWrapper);
     }
 
     parseView(): void {
         // View is only shown, if the script is embeed at the bottom of the body and not in the header.
         if(document.body != null || document.body != undefined) {
             document.body.appendChild(this.element.element);
-            //document.body.appendChild(this.showPanelButton.element.element);
         }
 
     }
@@ -103,13 +105,13 @@ export class UserPreferenceViewController implements IViewController<IUserPrefer
     }
 
     showPanel(): void {
-        this.element.element.style.right = "2vh";
+        this.panelWrapper.element.style.right = "2vh";
         this.showPanelButton.element.element.style.right = "-200px";
         //this.element.element.style.right = getComputedStyle(document.documentElement).getPropertyValue('--padding');
     }
 
     hidePanel(): void {
-        this.element.element.style.right =  "-400px";
+        this.panelWrapper.element.style.right =  "-400px";
         this.showPanelButton.element.element.style.right = "2vh";
     }
 
