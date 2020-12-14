@@ -120,13 +120,13 @@ var tr = {
 
 "selectedTrack": "Seçilen Parça",
 
-"alertDescribedVersion": "Tanımlı video-website versiyonu için ses kullanılıyor",
+"alertDescribedVersion": "Tanımlı video versiyonu için ses kullanılıyor",
 
-"alertNonDescribedVersion": "Tanımlanmamış video-website versiyonu için kullanılıyor",
+"alertNonDescribedVersion": "Tanımlanmamış video versiyonu için kullanılıyor",
 
 "fallbackError1": "Üzgünüm, tarayıcın bunu oynatmak için uygun değil",
 
-"fallbackError2": "Bu video-website oynatıcı için uygun olan tarayıcılar",
+"fallbackError2": "Bu video oynatıcı için uygun olan tarayıcılar",
 
 "orHigher": "ve üzeri için",
 
@@ -148,11 +148,11 @@ var tr = {
 
 "prefIntroCaptions": "Belirtilen ayarlar altyazıların nasıl görüntüleneceğini kontrol eder.",
 
-"prefIntroDescription1": "Bu video-website oynatıcı iki farklı ses açıklaması destekler: ",
+"prefIntroDescription1": "Bu video oynatıcı iki farklı ses açıklaması destekler: ",
 
-"prefIntroDescription2": "Şu anki video-website'da mevcut ",
+"prefIntroDescription2": "Şu anki video'da mevcut ",
 
-"prefIntroDescriptionNone": "Şu anki video-website'da her iki format için de ses açıklaması mevcut değil.",
+"prefIntroDescriptionNone": "Şu anki video'da her iki format için de ses açıklaması mevcut değil.",
 
 "prefIntroDescription3": "Ses açıklamalarını tercihlerinle ilişkilendirmek için belirtilen biçimi kullan.",
 
@@ -202,7 +202,7 @@ var tr = {
 
 "prefDescFormatOption2b": "metin tabanlı açıklama",
 
-"prefDescPause": "Açıklama başladığında video-website'yu otomatik olarak durdur",
+"prefDescPause": "Açıklama başladığında video'yu otomatik olarak durdur",
 
 "prefVisibleDesc": "Açıklamayı görünür yap",
 
@@ -314,7 +314,7 @@ var tr = {
 
 "resultsSummary3": "matching items.",
 
-"resultsSummary4": "Click the time associated with any item to play the video-website from that point.",
+"resultsSummary4": "Click the time associated with any item to play the video from that point.",
 
 "noResultsFound": "No results found.",
 

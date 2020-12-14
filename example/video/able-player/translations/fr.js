@@ -314,7 +314,7 @@ var fr = {
 
 "resultsSummary3": "matching items.",
 
-"resultsSummary4": "Click the time associated with any item to play the video-website from that point.",
+"resultsSummary4": "Click the time associated with any item to play the video from that point.",
 
 "noResultsFound": "No results found.",
 

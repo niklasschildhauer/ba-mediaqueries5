@@ -148,11 +148,11 @@ var nl = {
 
 "prefIntroCaptions": "De volgende set voorkeuren regels hoe ondertitels getoond worden.",
 
-"prefIntroDescription1": "Deze video-website speler ondersteund audiobeschrijving op twee manieren: ",
+"prefIntroDescription1": "Deze video speler ondersteund audiobeschrijving op twee manieren: ",
 
-"prefIntroDescription2": "De huidige video-website heeft ",
+"prefIntroDescription2": "De huidige video heeft ",
 
-"prefIntroDescriptionNone": "De huidige video-website heeft in beide formaten geen audiobeschrijving.",
+"prefIntroDescriptionNone": "De huidige video heeft in beide formaten geen audiobeschrijving.",
 
 "prefIntroDescription3": "Gebruik het volgende formulier om je voorkeuren gerelateerd aan tekst-gebaseerde audiobeschrijving in te stellen.",
 
@@ -194,15 +194,15 @@ var nl = {
 
 "prefDescFormatHelp": "Als beide formaten beschikbaar zijn zal er slechts een enkele gebruikt worden.",
 
-"prefDescFormatOption1": "Alternatieve beschreven versie van de video-website",
+"prefDescFormatOption1": "Alternatieve beschreven versie van de video",
 
 "prefDescFormatOption1b": "een alternatief beschreven versie",
 
-"prefDescFormatOption2": "op tekst gebaseerde beschrijving, aangekondigd door de screen self-voicing",
+"prefDescFormatOption2": "op tekst gebaseerde beschrijving, aangekondigd door de screen reader",
 
 "prefDescFormatOption2b": "op tekst gebaseerde beschrijving",
 
-"prefDescPause": "Pauzeer video-website automatisch als beschrijving aan wordt gezet",
+"prefDescPause": "Pauzeer video automatisch als beschrijving aan wordt gezet",
 
 "prefVisibleDesc": "Als er een tekst-gebaseerde beschrijving is, maak deze dan zichtbaar",
 
@@ -260,7 +260,7 @@ var nl = {
 
 "captionsPositionOverlay": "Overlay",
 
-"captionsPositionBelow": "Onder video-website",
+"captionsPositionBelow": "Onder video",
 
 "sampleCaptionText": "Voorbeeld ondertitel tekst",
 
@@ -314,7 +314,7 @@ var nl = {
 
 "resultsSummary3": "matching items.",
 
-"resultsSummary4": "Click the time associated with any item to play the video-website from that point.",
+"resultsSummary4": "Click the time associated with any item to play the video from that point.",
 
 "noResultsFound": "No results found.",
 

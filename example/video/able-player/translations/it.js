@@ -6,9 +6,9 @@ var it = {
 
 "playerHeading": "Lettore multimediale",
 
-"faster": "Piï¿½ veloce",
+"faster": "Più veloce",
 
-"slower": "Piï¿½ lento",
+"slower": "Più lento",
 
 "play": "Riproduci",
 
@@ -80,7 +80,7 @@ var it = {
 
 "fullScreen": "Schermo intero",
 
-"speed": "Velocitï¿½",
+"speed": "Velocità",
 
 "and": "e",
 
@@ -120,11 +120,11 @@ var it = {
 
 "selectedTrack": "Traccia selezionata",
 
-"alertDescribedVersion": "Sto usando la versione audiodescritta di questo video-website",
+"alertDescribedVersion": "Sto usando la versione audiodescritta di questo video",
 
-"alertNonDescribedVersion": "Sto usando la versione non audiodescritta di questo video-website",
+"alertNonDescribedVersion": "Sto usando la versione non audiodescritta di questo video",
 
-"fallbackError1": "Spiacente il tuo browser non ï¿½ in grado di riprodurre questo",
+"fallbackError1": "Spiacente il tuo browser non è in grado di riprodurre questo",
 
 "fallbackError2": "I seguenti browser supportano questo lettore multimediale",
 
@@ -149,14 +149,14 @@ var it = {
 "prefIntroCaptions": "Le opzioni seguenti controllano la visualizzazione dei sottotitoli.",
 
 "prefIntroDescription1": "Questo lettore multimediale supporta le audiodescrizioni in due modi:",
-"prefIntroDescription2": "il video-website corrente ha ",
-"prefIntroDescriptionNone": "Il video-website corrente non ha audiodescrizioni.",
+"prefIntroDescription2": "il video corrente ha ",
+"prefIntroDescriptionNone": "Il video corrente non ha audiodescrizioni.",
 
 "prefIntroDescription3": "Usa il seguente modulo per impostare le tue preferenze relative all'audiodescrizione testuale.",
 
 "prefIntroDescription4": "Dopo aver salvato le tue impostazioni, le audiodescrizioni possono essere attivate o disattivate usando i pulsanti descrizione.",
 
-"prefIntroKeyboard1": "Il lettore multimediale puï¿½ essere usato dovunque in questa pagina, attraverso la tastiera. Vedi sotto per un elenco di tasti di scelta rapida.",
+"prefIntroKeyboard1": "Il lettore multimediale può essere usato dovunque in questa pagina, attraverso la tastiera. Vedi sotto per un elenco di tasti di scelta rapida.",
 
 "prefIntroKeyboard2": "I tasti di scelta rapida, (Shift, Alt, e Control) possono essere assegnati di seguito.",
 
@@ -190,9 +190,9 @@ var it = {
 
 "prefDescFormat": "Formato preferito",
 
-"prefDescFormatHelp": "Se entrambi i formati sono disponibili, ne verrï¿½ usato soltanto uno.",
+"prefDescFormatHelp": "Se entrambi i formati sono disponibili, ne verrà usato soltanto uno.",
 
-"prefDescFormatOption1": "Versione di descrizione alternativa per il video-website",
+"prefDescFormatOption1": "Versione di descrizione alternativa per il video",
 
 "prefDescFormatOption1b": "Una versione di descrizione alternativa",
 
@@ -200,7 +200,7 @@ var it = {
 
 "prefDescFormatOption2b": "Descrizione testuale",
 
-"prefDescPause": "Mette automaticamente il video-website in pausa, quando inizia la descrizione",
+"prefDescPause": "Mette automaticamente il video in pausa, quando inizia la descrizione",
 
 "prefVisibleDesc": "Rende la descrizione visibile",
 
@@ -216,7 +216,7 @@ var it = {
 
 "prefCaptionsSize": "Dimensione del carattere",
 
-"prefCaptionsOpacity": "Opacitï¿½",
+"prefCaptionsOpacity": "Opacità",
 
 "prefCaptionsStyle": "Stile",
 
@@ -258,13 +258,13 @@ var it = {
 
 "captionsPositionOverlay": "Copre",
 
-"captionsPositionBelow": "Sotto al video-website",
+"captionsPositionBelow": "Sotto al video",
 
 "sampleCaptionText": "Testo di esempio sottotitoli",
 
 "prefSuccess": "I cambiamenti sono stati salvati.",
 
-"prefNoChange": "Non ï¿½ stato effettuato alcun cambiamento.",
+"prefNoChange": "Non è stato effettuato alcun cambiamento.",
 
 "help": "Aiuto",
 
@@ -300,7 +300,7 @@ var it = {
 
 "windowSendBack": "Manda in fondo",
 
-"windowSendBackAlert": "Questa finestra ï¿½ ora dietro agli altri oggetti della pagina.",
+"windowSendBackAlert": "Questa finestra è ora dietro agli altri oggetti della pagina.",
 
 "windowBringTop": "Metti in primo piano",
 
@@ -312,7 +312,7 @@ var it = {
 
 "resultsSummary3": "matching items.",
 
-"resultsSummary4": "Click the time associated with any item to play the video-website from that point.",
+"resultsSummary4": "Click the time associated with any item to play the video from that point.",
 
 "noResultsFound": "No results found.",
 

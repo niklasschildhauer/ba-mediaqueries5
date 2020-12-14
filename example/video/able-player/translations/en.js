@@ -120,9 +120,9 @@ var en = {
 
 "selectedTrack": "Selected Track",
 
-"alertDescribedVersion": "Using the audio described version of this video-website",
+"alertDescribedVersion": "Using the audio described version of this video",
 
-"alertNonDescribedVersion": "Using the non-described version of this video-website",
+"alertNonDescribedVersion": "Using the non-described version of this video",
 
 "fallbackError1": "Sorry, your browser is unable to play this",
 
@@ -150,9 +150,9 @@ var en = {
 
 "prefIntroDescription1": "This media player supports audio description in two ways: ",
 
-"prefIntroDescription2": "The current video-website has ",
+"prefIntroDescription2": "The current video has ",
 
-"prefIntroDescriptionNone": "The current video-website has no audio description in either format.",
+"prefIntroDescriptionNone": "The current video has no audio description in either format.",
 
 "prefIntroDescription3": "Use the following form to set your preferences related to text-based audio description.",
 
@@ -194,15 +194,15 @@ var en = {
 
 "prefDescFormatHelp": "If both formats are avaialable, only one will be used.",
 
-"prefDescFormatOption1": "alternative described version of video-website",
+"prefDescFormatOption1": "alternative described version of video",
 
 "prefDescFormatOption1b": "an alternative described version",
 
-"prefDescFormatOption2": "text-based description, announced by screen self-voicing",
+"prefDescFormatOption2": "text-based description, announced by screen reader",
 
 "prefDescFormatOption2b": "text-based description",
 
-"prefDescPause": "Automatically pause video-website when description starts",
+"prefDescPause": "Automatically pause video when description starts",
 
 "prefVisibleDesc": "Make description visible",
 
@@ -260,7 +260,7 @@ var en = {
 
 "captionsPositionOverlay": "Overlay",
 
-"captionsPositionBelow": "Below video-website",
+"captionsPositionBelow": "Below video",
 
 "sampleCaptionText": "Sample caption text",
 
@@ -314,7 +314,7 @@ var en = {
 
 "resultsSummary3": "matching items.",
 
-"resultsSummary4": "Click the time associated with any item to play the video-website from that point.",
+"resultsSummary4": "Click the time associated with any item to play the video from that point.",
 
 "noResultsFound": "No results found.",
 

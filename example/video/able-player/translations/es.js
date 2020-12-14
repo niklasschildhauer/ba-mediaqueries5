@@ -202,7 +202,7 @@ var es = {
 
 "prefDescFormatOption2b": "descripción en texto",
 
-"prefDescPause": "Pausar automáticamente el video-website cuando arranque una descripción",
+"prefDescPause": "Pausar automáticamente el video cuando arranque una descripción",
 
 "prefVisibleDesc": "Hacer visibles las descripciones en texto si se están usando",
 
@@ -314,7 +314,7 @@ var es = {
 
 "resultsSummary3": "matching items.",
 
-"resultsSummary4": "Click the time associated with any item to play the video-website from that point.",
+"resultsSummary4": "Click the time associated with any item to play the video from that point.",
 
 "noResultsFound": "No results found.",
 

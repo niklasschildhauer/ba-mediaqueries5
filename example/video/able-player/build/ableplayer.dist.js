@@ -40,7 +40,7 @@ var AblePlayerInstances = [];
 (function ($) {
 	$(document).ready(function () {
 
-		$('video-website, audio').each(function (index, element) {
+		$('video, audio').each(function (index, element) {
 			if ($(element).data('able-player') !== undefined) {
 				AblePlayerInstances.push(new AblePlayer($(this),$(element)));
 			}
@@ -291,7 +291,7 @@ var AblePlayerInstances = [];
 		}
 
 		// Seekbar
-		// valid values of data-seekbar-scope are 'chapter' and 'video-website'; will also accept 'chapters'
+		// valid values of data-seekbar-scope are 'chapter' and 'video'; will also accept 'chapters'
 		if ($(media).data('seekbar-scope') === 'chapter' || $(media).data('seekbar-scope') === 'chapters') {
 			this.seekbarScope = 'chapter';
 		}
@@ -392,7 +392,7 @@ var AblePlayerInstances = [];
 
 		// Fallback
 		// The only supported fallback content as of version 4.0 is:
-		// 1. Content nested within the <audio> or <video-website> element.
+		// 1. Content nested within the <audio> or <video> element.
 		// 2. A standard localized message (see buildplayer.js > provideFallback()
 		// The data-test-fallback attribute can be used to test the fallback solution in any browser
 		if ($(media).data('test-fallback') !== undefined && $(media).data('test-fallback') !== false) {
@@ -451,7 +451,7 @@ var AblePlayerInstances = [];
 			}
 		}
 
-		// Hide controls when video-website starts playing
+		// Hide controls when video starts playing
 		// They will reappear again when user presses a key or moves the mouse
 		// As of v4.0, controls are hidden automatically on playback in fullscreen mode
 		if ($(media).data('hide-controls') !== undefined && $(media).data('hide-controls') !== false) {
@@ -869,7 +869,7 @@ var AblePlayerInstances = [];
 		// Bootstrap from this.media possibly being an ID or other selector.
 		this.$media = $(this.media).first();
 		this.media = this.$media[0];
-		// Set media type to 'audio' or 'video-website'; this determines some of the behavior of player creation.
+		// Set media type to 'audio' or 'video'; this determines some of the behavior of player creation.
 		if (this.$media.is('audio')) {
 			this.mediaType = 'audio';
 		}
@@ -877,7 +877,7 @@ var AblePlayerInstances = [];
 			this.mediaType = 'video';
 		}
 		else {
-			// Able Player was initialized with some element other than <video-website> or <audio>
+			// Able Player was initialized with some element other than <video> or <audio>
 			this.provideFallback();
 			deferred.fail();
 			return promise;
@@ -914,7 +914,7 @@ var AblePlayerInstances = [];
 			this.playerMaxWidth = this.$media.parent().width();
 			this.playerMaxHeight = this.getMatchingHeight(this.playerMaxWidth);
 		}
-		// override width and height attributes with in-line CSS to make video-website responsive
+		// override width and height attributes with in-line CSS to make video responsive
 		this.$media.css({
 			'width': '100%',
 			'height': 'auto'
@@ -923,10 +923,10 @@ var AblePlayerInstances = [];
 
 	AblePlayer.prototype.getMatchingHeight = function(width) {
 
-		// returns likely height for a video-website, given width
+		// returns likely height for a video, given width
 		// These calculations assume 16:9 aspect ratio (the YouTube standard)
 		// Videos recorded in other resolutions will be sized to fit, with black bars on each side
-		// This function is only called if the <video-website> element does not have width and height attributes
+		// This function is only called if the <video> element does not have width and height attributes
 
 		var widths, heights, closestWidth, closestIndex, closestHeight, height;
 
@@ -1016,7 +1016,7 @@ var AblePlayerInstances = [];
 				this.iconType = 'image';
 			}
 			if (this.debug) {
-				console.log('Using ' + this.iconType + 's for player controls');
+				
 			}
 			if (typeof $tempButton !== 'undefined') {
 				$tempButton.remove();
@@ -1331,15 +1331,15 @@ var AblePlayerInstances = [];
 					    switch (error.name) {
 						    case 'InvalidTrackLanguageError':
 							    // no track was available with the specified language
-                  console.log('No ' + track.kind + ' track is available in the specified language (' + track.label + ')');
+                  
                   break;
                 case 'InvalidTrackError':
 							    // no track was available with the specified language and kind
-                  console.log('No ' + track.kind + ' track is available in the specified language (' + track.label + ')');
+                  
                   break;
                 default:
 							    // some other error occurred
-                  console.log('Error loading ' + track.label + ' ' + track.kind + ' track');
+                  
                   break;
     		      }
 				    });
@@ -1349,7 +1349,7 @@ var AblePlayerInstances = [];
             this.vimeoPlayer.disableTextTrack().then(function() {
     			    // Vimeo captions disabled
   			    }).catch(function(error) {
-              console.log('Error disabling Vimeo text track: ',error);
+              
             });
 			    }
         }
@@ -1392,7 +1392,7 @@ var AblePlayerInstances = [];
 		var i, sourceType, $newItem;
 		if (this.youTubeId) {
 			if (this.mediaType !== 'video') {
-				// attempting to play a YouTube video-website using an element other than <video-website>
+				// attempting to play a YouTube video using an element other than <video>
 				return null;
 			}
 			else {
@@ -1401,7 +1401,7 @@ var AblePlayerInstances = [];
 		}
 		else if (this.vimeoId) {
 			if (this.mediaType !== 'video') {
-				// attempting to play a Vimeo video-website using an element other than <video-website>
+				// attempting to play a Vimeo video using an element other than <video>
 				return null;
 			}
 			else {
@@ -1415,7 +1415,7 @@ var AblePlayerInstances = [];
 						) {
 			// the user wants to test the fallback player, or
 			// the user is using an older version of IE or IOS,
-			// both of which had buggy implementation of HTML5 video-website
+			// both of which had buggy implementation of HTML5 video
 			return null;
 		}
 		else if (this.media.canPlayType) {
@@ -1436,8 +1436,6 @@ var AblePlayerInstances = [];
 	};
 
 	AblePlayer.prototype.getCookie = function() {
-
-		console.log("AblePlayer - get Cookie")
 
 		var queryString = window.location.search;
 		var urlParams = new URLSearchParams(queryString);
@@ -2144,9 +2142,7 @@ var AblePlayerInstances = [];
 
 	 AblePlayer.prototype.resetPrefsForm = function () {
 
-		console.log("AblePlayer - resetPrefsForm")
-
-  	 // Reset preferences form with default values from cookie
+		// Reset preferences form with default values from cookie
      // Called when:
      // User clicks cancel or close button in Prefs Dialog
      // User presses Escape to close Prefs dialog
@@ -2357,10 +2353,10 @@ var AblePlayerInstances = [];
 			errString += 'Column: ' + parserState.column + '\n';
 			errString += err;
 			if (console.warn) {
-				console.warn(errString);
+				
 			}
 			else if (console.log) {
-				console.log(errString);
+				
 			}
 		}
 		return parserState;
@@ -2546,10 +2542,10 @@ var AblePlayerInstances = [];
 				errString += 'Column: ' + state.column + '\n';
 				errString += 'Expected cue timing for cueId \''+cueId+'\' but found: ' + nextLine + '\n';
 				if (console.warn) {
-					console.warn(errString);
+					
 				}
 				else if (console.log) {
-					console.log(errString);
+					
 				}
 				return; // Return leaving line for parseCuesAndComments to handle
 			}
@@ -3103,11 +3099,11 @@ var AblePlayerInstances = [];
 
 		// create and inject surrounding HTML structure
 		// If IOS:
-		//	If video-website:
+		//	If video:
 		//	 IOS does not support any of the player's functionality
 		//	 - everything plays in its own player
 		//	 Therefore, AblePlayer is not loaded & all functionality is disabled
-		//	 (this all determined. If this is IOS && video-website, this function is never called)
+		//	 (this all determined. If this is IOS && video, this function is never called)
 		//	If audio:
 		//	 HTML cannot be injected as a *parent* of the <audio> element
 		//	 It is therefore injected *after* the <audio> element
@@ -3127,7 +3123,7 @@ var AblePlayerInstances = [];
     this.$ableWrapper.addClass('able-skin-' + this.skin);
 
 		// NOTE: Excluding the following from youtube was resulting in a player
-		// that exceeds the width of the YouTube video-website
+		// that exceeds the width of the YouTube video
 		// Unclear why it was originally excluded; commented out in 3.1.20
 		// if (this.player !== 'youtube') {
 		this.$ableWrapper.css({
@@ -3138,7 +3134,7 @@ var AblePlayerInstances = [];
 
 		if (this.mediaType === 'video') {
 			// youtube adds its own big play button
-			// don't show ours *unless* video-website has a poster attribute
+			// don't show ours *unless* video has a poster attribute
 			// (which obstructs the YouTube poster & big play button)
 			if (this.iconType != 'image' && (this.player !== 'youtube' || this.hasPoster)) {
 				this.injectBigPlayButton();
@@ -3441,7 +3437,7 @@ var AblePlayerInstances = [];
 
 	AblePlayer.prototype.injectAlert = function () {
 
-		// inject two alerts, one visible for all users and one for screen self-voicing users only
+		// inject two alerts, one visible for all users and one for screen reader users only
 
 		var top;
 
@@ -4071,7 +4067,7 @@ var AblePlayerInstances = [];
 	AblePlayer.prototype.addControls = function() {
 
 		// determine which controls to show based on several factors:
-		// mediaType (audio vs video-website)
+		// mediaType (audio vs video)
 		// availability of tracks (e.g., for closed captions & audio description)
 		// browser support (e.g., for sliders and speedButtons)
 		// user preferences (???)
@@ -4190,7 +4186,7 @@ var AblePlayerInstances = [];
 					// 3. span that contains a visually hidden label for screen readers (buttonLabel)
 					// In addition, we are adding aria-label to the button (but not title)
 					// And if iconType === 'image', we are replacing #2 with an image (with alt="" and role="presentation")
-					// This has been thoroughly tested and works well in all screen self-voicing/browser combinations
+					// This has been thoroughly tested and works well in all screen reader/browser combinations
 					// See https://github.com/ableplayer/ableplayer/issues/81
 
           // NOTE: Changed from <button> to <div role="button" as of 4.2.18
@@ -4880,7 +4876,7 @@ var AblePlayerInstances = [];
 
 	AblePlayer.prototype.deletePlayer = function() {
 
-		// remove previous video-website's attributes and child elements from media element
+		// remove previous video's attributes and child elements from media element
 		if (this.player == 'youtube') {
 				var $youTubeIframe = this.$mediaContainer.find('iframe');
 				$youTubeIframe.remove();
@@ -4992,7 +4988,7 @@ var AblePlayerInstances = [];
 			// return the name of the control with first letter in upper case
 			// ultimately will need to get a translated label from this.tt
 			if (this.debug) {
-				console.log('Found an untranslated label: ' + control);
+				
 			}
 			return control.charAt(0).toUpperCase() + control.slice(1);
 		}
@@ -5224,8 +5220,8 @@ var AblePlayerInstances = [];
 		// and some browsers will display the default captions, despite all standard efforts to suppress them
 		this.$media.find('track').removeAttr('default');
 
-		// caption cues from WebVTT are used to build a transcript for both audio and video-website
-		// but captions are currently only supported for video-website
+		// caption cues from WebVTT are used to build a transcript for both audio and video
+		// but captions are currently only supported for video
 		if (this.mediaType === 'video') {
 
 			if (!(this.usingYouTubeCaptions || this.usingVimeoCaptions)) {
@@ -5370,7 +5366,7 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 		$tempDiv.load(src, function (trackText, status, req) {
 			if (status === 'error') {
 				if (thisObj.debug) {
-					console.log ('error reading file ' + src + ': ' + status);
+					
 				}
 				deferred.fail();
 			}
@@ -5492,7 +5488,7 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 		}
 		else {
 			// dimensions are initially unknown
-			// sending null values to YouTube results in a video-website that uses the default YouTube dimensions
+			// sending null values to YouTube results in a video that uses the default YouTube dimensions
 			// these can then be scraped from the iframe and applied to this.$ableWrapper
 			this.ytWidth = null;
 			this.ytHeight = null;
@@ -5507,7 +5503,7 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 
 		// NOTE: YouTube is changing the following parameters on or after Sep 25, 2018:
 		// rel - No longer able to prevent YouTube from showing related videos
-		//			value of 0 now limits related videos to video-website's same channel
+		//			value of 0 now limits related videos to video's same channel
 		// showinfo - No longer supported (previously, value of 0 hid title, share, & watch later buttons
 		// Documentation https://developers.google.com/youtube/player_parameters
 
@@ -5526,9 +5522,9 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 				cc_load_policy: ccLoadPolicy,
 				hl: this.lang, // use the default language UI
 				modestbranding: 1, // no YouTube logo in controller
-				rel: 0, // do not show related videos when video-website ends
+				rel: 0, // do not show related videos when video ends
 				html5: 1, // force html5 if browser supports it (undocumented parameter; 0 does NOT force Flash)
-				iv_load_policy: 3 // do not show video-website annotations
+				iv_load_policy: 3 // do not show video annotations
 			},
 			events: {
 				onReady: function () {
@@ -5586,15 +5582,15 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 					// prior to calling initYouTubePlayer()
 					// Previously we got caption data via the YouTube iFrame API, and doing so was an awful mess.
 					// onApiChange fires to indicate that the player has loaded (or unloaded) a module with exposed API methods
-					// it isn't fired until the video-website starts playing
-					// if captions are available for this video-website (automated captions don't count)
+					// it isn't fired until the video starts playing
+					// if captions are available for this video (automated captions don't count)
 					// the 'captions' (or 'cc') module is loaded. If no captions are available, this event never fires
-					// So, to trigger this event we had to play the video-website briefly, then pause, then reset.
+					// So, to trigger this event we had to play the video briefly, then pause, then reset.
 					// During that brief moment of playback, the onApiChange event was fired and we could setup captions
 					// The 'captions' and 'cc' modules are very different, and have different data and methods
 					// NOW, in v2.2.23, we still need to initialize the caption modules in order to control captions
 					// but we don't have to do that on load in order to get caption data
-					// Instead, we can wait until the video-website starts playing normally, then retrieve the modules
+					// Instead, we can wait until the video starts playing normally, then retrieve the modules
 					thisObj.initYouTubeCaptionModule();
 				}
 			}
@@ -5611,9 +5607,9 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 
 	AblePlayer.prototype.getYouTubeDimensions = function (youTubeContainerId) {
 
-		// get dimensions of YouTube video-website, return array with width & height
+		// get dimensions of YouTube video, return array with width & height
 		// Sources, in order of priority:
-		// 1. The width and height attributes on <video-website>
+		// 1. The width and height attributes on <video>
 		// 2. YouTube (not yet supported; can't seem to get this data via YouTube Data API without OAuth!)
 
 		var d, url, $iframe, width, height;
@@ -5650,7 +5646,7 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 		// and resize Able Player to match
 		var d, width, height;
 		if (typeof this.aspectRatio !== 'undefined') {
-			// video-website dimensions have already been collected
+			// video dimensions have already been collected
 			if (this.restoringAfterFullScreen) {
 				// restore using saved values
 				if (this.youTubePlayer) {
@@ -5742,7 +5738,7 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 					deferred.resolve();
 			})
 			.fail(function(){
-				console.log('Unable to initialize Google API. YouTube captions are currently unavailable.');
+				
 			});
 		}
 		else {
@@ -5810,7 +5806,7 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 								'videoId': youTubeId
 							});
 							request.then(function(json) {
-								if (json.result.items.length) { // video-website has captions!
+								if (json.result.items.length) { // video has captions!
 									thisObj.hasCaptions = true;
 									thisObj.usingYouTubeCaptions = true;
 									if (thisObj.prefCaptions === 1) {
@@ -5869,12 +5865,12 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 									deferred.resolve();
 								}
 							}, function (reason) {
-								// If video-website has no captions, YouTube returns an error.
+								// If video has no captions, YouTube returns an error.
 								// Should still proceed, but with captions disabled
 								// The specific error, if needed: reason.result.error.message
-								// If no captions, the error is: "The video-website identified by the <code>videoId</code> parameter could not be found."
-								console.log('Error retrieving captions.');
-								console.log('Check your video-website on YouTube to be sure captions are available and published.');
+								// If no captions, the error is: "The video identified by the <code>videoId</code> parameter could not be found."
+								
+								
 								thisObj.hasCaptions = false;
 								thisObj.usingYouTubeCaptions = false;
 								deferred.resolve();
@@ -5921,7 +5917,7 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 			dataType: 'xml',
 			success: function(xml) {
 				var $tracks = $(xml).find('track');
-				if ($tracks.length > 0) {	 // video-website has captions!
+				if ($tracks.length > 0) {	 // video has captions!
 					thisObj.hasCaptions = true;
 					thisObj.usingYouTubeCaptions = true;
 					if (thisObj.prefCaptions === 1) {
@@ -5977,7 +5973,7 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 				}
 			},
 			error: function(xhr, status) {
-				console.log('Error retrieving YouTube caption data for video-website ' + youTubeId);
+				
 				deferred.resolve();
 			}
 		});
@@ -6024,8 +6020,8 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 
 		// This function is called when YouTube onApiChange event fires
 		// to indicate that the player has loaded (or unloaded) a module with exposed API methods
-		// it isn't fired until the video-website starts playing
-		// and only fires if captions are available for this video-website (automated captions don't count)
+		// it isn't fired until the video starts playing
+		// and only fires if captions are available for this video (automated captions don't count)
 		// If no captions are available, onApichange event never fires & this function is never called
 
 		// YouTube iFrame API documentation is incomplete related to captions
@@ -6124,7 +6120,7 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 
 	window. AccessibleSlider = function(mediaType, div, orientation, length, min, max, bigInterval, label, className, trackingMedia, initialState) {
 
-		// mediaType is either 'audio' or 'video-website'
+		// mediaType is either 'audio' or 'video'
 		// div is the host element around which the slider will be built
 		// orientation is either 'horizontal' or 'vertical'
 		// length is the width or height of the slider, depending on orientation
@@ -6132,7 +6128,7 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 		// max is the high end of the slider scale
 		// bigInterval is the number of steps supported by page up/page down (set to 0 if not supported)
 		// (smallInterval, defined as nextStep below, is always set to 1) - this is the interval supported by arrow keys
-		// label is used within an aria-label attribute to identify the slider to screen self-voicing users
+		// label is used within an aria-label attribute to identify the slider to screen reader users
 		// className is used as the root within class names (e.g., 'able-' + classname + '-head')
 		// trackingMedia is true if this is a media timeline; otherwise false
 		// initialState is either 'visible' or 'hidden'
@@ -7357,12 +7353,12 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 
 		// The following variables are applicable to delivery of description:
 		// prefDesc == 1 if user wants description (i.e., Description button is on); else 0
-		// prefDescFormat == either 'video-website' or 'text' (as of v4.0.10, prefDescFormat is always 'video-website')
-		// prefDescPause == 1 to pause video-website when description starts; else 0
+		// prefDescFormat == either 'video' or 'text' (as of v4.0.10, prefDescFormat is always 'video')
+		// prefDescPause == 1 to pause video when description starts; else 0
 		// prefVisibleDesc == 1 to visibly show text-based description area; else 0
-		// hasOpenDesc == true if a described version of video-website is available via data-desc-src attribute
+		// hasOpenDesc == true if a described version of video is available via data-desc-src attribute
 		// hasClosedDesc == true if a description text track is available
-		// this.useDescFormat == either 'video-website' or 'text'; the format ultimately delivered
+		// this.useDescFormat == either 'video' or 'text'; the format ultimately delivered
 		// descOn == true if description of either type is on
 		// exposeTextDescriptions == true if text description is to be announced audibly; otherwise false
 
@@ -7372,7 +7368,7 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
     }
 		else {
 			// this is the initial build
-			// first, check to see if there's an open-described version of this video-website
+			// first, check to see if there's an open-described version of this video
 			// checks only the first source since if a described version is provided,
 			// it must be provided for all sources
 			this.descFile = this.$sources.first().attr('data-desc-src');
@@ -7394,10 +7390,10 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 		// update this.useDescFormat based on media availability & user preferences
 		if (this.prefDesc) {
 			if (this.hasOpenDesc && this.hasClosedDesc) {
-				// both formats are available. Always use 'video-website'
+				// both formats are available. Always use 'video'
 				this.useDescFormat = this.prefDescFormat;
 				this.descOn = true;
-				// Do not pause during descriptions when playing described video-website
+				// Do not pause during descriptions when playing described video
 				this.prefDescPause = false;
 			}
 			else if (this.hasOpenDesc) {
@@ -7466,13 +7462,13 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 			}
 		}
 		else { // description is off.
-			if (this.prevDescFormat === 'video') { // user was previously using description via video-website
+			if (this.prevDescFormat === 'video') { // user was previously using description via video
 				if (this.usingAudioDescription()) {
 					this.swapDescription();
 				}
 			}
 			else if (this.prevDescFormat === 'text') { // user was previously using text description
-				// hide description div from everyone, including screen self-voicing users
+				// hide description div from everyone, including screen reader users
 				this.$descDiv.hide();
 				this.$descDiv.removeClass('able-clipped');
 			}
@@ -7503,13 +7499,13 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 
 		thisObj = this;
 
-		// get current time, and start new video-website at the same time
+		// get current time, and start new video at the same time
 		// NOTE: There is some risk in resuming playback at the same start time
 		// since the described version might include extended audio description (with pauses)
 		// and might therefore be longer than the non-described version
 		// The benefits though would seem to outweigh this risk
 
-		this.swapTime = this.elapsed; // video-website will scrub to this time after loaded (see event.js)
+		this.swapTime = this.elapsed; // video will scrub to this time after loaded (see event.js)
 		if (this.descOn) {
 			// user has requested the described version
 			this.showAlert(this.tt.alertDescribedVersion);
@@ -7570,15 +7566,15 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 			}
 			if (typeof this.youTubePlayer !== 'undefined') {
 
-				// retrieve/setup captions for the new video-website from YouTube
+				// retrieve/setup captions for the new video from YouTube
 				this.setupAltCaptions().then(function() {
 
 					if (thisObj.playing) {
-						// loadVideoById() loads and immediately plays the new video-website at swapTime
+						// loadVideoById() loads and immediately plays the new video at swapTime
 						thisObj.youTubePlayer.loadVideoById(thisObj.activeYouTubeId,thisObj.swapTime);
 					}
 					else {
-						// cueVideoById() loads the new video-website and seeks to swapTime, but does not play
+						// cueVideoById() loads the new video and seeks to swapTime, but does not play
 						thisObj.youTubePlayer.cueVideoById(thisObj.activeYouTubeId,thisObj.swapTime);
 					}
 				});
@@ -7595,16 +7591,16 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 				this.activeVimeoId = this.vimeoDescId;
 				this.showAlert(this.tt.alertDescribedVersion);
 			}
-			// load the new video-website source
+			// load the new video source
 			this.vimeoPlayer.loadVideo(this.activeVimeoId).then(function() {
 
 				if (thisObj.playing) {
-					// video-website was playing when user requested an alternative version
+					// video was playing when user requested an alternative version
 					// seek to swapTime and continue playback (playback happens automatically)
 					thisObj.vimeoPlayer.setCurrentTime(thisObj.swapTime);
 				}
 				else {
-					// Vimeo autostarts immediately after video-website loads
+					// Vimeo autostarts immediately after video loads
 					// The "Described" button should not trigger playback, so stop this before the user notices.
 					thisObj.vimeoPlayer.pause();
 				}
@@ -7782,11 +7778,11 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 			this.userAgent.os = "Linux";
 		}
 		if (this.debug) {
-			console.log('User agent:' + navigator.userAgent);
-			console.log('Vendor: ' + navigator.vendor);
-			console.log('Browser: ' + this.userAgent.browser.name);
-			console.log('Version: ' + this.userAgent.browser.version);
-			console.log('OS: ' + this.userAgent.os);
+			
+			
+			
+			
+			
 		}
 	};
 
@@ -7794,7 +7790,7 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 
 		var userAgent = navigator.userAgent.toLowerCase();
 		if (this.debug) {
-			console.log('User agent: ' + userAgent);
+			
 		}
 		if (userAgent.indexOf(which.toLowerCase()) !== -1) {
 			return true;
@@ -7893,7 +7889,7 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 				// this.seeking will be set to false at that point
 				this.media.currentTime = this.startTime;
 				if (this.hasSignLanguage && this.signVideo) {
-					// keep sign languge video-website in sync
+					// keep sign languge video in sync
 					this.signVideo.currentTime = this.startTime;
 				}
 			}
@@ -8141,7 +8137,7 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 			}
 		}
 		else if (this.player === 'youtube') {
-			// Youtube supports varying playback rates per video-website.	 Only expose controls if more than one playback rate is available.
+			// Youtube supports varying playback rates per video.	 Only expose controls if more than one playback rate is available.
 			if (this.youTubePlayer.getAvailablePlaybackRates().length > 1) {
 				return true;
 			}
@@ -8257,13 +8253,13 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 
 	AblePlayer.prototype.fadeControls = function(direction) {
 
-		// Visibly fade controls without hiding them from screen self-voicing users
+		// Visibly fade controls without hiding them from screen reader users
 
 		// direction is either 'out' or 'in'
 
 		// TODO: This still needs work.
 		// After the player fades, it's replaced by an empty space
-		// Would be better if the video-website and captions expanded to fill the void
+		// Would be better if the video and captions expanded to fill the void
 		// Attempted to fade out to 0 opacity, then move the playerDiv offscreen
 		// and expand the mediaContainer to fill the vacated space
 		// However, my attempts to do this have been choppy and buggy
@@ -8372,8 +8368,8 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 					if (this.selectedChapters.cues[lastChapterIndex] == this.currentChapter) {
 						// this is the last chapter
 						if (this.currentChapter.end !== this.duration) {
-							// chapter ends before or after video-website ends
-							// need to adjust seekbar duration to match video-website end
+							// chapter ends before or after video ends
+							// need to adjust seekbar duration to match video end
 							this.seekBar.setDuration(this.duration - this.currentChapter.start);
 						}
 						else {
@@ -8656,7 +8652,7 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 			};
 
 			if (this.stoppingYouTube) {
-				// stoppingYouTube is true temporarily while video-website is paused and seeking to 0
+				// stoppingYouTube is true temporarily while video is paused and seeking to 0
 				// See notes in handleRestart()
 				// this.stoppingYouTube will be reset when seek to 0 is finished (in event.js > onMediaUpdateTime())
 				if (this.$status.text() !== this.tt.statusStopped) {
@@ -8881,13 +8877,13 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 			if (this.chapters[lastChapterIndex] == this.currentChapter) {
 				// this is the last chapter
 				if (targetTime > this.duration || targetTime > this.currentChapter.end) {
-					// targetTime would exceed the end of the video-website (or chapter)
+					// targetTime would exceed the end of the video (or chapter)
 					// scrub to end of whichever is earliest
 					targetTime = Math.min(this.duration, this.currentChapter.end);
 				}
 				else if (this.duration % targetTime < this.seekInterval) {
 					// nothing left but pocket change after seeking to targetTime
-					// go ahead and seek to end of video-website (or chapter), whichever is earliest
+					// go ahead and seek to end of video (or chapter), whichever is earliest
 					targetTime = Math.min(this.duration, this.currentChapter.end);
 				}
 			}
@@ -8930,7 +8926,7 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 			currentRate = this.getPlaybackRate();
 			index = rates.indexOf(currentRate);
 			if (index === -1) {
-				console.log('ERROR: Youtube returning unknown playback rate ' + currentRate.toString());
+				
 			}
 			else {
 				index += dir;
@@ -9325,7 +9321,7 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 				}).text(this.tt.fullscreen); // In English: "Full screen"; TODO: Add alert text that is more descriptive
 				$dialogDiv.append($fsDialogAlert);
 				// now render this as a dialog
-				this.fullscreenDialog = new AccessibleDialog($dialogDiv, this.$fullscreenButton, 'dialog', 'Fullscreen video-website player', $fsDialogAlert, this.tt.exitFullScreen, '100%', true, function () { thisObj.handleFullscreenToggle() });
+				this.fullscreenDialog = new AccessibleDialog($dialogDiv, this.$fullscreenButton, 'dialog', 'Fullscreen video player', $fsDialogAlert, this.tt.exitFullScreen, '100%', true, function () { thisObj.handleFullscreenToggle() });
 				$('body').append($dialogDiv);
 			}
 
@@ -9854,7 +9850,7 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 					}
 					else {
 						// need to wait for caption module to be loaded to change the language
-						// caption module will be loaded after video-website starts playing, triggered by onApiChange event
+						// caption module will be loaded after video starts playing, triggered by onApiChange event
 						// at that point, thosObj.captionLang will be passed to the module as the default language
 					}
 				}
@@ -9875,15 +9871,15 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 					switch (error.name) {
 						case 'InvalidTrackLanguageError':
 							// no track was available with the specified language
-							console.log('No ' + track.kind + ' track is available in the specified language (' + track.label + ')');
+							
 							break;
 						case 'InvalidTrackError':
 							// no track was available with the specified language and kind
-							console.log('No ' + track.kind + ' track is available in the specified language (' + track.label + ')');
+							
 							break;
 						default:
 							// some other error occurred
-							console.log('Error loading ' + track.label + ' ' + track.kind + ' track');
+							
 							break;
     				}
 				});
@@ -10431,7 +10427,7 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 		if (this.selectedChapters.cues[lastChapterIndex] == this.currentChapter) {
 			// this is the last chapter
 			if (this.currentChapter.end !== this.duration) {
-				// chapter ends before or after video-website ends, adjust chapter end to match video-website end
+				// chapter ends before or after video ends, adjust chapter end to match video end
 				chapterEnd = this.duration;
 				this.currentChapter.end = this.duration;
 			}
@@ -10464,7 +10460,7 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 	AblePlayer.prototype.convertChapterTimeToVideoTime = function (chapterTime) {
 
 		// chapterTime is the time within the current chapter
-		// return the same time, relative to the entire video-website
+		// return the same time, relative to the entire video
 		if (typeof this.currentChapter !== 'undefined') {
 			var newTime = this.currentChapter.start + chapterTime;
 			if (newTime > this.currentChapter.end) {
@@ -11850,16 +11846,16 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 		$thisElement = $(document.activeElement);
 
     if (which === 27) { // escape
-console.log('onPlayerKeyPress, you pressed Escape');
+
       if ($.contains(this.$transcriptArea[0],$thisElement[0])) {
-console.log('element is part of the transcript area');
+
         // This element is part of transcript area.
         this.handleTranscriptToggle();
         return false;
       }
     }
 		if (!this.okToHandleKeyPress()) {
-console.log('NOT ok!');
+
 			return false;
 		}
 
@@ -11876,7 +11872,7 @@ console.log('NOT ok!');
 			e.target.tagName === 'SELECT'
 		)){
 			if (which === 27) { // escape
-console.log('You pushed ESC');
+
 				this.closePopups();
 			}
 			else if (which === 32) { // spacebar = play/pause
@@ -12016,7 +12012,7 @@ console.log('You pushed ESC');
             ) {
 					// by clicking on any of these elements, user is likely intending to play
 					// Not included: elements where user might click multiple times in succession
-					// (i.e., 'rewind', 'forward', or seekbar); for these, video-website remains paused until user initiates play
+					// (i.e., 'rewind', 'forward', or seekbar); for these, video remains paused until user initiates play
 					thisObj.playMedia();
 				}
 				else if (!thisObj.startedPlaying) {
@@ -12122,23 +12118,23 @@ console.log('You pushed ESC');
 			.on('volumechange',function() {
 				thisObj.volume = thisObj.getVolume();
 				if (thisObj.debug) {
-					console.log('media volume change to ' + thisObj.volume + ' (' + thisObj.volumeButton + ')');
+					
 				}
 			})
 			.on('error',function() {
 				if (thisObj.debug) {
 					switch (thisObj.media.error.code) {
 						case 1:
-							console.log('HTML5 Media Error: MEDIA_ERR_ABORTED');
+							
 							break;
 						case 2:
-							console.log('HTML5 Media Error: MEDIA_ERR_NETWORK ');
+							
 							break;
 						case 3:
-							console.log('HTML5 Media Error: MEDIA_ERR_DECODE ');
+							
 							break;
 						case 4:
-							console.log('HTML5 Media Error: MEDIA_ERR_SRC_NOT_SUPPORTED ');
+							
 							break;
 					}
 				}
@@ -12160,7 +12156,7 @@ console.log('You pushed ESC');
 				if (thisObj.seekTrigger == 'restart' || thisObj.seekTrigger == 'chapter' || thisObj.seekTrigger == 'transcript') {
 					// by clicking on any of these elements, user is likely intending to play
 					// Not included: elements where user might click multiple times in succession
-					// (i.e., 'rewind', 'forward', or seekbar); for these, video-website remains paused until user initiates play
+					// (i.e., 'rewind', 'forward', or seekbar); for these, video remains paused until user initiates play
 					thisObj.playMedia();
 				}
 				else if (!thisObj.startedPlaying) {
@@ -12221,18 +12217,18 @@ console.log('You pushed ESC');
 		// Vimeo doesn't seem to support chaining of on() functions
 		// so each event listener must be attached separately
 		this.vimeoPlayer.on('loaded', function(vimeoId) {
-			 // Triggered when a new video-website is loaded in the player
+			 // Triggered when a new video is loaded in the player
 			thisObj.onMediaNewSourceLoad();
 		 });
 		this.vimeoPlayer.on('play', function(data) {
-			// Triggered when the video-website plays
+			// Triggered when the video plays
 			thisObj.playing = true;
 			thisObj.startedPlaying = true;
 			thisObj.paused = false;
 			thisObj.refreshControls('playpause');
 		});
 		this.vimeoPlayer.on('ended', function(data) {
-			// Triggered any time the video-website playback reaches the end.
+			// Triggered any time the video playback reaches the end.
 			// Note: when loop is turned on, the ended event will not fire.
 			thisObj.playing = false;
 			thisObj.paused = true;
@@ -12249,8 +12245,8 @@ console.log('You pushed ESC');
 			// There is no associated data with this event.
 		});
 		this.vimeoPlayer.on('progress', function(data) {
-			// Triggered as the video-website is loaded.
-			 // Reports back the amount of the video-website that has been buffered (NOT the amount played)
+			// Triggered as the video is loaded.
+			 // Reports back the amount of the video that has been buffered (NOT the amount played)
 			 // Data has keys duration, percent, and seconds
 	 	});
 		this.vimeoPlayer.on('seeking', function(data) {
@@ -12262,12 +12258,12 @@ console.log('You pushed ESC');
 			// A timeupdate event will also be fired at the same time.
 		});
 		this.vimeoPlayer.on('timeupdate',function(data) {
-			// Triggered as the currentTime of the video-website updates.
+			// Triggered as the currentTime of the video updates.
 			 // It generally fires every 250ms, but it may vary depending on the browser.
 			thisObj.onMediaUpdateTime(data['duration'], data['seconds']);
 		});
 		this.vimeoPlayer.on('pause',function(data) {
-			// Triggered when the video-website pauses
+			// Triggered when the video pauses
 			if (!thisObj.clickedPlay) {
 					// 'pause' was triggered automatically, not initiated by user
 				// this happens in some browsers (not Chrome, as of 70.x)
@@ -12290,7 +12286,7 @@ console.log('You pushed ESC');
 			thisObj.refreshControls('playpause');
 		});
 		this.vimeoPlayer.on('playbackratechange',function(data) {
-			// Triggered when the playback rate of the video-website in the player changes.
+			// Triggered when the playback rate of the video in the player changes.
 			// The ability to change rate can be disabled by the creator
 			// and the event will not fire for those videos.
 			// data contains one key: 'playbackRate'
@@ -12303,7 +12299,7 @@ console.log('You pushed ESC');
 		});
 		this.vimeoPlayer.on('volumechange',function(data) {
 			// Triggered when the volume in the player changes.
-			// Some devices do not support setting the volume of the video-website
+			// Some devices do not support setting the volume of the video
 			// independently from the system volume,
 			// so this event will never fire on those devices.
 			thisObj.volume = data['volume'] * 10;
@@ -13300,7 +13296,7 @@ console.log('You pushed ESC');
 
 		// Sign language is only currently supported in HTML5 player, not YouTube or Vimeo
 		if (this.player === 'html5') {
-			// check to see if there's a sign language video-website accompanying this video-website
+			// check to see if there's a sign language video accompanying this video
 			// check only the first source
 			// If sign language is provided, it must be provided for all sources
 			this.signFile = this.$sources.first().attr('data-sign-src');
@@ -13310,12 +13306,12 @@ console.log('You pushed ESC');
     		  // Therefore, sign language as rendered by Able Player unfortunately won't work
           this.hasSignLanguage = false;
           if (this.debug) {
-            console.log('Sign language has been disabled due to IOS restrictions');
+            
           }
         }
         else {
   				if (this.debug) {
-	  				console.log('This video-website has an accompanying sign language video-website: ' + this.signFile);
+	  				
           }
           this.hasSignLanguage = true;
           this.injectSignPlayerCode();
@@ -13341,12 +13337,12 @@ console.log('You pushed ESC');
 		signVideoWidth = this.getDefaultWidth('sign');
 
 		signVideoId = this.mediaId + '-sign';
-		this.$signVideo = $('<video-website>',{
+		this.$signVideo = $('<video>',{
 			'id' : signVideoId,
 			'tabindex' : '-1'
 		});
 		this.signVideo = this.$signVideo[0];
-		// for each original <source>, add a <source> to the sign <video-website>
+		// for each original <source>, add a <source> to the sign <video>
 		for (i=0; i < this.$sources.length; i++) {
 			signSrc = this.$sources[i].getAttribute('data-sign-src');
 			srcType = this.$sources[i].getAttribute('type');
@@ -14418,7 +14414,7 @@ console.log('You pushed ESC');
 					else {
 						msg = lang + ' is not currently supported. Using default language (' + this.lang + ')';
 						if (this.debug) {
-							console.log(msg);
+							
 						}
 					}
 				}
@@ -15775,7 +15771,7 @@ console.log('You pushed ESC');
 		this.activeVimeoId = vimeoId;
 
 		// Notes re. Vimeo Embed Options:
-		// If a video-website is owned by a user with a paid Plus, PRO, or Business account,
+		// If a video is owned by a user with a paid Plus, PRO, or Business account,
     // setting the "controls" option to "false" will hide the default controls, without hiding captions.
 		// This is a new option from Vimeo; previously used "background:true" to hide the controller,
 		// but that had unwanted side effects:
@@ -15799,7 +15795,7 @@ console.log('You pushed ESC');
 		}
 		else {
 			// dimensions are initially unknown
-			// sending null values to Vimeo results in a video-website that uses the default Vimeo dimensions
+			// sending null values to Vimeo results in a video that uses the default Vimeo dimensions
 			// these can then be scraped from the iframe and applied to this.$ableWrapper
 			this.vimeoWidth = null;
 			this.vimeoHeight = null;
@@ -15823,7 +15819,7 @@ console.log('You pushed ESC');
 				// define variables that will impact player setup
 
 				// vimeoSupportsPlaybackRateChange
-				// changing playbackRate is only supported if the video-website is hosted on a Pro or Business account
+				// changing playbackRate is only supported if the video is hosted on a Pro or Business account
 				// unfortunately there is no direct way to query for that information.
 				// this.vimeoPlayer.getPlaybackRate() returns a value, regardless of account type
 				// This is a hack:
@@ -15900,9 +15896,9 @@ console.log('You pushed ESC');
 
 	AblePlayer.prototype.getVimeoDimensions = function (vimeoContainerId) {
 
-		// get dimensions of Vimeo video-website, return array with width & height
+		// get dimensions of Vimeo video, return array with width & height
 		// Sources, in order of priority:
-		// 1. The width and height attributes on <video-website>
+		// 1. The width and height attributes on <video>
 		// 2. YouTube (not yet supported; can't seem to get this data via YouTube Data API without OAuth!)
 
 		var d, url, $iframe, width, height;
@@ -15942,7 +15938,7 @@ console.log('You pushed ESC');
 		// and resize Able Player to match
 		var d, width, height;
 		if (typeof this.aspectRatio !== 'undefined') {
-			// video-website dimensions have already been collected
+			// video dimensions have already been collected
 			if (this.restoringAfterFullScreen) {
 				// restore using saved values
 				if (this.youTubePlayer) {
@@ -16033,7 +16029,7 @@ console.log('You pushed ESC');
 					deferred.resolve();
 			})
 			.fail(function(){
-				console.log('Unable to initialize Google API. YouTube captions are currently unavailable.');
+				
 			});
 		}
 		else {
@@ -16059,7 +16055,7 @@ console.log('You pushed ESC');
 				// each Vimeo track includes the following:
 				// label (local name of the language)
 				// language (2-character code)
-				// kind (captions or subtitles, as declared by video-website owner)
+				// kind (captions or subtitles, as declared by video owner)
 				// mode ('disabled' or 'showing')
 
 				if (tracks.length) {
@@ -16111,8 +16107,8 @@ console.log('You pushed ESC');
 
 		// This function is called when YouTube onApiChange event fires
 		// to indicate that the player has loaded (or unloaded) a module with exposed API methods
-		// it isn't fired until the video-website starts playing
-		// and only fires if captions are available for this video-website (automated captions don't count)
+		// it isn't fired until the video starts playing
+		// and only fires if captions are available for this video (automated captions don't count)
 		// If no captions are available, onApichange event never fires & this function is never called
 
 		// YouTube iFrame API documentation is incomplete related to captions

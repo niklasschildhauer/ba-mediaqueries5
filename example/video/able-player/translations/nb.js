@@ -202,7 +202,7 @@ var nb = {
 
 "prefDescFormatOption2b": "tekstbasert lydbeskrivelse",
 
-"prefDescPause": "Sett video-website automatisk på pause når lydbeskrivelse starter",
+"prefDescPause": "Sett video automatisk på pause når lydbeskrivelse starter",
 
 "prefVisibleDesc": "Gjør lydbeskrivelsen synlig",
 
@@ -314,7 +314,7 @@ var nb = {
 
 "resultsSummary3": "matching items.",
 
-"resultsSummary4": "Click the time associated with any item to play the video-website from that point.",
+"resultsSummary4": "Click the time associated with any item to play the video from that point.",
 
 "noResultsFound": "No results found.",
 

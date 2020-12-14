@@ -82,7 +82,7 @@
 .able-video {
 }
 .able-video .able-now-playing {
-	display: none; /* not currently used for video-website */
+	display: none; /* not currently used for video */
 }
 .able-controller {
 	position: relative;
@@ -987,7 +987,7 @@ ul.able-popup {
 }
 
 /*
-  Playlist (both audio and video-website)
+  Playlist (both audio and video)
 */
 
 .able-playlist {
@@ -1187,7 +1187,7 @@ button#able-vts-save:focus {
 */
 
 .able-clipped, .able-screenreader-alert {
-	/* hide from sighted users, but not screen self-voicing users */
+	/* hide from sighted users, but not screen reader users */
 	position: absolute !important;
 	clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
 	clip: rect(1px, 1px, 1px, 1px);
