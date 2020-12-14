@@ -1,5 +1,5 @@
 import * as Model from "../model/Model";
-import {CommonTerm, IMediaFeature, IMediaQuery, IUserPreference, Persona} from "../model/Model";
+import {CommonTerm, IUserPreference, Persona, UserPreference} from "../model/Model";
 import {INetworkAPI} from "../network/NetworkAPI";
 
 export interface IUserPreferenceProfile {
@@ -106,6 +106,12 @@ export class UserPreferenceProfile implements IUserPreferenceProfile {
         for (let i = 0; i < this.userPreferences.length; i++) {
             if(this.userPreferences[i].mediaFeature == preference.mediaFeature) {
                 this.userPreferences[i] = preference
+                if(preference.mediaFeature == CommonTerm.sessionTimeout) {
+                    (parseFloat(preference.value) > 1) ?
+                    this.changeUserPreference(new UserPreference(CommonTerm.extendedSessionTimeout, "true"))
+                        :
+                    this.changeUserPreference(new UserPreference(CommonTerm.extendedSessionTimeout, "false"));
+                }
                 return
             }
         }

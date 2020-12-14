@@ -1,0 +1,18 @@
+.buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.countdown-wrapper {
+    display: none;
+}
+
+#countdown {
+    font-weight: bolder;
+}
+
+@media (extendedSessionTimeout) {
+    .countdown-wrapper {
+        display: flex;
+    }
+}

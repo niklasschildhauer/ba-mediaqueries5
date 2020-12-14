@@ -12,8 +12,8 @@ test('Media Feature Factory - createMediaFeatureFrom #1', () => {
 
 test('Media Feature Factory - createMediaFeatureFrom #2', () => {
     expect(function() {
-        Factory.createMediaFeatureFrom("(picto: true)");
-    }).toThrow(new Error('There is no matching common term: (picto)'));
+        Factory.createMediaFeatureFrom("(pictogram: true)");
+    }).toThrow(new Error('There is no matching common term: (pictogram)'));
 });
 
 test('Media Feature Factory - createMediaFeatureFrom #3', () => {

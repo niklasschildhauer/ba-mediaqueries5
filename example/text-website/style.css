@@ -13,3 +13,36 @@
     }
 }
 
+
+/* Tooltip for Pictograms Enabled */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltipicto {
+    visibility: hidden;
+    background-color: black;
+    color: #fff;
+    padding: 5px 0;
+    border-radius: 6px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    width: 160px;
+    padding-left: -80px;
+    z-index: 1;
+}
+
+@media (pictogramsEnabled) {
+    .tooltip {
+        border-top: 1px solid black;
+    }
+    .tooltip:hover .tooltipicto {
+        visibility: visible;
+    }
+}

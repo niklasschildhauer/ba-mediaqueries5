@@ -1411,6 +1411,12 @@ var UserPreferenceProfile = /** @class */ (function () {
         for (var i = 0; i < this.userPreferences.length; i++) {
             if (this.userPreferences[i].mediaFeature == preference.mediaFeature) {
                 this.userPreferences[i] = preference;
+                if (preference.mediaFeature == Model_1.CommonTerm.sessionTimeout) {
+                    (parseFloat(preference.value) > 1) ?
+                        this.changeUserPreference(new Model_1.UserPreference(Model_1.CommonTerm.extendedSessionTimeout, "true"))
+                        :
+                            this.changeUserPreference(new Model_1.UserPreference(Model_1.CommonTerm.extendedSessionTimeout, "false"));
+                }
                 return;
             }
         }
