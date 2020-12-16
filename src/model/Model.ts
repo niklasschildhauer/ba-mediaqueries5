@@ -1,5 +1,8 @@
-import * as common from '../common/utility'
-
+/**
+ * @interface IMediaDescriptor
+ *
+ * Represents the CSS @media descriptor with media query and body.
+ */
 export interface IMediaDescriptor {
     mediaQuery: IMediaQuery
     body: string;
