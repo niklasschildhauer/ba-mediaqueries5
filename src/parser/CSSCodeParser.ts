@@ -3,7 +3,12 @@ import {IReader} from "../reader/CSSReader";
 import {CommonTerm, IMediaDescriptor} from "../model/Model";
 import {ICodeParser} from "./CodeParser";
 
-
+/**
+ * @class CSSCodeParser
+ *
+ * It is responsible to insert the correct CSS Code. It contains the CSS Reader
+ * to get the current media descriptor and the User Profile to get the current user preferences
+ */
 export class CSSCodeParser implements ICodeParser {
     private userProfile: Profile.IUserPreferenceProfile;
     private cssReader: IReader<IMediaDescriptor>;
@@ -15,12 +20,21 @@ export class CSSCodeParser implements ICodeParser {
         this.userProfile = userPreferenceProfile;
     }
 
+    /**
+     * Inserts the CSS code into the page.
+     * First the inserted CSS code is reset and then a new CSS code is created and inserted.
+     */
     parse(): void {
         this.resetCSSCode();
         let cssCode = this.createCSSCode();
         this.parseCSSCode(cssCode);
     }
 
+    /**
+     * Creates the appropriate CSS code by evaluating user preferences and media descriptors.
+     *
+     * @returns A string with the appropriate CSS Code
+     */
     private createCSSCode(): string {
         let cssStyle: string[] = []
         let mediaDescriptors = this.cssReader.get()
@@ -40,6 +54,9 @@ export class CSSCodeParser implements ICodeParser {
 
     }
 
+    /**
+     * Inserts the CSS code into the page.
+     */
     private parseCSSCode(cssCode: string): void {
         const style = document.createElement('style');
         style.setAttribute("id", this.styleId);
@@ -47,6 +64,9 @@ export class CSSCodeParser implements ICodeParser {
         document.head.appendChild(style);
     }
 
+    /**
+     * Resets the CSS code of the page
+     */
     private resetCSSCode(): void {
         const style = document.getElementById(this.styleId);
         if(style != null){
@@ -55,6 +75,9 @@ export class CSSCodeParser implements ICodeParser {
 
     }
 
+    /**
+     * Creates CSS Variables
+     */
     private createCSSVariables(): string {
         const variables = ["--audio-description-enabled: " + this.userProfile.getValueForMediaFeature(CommonTerm.audioDescriptionEnabled),
             "--captions-enabled: " + this.userProfile.getValueForMediaFeature(CommonTerm.captionsEnabled),

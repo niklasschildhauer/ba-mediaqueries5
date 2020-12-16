@@ -1,18 +1,30 @@
 import {CommonTerm, IUserPreference, Persona, UserPreference} from "../model/Model";
 import * as Personas from "./Personas/Personas"
 
+/**
+ * @interface INetworkAPI
+ *
+ * Defines the Network API. It contains two methods to load User Preferences from a server.
+ */
 export interface INetworkAPI {
     loadPreferenceSetFromPersona(persona: Persona): Promise<INetworkResultUserPreference>;
     loadUserContext(username: string, password: string): Promise<INetworkResultUserPreference>;
 }
 
-
+/**
+ * @interface INetworkResultUserPreference
+ *
+ * Defines the Model of the Network Result. This is the return value of the NetworkAPI.
+ */
 export interface INetworkResultUserPreference {
     success: boolean
     errorMessage: string | null
     userPreferences: IUserPreference[]
 }
 
+/**
+ * @class NetworkUserResultUserPreference
+ */
 export class NetworkUserResultUserPreference implements INetworkResultUserPreference{
     success: boolean
     errorMessage: string | null
@@ -25,6 +37,13 @@ export class NetworkUserResultUserPreference implements INetworkResultUserPrefer
     }
 }
 
+
+/**
+ * @class NetworkAPI
+ *
+ * This class uses the Javascript OpenAPEClient to load data from the client.
+ * It shields the external code from the rest of the program so that it can be easily replaced if necessary.
+ */
 export class NetworkAPI implements  INetworkAPI {
     private client: OpenAPEClient
 
@@ -32,6 +51,18 @@ export class NetworkAPI implements  INetworkAPI {
         this.client = new OpenAPEClient();
     }
 
+    /**
+     * Loads the user context from a user. For this the method does several steps:
+     * 1. It logs the user in
+     * 2. It loads all the user Context Lists of the user
+     * 3. It loads all matching user preferences
+     * 4. it returns a NetworkUserResultUserPreference Object with either the UserPreferences or a error
+     * message
+     *
+     * @param username   the openAPE username
+     * @param passwort   the openAPE password
+     * @returns A Promise with the NetworkUserResultUserPreference Object.
+     */
     async loadUserContext(username: string, password: string): Promise<INetworkResultUserPreference> {
         await this.client.login(username, password)
             .catch(function (err) {
@@ -65,17 +96,13 @@ export class NetworkAPI implements  INetworkAPI {
         return new NetworkUserResultUserPreference(true, null, userPreferences);
     }
 
-    // private async getUserContextId(uri: string) {
-    //     console.log(uri)
-    //     this.client.getUserContext(uri)
-    //         .then(function(result){
-    //             console.log(result)
-    //         })
-    //         .catch(function(err){
-    //             console.log(err)
-    //         })
-    // }
-
+    /**
+     * Loads the user context of a Persona from the {@linkcode Persona}. For demo reasons the user context
+     * is not loaded from the OpenApe server, instead it is loaded from constants
+     *
+     * @param persona
+     * @returns A Promise with the NetworkUserResultUserPreference Object.
+     */
     loadPreferenceSetFromPersona(persona: Persona): Promise<INetworkResultUserPreference> {
         let userPreferences: IUserPreference[]
         switch (persona) {
@@ -113,6 +140,13 @@ export class NetworkAPI implements  INetworkAPI {
         return Promise.resolve(new NetworkUserResultUserPreference(true, null, userPreferences));
     }
 
+
+    /**
+     * Private function which creates the UserPreference Array from OpenAPE returned JSON
+     *
+     * @param json   From the openAPE Server
+     * @returns UserPreference Array
+     */
     // hier muss noch gecheckt werden wie der Kontext heißt...
     private createUserPreferencesFromOpenAPEJSON(json: any): IUserPreference[] {
         let preferences = json;
@@ -169,6 +203,12 @@ let CONSTANTS = {
     CONTENT_TYPE: "application/json"
 };
 
+
+/**
+ * @class OpenAPEClient
+ *
+ * This class is a copy of the [JavaScript OpenAPE Client](https://github.com/REMEXLabs/openape.js).
+ */
 class OpenAPEClient {
     contentType: string
     serverUrl: string
@@ -192,6 +232,15 @@ class OpenAPEClient {
         this.token = null;
     }
 
+    /**
+     * login
+     *
+     * This function logs the current user in.
+     *
+     * @param {string} username
+     * @param {string} password
+     * @returns {Promise} - A JavaScript Promise object.
+     */
     async login(username: string, password: string) {
         if (this.isPasswordCorrect(password) && this.isUsernameCorrect(username)) {
             const data = new URLSearchParams();
@@ -210,6 +259,14 @@ class OpenAPEClient {
         }
     }
 
+    /**
+     * getUserContexts
+     *
+     * This function gets the user ContextLists from the logged in user
+     *
+     * @param {string[]} userContextList
+     * @returns {Promise} - A JavaScript Promise object.
+     */
     async getUserContexts(userContextList: string[]): Promise<any[]> {
         let resultData: any[] = []
         await userContextList.forEach((uri: string) => {
@@ -225,6 +282,15 @@ class OpenAPEClient {
     }
 
 
+    /**
+     * fetchAPIPost
+     *
+     * This function fetchs the openAPE Server with a post request
+     *
+     * @param {string} url - The URL of the server.
+     * @param {URLSearchParams} The URL Search Params
+     * @returns {Promise} - A JavaScript Promise object.
+     */
     async fetchAPIPost(data: URLSearchParams, url: string) {
         console.log("Connection will be established with server: " + url);
         return await fetch(url, {
@@ -243,6 +309,14 @@ class OpenAPEClient {
             })
     }
 
+    /**
+     * fetchAPIGet
+     *
+     * This function fetchs the openAPE Server with a get request
+     *
+     * @param {string} url - The URL of the server.
+     * @returns {Promise} - A JavaScript Promise object.
+     */
     async fetchAPIGet(url: string) {
         if(!this.isTokenCorrect(this.token)) {
             throw new Error("Token is not correct");
@@ -276,13 +350,9 @@ class OpenAPEClient {
      * This function is used to retrieve a list of URIs to accessible user contexts.
      * It relates to ISO/IEC 24752-8 7.2.6.
      *
-     * @param {function} successCallback - The function to be called on success.
-     * @param {function} errorCallback - The function to be called on error.
-     * @param {string} [contentType="JSON"] - The content type to be used if the default set in the client
-     * should not be used. Can be "JSON" or "XML".
-     * @returns {object} - A JavaScript object with all user contexts information.
+     * @returns {Promise} - A JavaScript Promise object with the user context lists.
      */
-    async getUserContextList(contentType = this.contentType) {
+    async getUserContextList() {
         try {
             return await this.fetchAPIGet(CONSTANTS.OPENAPE_SERVER_URL + CONSTANTS.USER_CONTEXT_PATH);
         } catch(err) {
@@ -298,13 +368,9 @@ class OpenAPEClient {
      * It relates to ISO/ICE 24752-8 7.2.3.
      *
      * @param {string} userContextId - The ID of the stored user context that shall be retrieved.
-     * @param {function} successCallback - The function to be called on success.
-     * @param {function} errorCallback - The function to be called on error.
-     * @param {string} [contentType="JSON"] - The content type to be used if the default set in the client
-     * should not be used. Can be "JSON" or "XML".
-     * @returns {object} - A JavaScript object with the user context's information.
+     * @returns {Promise} - A JavaScript Promise object with the user context's information.
      */
-    async getUserContext(userContextId: string, contentType = this.contentType) {
+    async getUserContext(userContextId: string) {
         if(!this.isContextIdCorrect(userContextId)) {
             throw new Error("User context is not correct");
             return

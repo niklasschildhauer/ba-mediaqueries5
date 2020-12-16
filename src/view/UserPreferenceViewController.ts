@@ -1,10 +1,8 @@
 import {
     HTMLBasicElement,
-    HTMLTextElement,
     PersonasWrapperView,
     ListWrapperView,
     PersonasWrapperDelegate,
-    LabelButtonView,
     ApplyButtonWrapperDelegate,
     ApplyButtonWrapperView,
     IApplyButtonWrapperView,
@@ -12,7 +10,6 @@ import {
     IListWrapperView,
     LoginWrapperView,
     LoginDelegate,
-    ImageButtonView,
     HeaderWrapperView,
     HeaderViewDelegate,
     IHeaderWrapperView,
@@ -22,29 +19,40 @@ import {
 import {CommonTerm, IUserPreference, Persona} from '../model/Model';
 import {IUserPreferenceProfile, UserPreferenceProfile} from "../user/UserPreferenceProfile";
 
+/**
+ * @interface IUserPreferenceViewController
+ *
+ * Defines the UserPreferenceViewController. The function will be called from the
+ * {@linkcode IUserPreferencePresenter} which contains the logic of the view.
+ */
 export interface IUserPreferenceViewController {
     showLoginErrorMessage(message: string): void;
-
     selectPersona(persona: Persona): void;
-
     unselectAllPersona(): void;
-
     getAllSetPreferences(): IUserPreference[];
-
     selectUserPreferences(userPreferences: IUserPreference[]): void
 
     showPanel(): void; // nicht im Schaubild
     hidePanel(): void; // nicht im Schuabild
 }
 
+/**
+ * @interface IViewController<T>
+ *
+ * Defines a ViewController with two lifecycle methods.
+ */
 export interface IViewController<T> {
     presenter: T;
 
     parseView(): void;
-
     removeView(): void;
 }
 
+/**
+ * @class UserPreferenceViewController
+ *
+ * This View Controller creates all views for the User Preference Panel.
+ */
 export class UserPreferenceViewController implements IViewController<IUserPreferencePresenter>, IUserPreferenceViewController, PersonasWrapperDelegate, ApplyButtonWrapperDelegate, ListWrapperDelegate, LoginDelegate, HeaderViewDelegate, OpenButtonViewDelegate {
     presenter: IUserPreferencePresenter;
 
@@ -79,7 +87,10 @@ export class UserPreferenceViewController implements IViewController<IUserPrefer
         this.element.appendChild(this.showPanelButton.element);
         this.element.appendChild(this.panelWrapper);
     }
-
+    /**
+     * Lifecycle Method
+     * Inserts the view in the current HTML document
+     */
     parseView(): void {
         // View is only shown, if the script is embeed at the bottom of the body and not in the header.
         if(document.body != null || document.body != undefined) {
@@ -88,6 +99,10 @@ export class UserPreferenceViewController implements IViewController<IUserPrefer
 
     }
 
+    /**
+     * Lifecycle Method
+     * Removes the view from the current HTML document
+     */
     removeView(): void {
         if(this.element.id != null) {
             let child = document.getElementById(this.element.id)
@@ -95,43 +110,58 @@ export class UserPreferenceViewController implements IViewController<IUserPrefer
                 document.removeChild(child);
             }
         }
-
-        // if(this.showPanelButton.element.id != null) {
-        //     let child = document.getElementById(this.showPanelButton.element.id)
-        //     if(child != null || child != undefined) {
-        //         document.removeChild(child);
-        //     }
-        // }
     }
 
+    /**
+     * Changes the right Attribute of the panel to show the panel
+     */
     showPanel(): void {
         this.panelWrapper.element.style.right = "2vh";
         this.showPanelButton.element.element.style.right = "-200px";
-        //this.element.element.style.right = getComputedStyle(document.documentElement).getPropertyValue('--padding');
     }
 
+    /**
+     * Changes the right Attribute of the panel to hide the panel
+     */
     hidePanel(): void {
         this.panelWrapper.element.style.right =  "-400px";
         this.showPanelButton.element.element.style.right = "2vh";
     }
 
+    /**
+     * Shows the current user preferences. For that the values in the
+     * ListWrapperView will be set
+     */
     selectUserPreferences(userPreferences: IUserPreference[]): void {
         for (let i = 0; i < userPreferences.length; i++) {
             this.listWrapper.setPreferences(userPreferences[i]);
         }
     }
+
+    /**
+     * Shows a error message in the LoginWrapperView
+     */
     showLoginErrorMessage(message: string): void {
         this.loginWrapper.showErrorMessage(message);
     }
 
+    /**
+     * Shows that a persona is selected.
+     */
     selectPersona(persona: Persona): void {
         this.personaWrapper.selectPersona(persona);
     }
 
+    /**
+     * Unselect all Personas
+     */
     unselectAllPersona(): void {
         this.personaWrapper.unselectAllPersonas();
     }
 
+    /**
+     * @returns All set user preferences in the ListWrapperView
+     */
     getAllSetPreferences(): IUserPreference[] {
         return this.listWrapper.getAllPreferences();
     }
@@ -169,8 +199,12 @@ export class UserPreferenceViewController implements IViewController<IUserPrefer
     }
 }
 
+/**
+ * @interface IUserPreferencePresenter
+ *
+ * Defines the UserPreferencePresenter
+ */
 export interface IUserPreferencePresenter {
-
     viewDidLoad(): void;
     editPreferences(): void;
     pressedCancel(): void;
@@ -184,6 +218,11 @@ export interface IUserPreferencePresenter {
     reload(): void
 }
 
+/**
+ * @class UserPreferencePresenter
+ *
+ * Contains the logic of the view.
+ */
 export class UserPreferencePresenter implements IUserPreferencePresenter {
     private view: IUserPreferenceViewController;
     private userProfile: IUserPreferenceProfile;
@@ -193,45 +232,87 @@ export class UserPreferencePresenter implements IUserPreferencePresenter {
         this.view = view;
     }
 
+    /**
+     * Is called from the view, after the ViewController is created.
+     * It calls the reload function
+     */
     viewDidLoad(): void {
         this.reload();
     }
+    /**
+     * Calls the refreshView method to reset the view.
+     */
     reload() {
         this.refreshView();
     }
+
+    /**
+     * Calls the reload method to reset the view.
+     */
     pressedCancel(): void {
         this.reload();
     }
+    /**
+     * Is called when the user does edit a preference. Then no persona should be selected.
+     */
     editPreferences(): void {
         this.view.unselectAllPersona()
     }
+    /**
+     * Calls the User Profile to log a user in
+     *
+     * @param username   the openAPE username
+     * @param passwort   the openAPE password
+     */
     pressedLogin(username: string, password: string): void {
         this.userProfile.login(username, password);
         this.reload();
     }
+    /**
+     * Applies the user preferences set from the user.
+     * First the UserPreferenceProfil is updated, after the reload function is executed.
+     */
     pressedApplyPreferences(): void {
         this.userProfile.setUserPreferences(this.view.getAllSetPreferences());
         this.reload();
     }
+    /**
+     * Calls the showPanel method of the view
+     */
     pressedShowPanel(): void {
         this.view.showPanel();
     }
+    /**
+     * Calls the hidePanel method of the view
+     */
     pressedHidePanel(): void {
         this.view.hidePanel();
         this.reload();
     }
+    /**
+     * Tells the UserPreferenceProfile that a persona is selected
+     */
     selectPersona(persona: Persona): void {
         this.userProfile.selectPersona(persona);
     }
+    /**
+     * Update the view to show that a persona is selcted
+     */
     selectedPersona(persona: Persona): void {
         this.view.unselectAllPersona();
         this.view.selectPersona(persona);
         this.reload();
     }
+    /**
+     * Tells the view to show a login error message
+     */
     showLoginErrorMessage(message: string): void {
         this.view.showLoginErrorMessage(message);
     }
 
+    /**
+     * Refreshs the view
+     */
     private refreshView() {
         this.view.selectUserPreferences(this.userProfile.getUserPreferences());
         console.log(this.userProfile.getUserPreferences());

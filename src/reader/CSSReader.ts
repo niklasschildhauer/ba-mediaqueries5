@@ -1,15 +1,33 @@
 import * as Model from '../model/Model'
 import * as Factory from '../model/Factory'
 
+/**
+ * @interface IReader<T>
+ *
+ * Defines a Reader class with the two methods read and get.
+ */
 export interface IReader<T> {
     read(string: string): void
     get(): T[];
 }
 
+
+/**
+ * @interface CSSReaderDelegate
+ *
+ * Defines the delegate methods which will be called from the CSSReader to inform the
+ * {@linkcode ScriptCoordinator} that something has changed.
+ */
 export interface CSSReaderDelegate {
     didUpdateMediaDescriptors(from: CSSReader): void
 }
 
+
+/**
+ * @class UserPreferenceProfile
+ *
+ * The class manges the media descriptors and reads CSS Code
+ */
 export class CSSReader implements IReader<Model.IMediaDescriptor> {
     private mediaDescriptors: Model.IMediaDescriptor[] = [];
     private plainCSS: string[] = [];
@@ -20,10 +38,20 @@ export class CSSReader implements IReader<Model.IMediaDescriptor> {
         this.readAutomatic();
     }
 
+    /**
+     * Returns the current media descriptors
+     *
+     * @returns An array of the media descriptors
+     */
     public get(): Model.IMediaDescriptor[] {
         return this.mediaDescriptors;
     }
 
+    /**
+     * Reads CSS Code.
+     *
+     * @param string   plain CSS Code to read
+     */
     public read(string: string): void {
         if (!this.plainCSS.includes(string)) {
             this.plainCSS.push(string);
@@ -33,6 +61,10 @@ export class CSSReader implements IReader<Model.IMediaDescriptor> {
         }
     }
 
+
+    /**
+     * Searchs in the HTML Document for CSS Code
+     */
     private async readAutomatic(): Promise<void> {
         let stylesSheets = document.querySelectorAll('link');
         for (let i = stylesSheets.length; i--;) {
@@ -47,6 +79,10 @@ export class CSSReader implements IReader<Model.IMediaDescriptor> {
         }
     }
 
+    /**
+     * Refresh method to create new media descriptors and to inform the delegate that
+     * the media descriptors has changed.
+     */
     private refresh(): void {
         if(this.plainCSS.length != 0) {
             let plainCSSCodeString = this.plainCSS.reverse().join("\n");
@@ -55,12 +91,16 @@ export class CSSReader implements IReader<Model.IMediaDescriptor> {
         this.delegate.didUpdateMediaDescriptors(this);
     }
 
+
     private reset(): void {
         this.mediaDescriptors = [];
         this.plainCSS = [];
         this.refresh();
     }
 
+    /**
+     * Loads a CSS File
+     */
     private async loadCSSFile(link: any) {
         return await fetch(link, {
             method: 'get'

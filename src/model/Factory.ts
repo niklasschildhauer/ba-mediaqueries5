@@ -4,14 +4,26 @@ import {
     MediaDescriptor,
     CommonTermUtil,
     MediaFeature,
-    CommonTerm,
     ICommonTermList, CommonTermList
 } from "./Model";
 import * as common from '../common/utility'
 import {removeUnimportantCharactersFrom} from "../common/utility";
 
-
+/**
+ * @class Factory
+ *
+ * The Faabrik class is designed according to the design pattern Factory method.
+ * It contains static methods, which create objects and configure them appropriately,
+ * so that no new operator has to be used in the program.
+ */
 export class Factory {
+
+    /**
+     * Static function to create a Array of MediaDescriptor objects of the IMediaDescriptor type.
+     *
+     * @param cssCode  A string of css code.
+     * @returns A array of MediaDescriptor objects
+     */
     public static createMediaDescriptorsFromCSSString(cssCode: string): IMediaDescriptor[] {
         const regex = new RegExp("@media.(.*?).\\{", "g")
 
@@ -33,6 +45,13 @@ export class Factory {
         return mediaDescriptors;
     }
 
+    /**
+     * Static function to create a MediaDescriptor object of the IMediaDescriptor type. It will be called
+     * from the {@linkcode createMediaDescriptorsFromCSSString} function.
+     *
+     * @param cssCode  A string of css code.
+     * @returns A array of MediaDescriptor objects
+     */
     public static createMediaDescriptorFromMQStringAndBodyString(mediaQuery: string, body: string): IMediaDescriptor {
         let query = mediaQuery;
         let negated: boolean
@@ -69,7 +88,12 @@ export class Factory {
         return new MediaDescriptor(unsupportedMediaQuery, supportedMediaQueryString, body, negated)
     }
 
-    //Zusammenwerfen ??
+    /**
+     * Static function to create a CommonTermList object of the ICommonTermList type.
+     *
+     * @param mediaQuery  A string of the media query.
+     * @returns A CommonTermList
+     */
     public static createCommonTermListFromMQString(mediaQuery: string): ICommonTermList {
         let query = mediaQuery;
         let negated: boolean
@@ -105,6 +129,14 @@ export class Factory {
         return new CommonTermList(unsupportedMediaQuery, supportedMediaQueryString, negated)
     }
 
+    /**
+     * Static function to create a Media Feature object of the IMediaFeature type. It will be called
+     * from the {@linkcode createMediaDescriptorsFromCSSString} function
+     * and {@linkcode createCommonTermListFromMQString}.
+     *
+     * @param mediaQuery  A string of the media query.
+     * @returns A CommonTermList
+     */
     public static createMediaFeatureFrom(condition: string): IMediaFeature {
         let conditionString = removeUnimportantCharactersFrom(condition);
 
@@ -131,7 +163,6 @@ export class Factory {
         return new MediaFeature(mediaFeature, negated, value);
     }
 
-    // checks if the media Query is negated or not.
     private static isMediaQueryNegated(mediaQuery: string) : [boolean, string] {
         if (mediaQuery.slice(0, 3).match("not")) {
             return [true, mediaQuery.slice(4)]

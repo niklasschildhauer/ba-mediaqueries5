@@ -209,7 +209,7 @@ export enum CommonTerm {
  * @enum Persona
  *
  * Contains all Personas from the 'A day in the life of …' descriptions
- * [Markdown](https://moocap.gpii.eu/?page_id=33).
+ * [MOOCAP](https://moocap.gpii.eu/?page_id=33).
  */
 export enum Persona {
     alexander = "Alexander",

@@ -21,7 +21,8 @@
     "test": "jest",
     "prebuild": "tsc",
     "build": "browserify lib/main.js > lib/bundle.js",
-    "start": "echo \\\"Error: no start installed\\\" && exit 1"
+    "start": "echo \\\"Error: no start installed\\\" && exit 1",
+    "docs": "typedoc --out ./docs/code/ ./src/"
   },
   "repository": {
     "type": "git",

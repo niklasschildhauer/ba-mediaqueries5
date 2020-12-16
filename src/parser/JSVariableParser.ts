@@ -1,8 +1,13 @@
 import * as Profile from "../user/UserPreferenceProfile";
-import {CommonTerm, CommonTermList, ICommonTermList, IUserPreference} from "../model/Model";
+import {CommonTerm, ICommonTermList, IUserPreference} from "../model/Model";
 import {Factory} from "../model/Factory";
 import {ICodeParser} from "./CodeParser";
 
+/**
+ * @class JSVariableParser
+ *
+ * It is responsible for the Common Term Lists. It contains the User Profile and the active Common Term Lists
+ */
 export class JSVariableParser implements ICodeParser {
     private userProfile: Profile.IUserPreferenceProfile;
     private commonTermLists: ICommonTermList[] = [];
@@ -13,6 +18,11 @@ export class JSVariableParser implements ICodeParser {
         (window as any).matchCommonTermMedia = (string: string) => this.createCommonTermList(string);
     }
 
+    /**
+     * Creates a CommonTermList with a media query
+     *
+     * @returns A CommonTermList object
+     */
     private createCommonTermList(string: string): ICommonTermList {
         const list = Factory.createCommonTermListFromMQString(string);
         const matchValue = this.evaluateCommonTermList(list);
@@ -21,7 +31,10 @@ export class JSVariableParser implements ICodeParser {
         return list
     }
 
-
+    /**
+     * In this case all stored CommonTermLists are iterated and checked if the match or not
+     * If the match value changes, the callback function of the CommonTermList is executed.
+     */
     parse(): void {
         let userPreferences = this.userProfile.getUserPreferences()
         for (let i = 0; i < userPreferences.length; i++) {
@@ -30,6 +43,9 @@ export class JSVariableParser implements ICodeParser {
         this.evaluateCommonTermLists();
     }
 
+    /**
+     * This function iterates over all stored CommonTermLists to evaluate each of them
+     */
     private evaluateCommonTermLists(): void {
         for (let i = 0; i < this.commonTermLists.length; i++) {
             const newValue = this.evaluateCommonTermList(this.commonTermLists[i]);
@@ -41,6 +57,11 @@ export class JSVariableParser implements ICodeParser {
         }
     }
 
+    /**
+     * This function evaluates a CommonTermList
+     *
+     * @returns the current match value of the common term list
+     */
     private evaluateCommonTermList(list: ICommonTermList): boolean {
         console.log(list);
         if(this.userProfile.doesMediaQueryMatch(list.mediaQuery)) {
@@ -56,11 +77,15 @@ export class JSVariableParser implements ICodeParser {
         return false;
     }
 
+
     private evaluateMediaQuery(mediaQuery: string): boolean {
         const mediaQueryList = (window as any).matchMedia(mediaQuery)
         return mediaQueryList.matches
     }
 
+    /**
+     * Makes the User Preferences accessible as Variables in JS
+     */
     private setJSVariableForUserPreference(userPreference: IUserPreference) {
         switch (userPreference.mediaFeature){
             case CommonTerm.audioDescriptionEnabled:
