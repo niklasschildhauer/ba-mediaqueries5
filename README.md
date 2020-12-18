@@ -27,8 +27,6 @@ Picture?
 - [Video demo website](https://gpii.eu/mq-5/example/video/index.html)
 - [Registration demo website](https://gpii.eu/mq-5/example/registration-website/index.html)
 
-![Alt text](/src/assets/demo-1.png "Demo Webpage")
-
 #### Operating Principle
 After the web page is loaded, the script fetch the external stylesheets to get the plain CSS text. 
 Then it searches for media queries that contain media feature candidates. 
