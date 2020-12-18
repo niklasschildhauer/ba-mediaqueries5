@@ -32,41 +32,59 @@ Each time a preference is changed, the process is triggered again.
 In addition, the skirpt also makes the media feature candidates available in JS as a media query list, as well as the candidate value as a variable. 
 
 #### How to setup the polyfill
-Um den Polyfill in einer beliebigen Webseite zu verwenden, müssen die beiden Datein aus  
+To use the polyfill in any website, the two files from [built](https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/tree/master/built) must be embedded in the HTML document as follows:
 
+```html
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="global-style.css" type="text/css" />    
+    </head>
+    <body>
+        ...
+        <script src="preference-features-polyfill.js"></script>
+        <script>
+            // other scripts
+        <script>
+    </body>
+</html>
+```
+It is important that the script is added to the body first, because the body element must be loaded in order to add the panel view.
 
 #### How to use the candidates...
 ##### ... in a Media Query
 The media featrue candidates can be combined arbitrarily with other media featrues and media types, using the 'and' keyword ('or‘ and ',' do not work).   
 
-```
+```css
 screen and (signLanguageEnabled: true) and (min-width: 600px) and (captionsEnabled: false)
-// true if the user prefers signLanguage and does not prefer captions and has a screen width of min 600px.
+/* true if the user prefers signLanguage and does not prefer captions and has a screen width of min 600px. */
 ```
 They can also be negated with the 'not' modifier. Either the whole query or a single feature.
 
+```css
+screen and (not audioDescriptionEnabled: true) 
+/* true if the user does not prefer audio description and uses a device of the type screen. */
 ```
-screen and (not audioDescriptionEnabled: true) // true if the user does not prefer audio description and uses a device of the type screen. 
-```
-```
-not screen and (audioDescriptionEnabled: true) // true if the user does not prefer audio description and does not use a device of the type screen. 
+```css
+not screen and (audioDescriptionEnabled: true) 
+/* true if the user does not prefer audio description and does not use a device of the type screen. */
 ```
 
 If no value is assigned, the value will be evaluated in the Boolean context.  
 
-```
+```css
 screen and (audioDescriptionEnabled) 
-// audioDescriptionEnabled in this case has the boolean context: true. So the query will be true if the user prefers audio description
+/* audioDescriptionEnabled in this case has the boolean context: true. So the query will be true if the user prefers audio description */
 ```
-```
+```css
 screen and (not audioDescriptionEnabled) 
-// audioDescriptionEnabled in this case has the boolean context: false. So the query will be true if the user does not prefer audio description
+/* audioDescriptionEnabled in this case has the boolean context: false. So the query will be true if the user does not prefer audio description */
 ```
 
 ###### 1. CSS
 Simply use the @media-rule as usual and then write the CSS code. 
 
-```
+```css
 .skiplink {
      display: none;
      font: Arial, sans-serif
@@ -93,7 +111,7 @@ Simply use the @media-rule as usual and then write the CSS code.
 Instead of the window.matchMedia function, call the window.matchCommonTermMedia function, which is part of the polyfill script. 
 This function also takes a media query string as parameter. 
 As usual, a callback function can be stored, which is called as soon as the value of the media query changes. 
-```
+```javascript
 let mqAudioDesc = window.matchCommonTermMedia("(audioDescriptionEnabled)")
     mqAudioDesc.addListener("change", callback);
 
@@ -108,7 +126,7 @@ function callback() {
 
 ##### ... as Variables
 If it is necessary to read the current value of a media feature candidate in JS, you can do this as follows:
-```
+```html
 <body>
     ...
     <script src="preference-features-polyfill.js"></script>
@@ -125,4 +143,20 @@ If it is necessary to read the current value of a media feature candidate in JS,
     <script>
 </body>
 ```
+
+#### How to contribute
+The script was developed in Typescript 4.1.2 and uses the npm-package manager.
+The code can be found at [src](https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/tree/master/src).
+```
+npm install 
+```
+Installs all project dependencies.
+```
+npm run build
+```
+Runs the tsc command to compile the TypeScript code to JS Code first and then runs browsify to bundle the JS code.    
+```
+npm run release
+```
+Runs the build process first, and then copies the bundled JS code and stylesheet to the built folder
 
