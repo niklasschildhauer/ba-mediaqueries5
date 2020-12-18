@@ -1,5 +1,5 @@
 import * as Coordinator from './coordinator/ScriptCoordinator'
 
-
-(window as any).userPreferenceSettings = new Coordinator.ScriptCoordinator();
+const coordinator: Coordinator.IScriptCoordinator = new Coordinator.ScriptCoordinator();
+(window as any).userPreferenceSettings = coordinator;
 

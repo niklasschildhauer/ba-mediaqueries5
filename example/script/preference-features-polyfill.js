@@ -218,7 +218,8 @@ exports.ScriptCoordinator = ScriptCoordinator;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Coordinator = require("./coordinator/ScriptCoordinator");
-window.userPreferenceSettings = new Coordinator.ScriptCoordinator();
+var coordinator = new Coordinator.ScriptCoordinator();
+window.userPreferenceSettings = coordinator;
 
 },{"./coordinator/ScriptCoordinator":2}],4:[function(require,module,exports){
 "use strict";
@@ -1873,7 +1874,7 @@ var UserPreferenceViewController = /** @class */ (function () {
         this.element.appendChild(this.panelWrapper);
     };
     /**
-     * Lifecycle Method
+     * Lifecycle method
      * Inserts the view in the current HTML document
      */
     UserPreferenceViewController.prototype.parseView = function () {
@@ -1883,7 +1884,7 @@ var UserPreferenceViewController = /** @class */ (function () {
         }
     };
     /**
-     * Lifecycle Method
+     * Lifecycle method
      * Removes the view from the current HTML document
      */
     UserPreferenceViewController.prototype.removeView = function () {
