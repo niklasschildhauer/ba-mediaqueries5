@@ -45,7 +45,7 @@ To use the polyfill in any website, the two files from [built](https://gitlab.mi
         <script src="preference-features-polyfill.js"></script>
         <script>
             // other scripts
-        <script>
+        </script>
     </body>
 </html>
 ```
@@ -140,7 +140,7 @@ If it is necessary to read the current value of a media feature candidate in JS,
         let sessionValue = window.sessionTimeout;
         let selfVoicingValue = window.selfVoicingEnabled;
         let pictoValue = window.pictogramsEnabled;
-    <script>
+    </script>
 </body>
 ```
 
