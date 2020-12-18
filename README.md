@@ -161,5 +161,5 @@ Runs the tsc command to compile the TypeScript code to JS Code first and then ru
 ```
 npm run release
 ```
-Runs the build process first, and then copies the bundled JS code and stylesheet to the built folder
+Runs the build process first, then copies the bundled JS code and stylesheet to the built folder and at the end uglifies the JS-File.
 

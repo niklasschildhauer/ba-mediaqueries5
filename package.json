@@ -15,7 +15,8 @@
   "devDependencies": {
     "babel": "^6.23.0",
     "browserify": "^17.0.0",
-    "typescript": "^4.1.2"
+    "typescript": "^4.1.2",
+    "uglify-js": "^3.12.2"
   },
   "scripts": {
     "test": "jest",
@@ -23,7 +24,7 @@
     "build": "browserify lib/main.js > lib/bundle.js",
     "start": "echo \\\"Error: no start installed\\\" &&  exit 1",
     "docs": "typedoc --out ./docs/code/ ./src/",
-    "release": "npm run build; cp ./lib/bundle.js ./built/; mv ./built/bundle.js ./built/preference-features-polyfill.js; cp src/view/preference-panel-style.css ./built/; cp ./built/preference-features-polyfill.js ./example/script/; cp ./built/preference-panel-style.css ./example/css/"
+    "release": "npm run build; cp ./lib/bundle.js ./built/; mv ./built/bundle.js ./built/preference-features-polyfill.js; cp src/view/preference-panel-style.css ./built/; cp ./built/preference-features-polyfill.js ./example/script/; cp ./built/preference-panel-style.css ./example/css/; uglifyjs --compress --output ./built/preference-features-polyfill.min.js -- ./built/preference-features-polyfill.js"
   },
   "repository": {
     "type": "git",
