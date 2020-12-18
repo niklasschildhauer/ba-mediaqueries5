@@ -39,7 +39,7 @@ export interface IUserPreferenceViewController {
 /**
  * @interface IViewController<T>
  *
- * Defines a ViewController with two lifecycle methods.
+ * Defines a ViewControllers lifecycle methods.
  */
 export interface IViewController<T> {
     presenter: T;
@@ -88,7 +88,7 @@ export class UserPreferenceViewController implements IViewController<IUserPrefer
         this.element.appendChild(this.panelWrapper);
     }
     /**
-     * Lifecycle Method
+     * Lifecycle method
      * Inserts the view in the current HTML document
      */
     parseView(): void {
@@ -100,14 +100,14 @@ export class UserPreferenceViewController implements IViewController<IUserPrefer
     }
 
     /**
-     * Lifecycle Method
+     * Lifecycle method
      * Removes the view from the current HTML document
      */
     removeView(): void {
         if(this.element.id != null) {
             let child = document.getElementById(this.element.id)
             if(child != null || child != undefined) {
-                document.removeChild(child);
+                document.body.removeChild(child);
             }
         }
     }

@@ -21,8 +21,9 @@
     "test": "jest",
     "prebuild": "tsc",
     "build": "browserify lib/main.js > lib/bundle.js",
-    "start": "echo \\\"Error: no start installed\\\" && exit 1",
-    "docs": "typedoc --out ./docs/code/ ./src/"
+    "start": "echo \\\"Error: no start installed\\\" &&  exit 1",
+    "docs": "typedoc --out ./docs/code/ ./src/",
+    "release": "npm run build; cp ./lib/bundle.js ./built/; mv ./built/bundle.js ./built/preference-features-polyfill.js; cp src/view/preference-panel-style.css ./built/; cp ./built/preference-features-polyfill.js ./example/script/; cp ./built/preference-panel-style.css ./example/css/"
   },
   "repository": {
     "type": "git",

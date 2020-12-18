@@ -40,6 +40,9 @@ export interface IScriptCoordinator {
     setSelfVoicingEnabledValue(value: string): void // noch nicht in Schaubild!
     setSessionTimeoutValue(value: string): void // noch nicht in Schaubild!
     setDisplaySkiplinksValue(value: string): void // noch nicht in Schaubild!
+    showPreferencePanel(): void;
+    hidePreferencePanel(): void;
+    removePreferencePanel(): void;
 }
 
 /**
@@ -155,6 +158,28 @@ export class ScriptCoordinator implements ICoordinator<IUserPreferencePresenter>
      */
     public setTableOfContentsValue(value: string): void {
         this.userProfile.setUserPreference(new UserPreference(CommonTerm.tableOfContents, value));
+    }
+
+    /**
+     * Shows the preference Panel, if it's collapsed
+     */
+    public showPreferencePanel(): void {
+        this.rootViewController.presenter.pressedShowPanel()
+    }
+
+    /**
+     * Hides the preference Panel, if it's expanded
+     */
+    public hidePreferencePanel(): void {
+        this.rootViewController.presenter.pressedHidePanel()
+    }
+
+
+    /**
+     * Removes the preference Panel from the HTML document
+     */
+    public removePreferencePanel(): void {
+        this.rootViewController.removeView();
     }
 
 

@@ -49,6 +49,12 @@ var JSVariableParser_1 = require("../parser/JSVariableParser");
 var CodeParser_1 = require("../parser/CodeParser");
 var CSSCodeParser_1 = require("../parser/CSSCodeParser");
 var NetworkAPI_1 = require("../network/NetworkAPI");
+/**
+ * @class ScriptCoordinator
+ *
+ * This Coordinator implements several delegate methods.
+ * If something changes, it will be coordinated here.
+ */
 var ScriptCoordinator = /** @class */ (function () {
     function ScriptCoordinator() {
         console.log("Hello World");
@@ -67,52 +73,140 @@ var ScriptCoordinator = /** @class */ (function () {
         var cssParser = new CSSCodeParser_1.CSSCodeParser(userProfile, this.cssReader);
         return new CodeParser_1.CodeParser(jsParser, cssParser);
     };
+    /**
+     * Can be called when the web author wants to add CSS code himself instead
+     * of letting CSSReader read it automatically.
+     */
     ScriptCoordinator.prototype.addCSSCode = function (string) {
         this.cssReader.read(string);
         console.log(this.cssReader.get());
     };
+    /**
+     * Changes the AudioDescriptionEnabled Value
+     *
+     * @param value
+     */
     ScriptCoordinator.prototype.setAudioDescriptionEnabledValue = function (value) {
         this.userProfile.setUserPreference(new Model_1.UserPreference(Model_1.CommonTerm.audioDescriptionEnabled, value));
     };
+    /**
+     * Changes the CaptionsEnabled Value
+     *
+     * @param value
+     */
     ScriptCoordinator.prototype.setCaptionsEnabledValue = function (value) {
         this.userProfile.setUserPreference(new Model_1.UserPreference(Model_1.CommonTerm.captionsEnabled, value));
     };
+    /**
+     * Changes the SignLanguage Value
+     *
+     * @param value
+     */
     ScriptCoordinator.prototype.setSignLanguageValue = function (value) {
         this.userProfile.setUserPreference(new Model_1.UserPreference(Model_1.CommonTerm.signLanguage, value));
     };
+    /**
+     * Changes the SignLanguageEnabled Value
+     *
+     * @param value
+     */
     ScriptCoordinator.prototype.setSignLanguageEnabledValue = function (value) {
         this.userProfile.setUserPreference(new Model_1.UserPreference(Model_1.CommonTerm.signLanguageEnabled, value));
     };
+    /**
+     * Changes the PictogramsEnabled Value
+     *
+     * @param value
+     */
     ScriptCoordinator.prototype.setPictogramsEnabledValue = function (value) {
         this.userProfile.setUserPreference(new Model_1.UserPreference(Model_1.CommonTerm.pictogramsEnabled, value));
     };
+    /**
+     * Changes the SelfVoicingEnabled Value
+     *
+     * @param value
+     */
     ScriptCoordinator.prototype.setSelfVoicingEnabledValue = function (value) {
         this.userProfile.setUserPreference(new Model_1.UserPreference(Model_1.CommonTerm.selfVoicingEnabled, value));
     };
+    /**
+     * Changes the SessionTimeout Value
+     *
+     * @param value
+     */
     ScriptCoordinator.prototype.setSessionTimeoutValue = function (value) {
         this.userProfile.setUserPreference(new Model_1.UserPreference(Model_1.CommonTerm.sessionTimeout, value));
     };
+    /**
+     * Changes the DisplaySkiplinks Value
+     *
+     * @param value
+     */
     ScriptCoordinator.prototype.setDisplaySkiplinksValue = function (value) {
         this.userProfile.setUserPreference(new Model_1.UserPreference(Model_1.CommonTerm.displaySkiplinks, value));
     };
+    /**
+     * Changes the TableOfContents Value
+     *
+     * @param value
+     */
     ScriptCoordinator.prototype.setTableOfContentsValue = function (value) {
         this.userProfile.setUserPreference(new Model_1.UserPreference(Model_1.CommonTerm.tableOfContents, value));
     };
-    ScriptCoordinator.prototype.parseCode = function () {
-        this.codeParser.parse();
+    /**
+     * Shows the preference Panel, if it's collapsed
+     */
+    ScriptCoordinator.prototype.showPreferencePanel = function () {
+        this.rootViewController.presenter.pressedShowPanel();
+    };
+    /**
+     * Hides the preference Panel, if it's expanded
+     */
+    ScriptCoordinator.prototype.hidePreferencePanel = function () {
+        this.rootViewController.presenter.pressedHidePanel();
+    };
+    /**
+     * Removes the preference Panel from the HTML document
+     */
+    ScriptCoordinator.prototype.removePreferencePanel = function () {
+        this.rootViewController.removeView();
     };
     // DELEGATE FUNCTIONS
+    /**
+     * Called from the CSSReader when the MediaDescriptors have been updated.
+     * It tells the CodeParser to parse the code again.
+     *
+     * @param CSSReader
+     */
     ScriptCoordinator.prototype.didUpdateMediaDescriptors = function (from) {
-        this.parseCode();
+        this.codeParser.parse();
         console.log("update CSS Code!");
     };
+    /**
+     * Called from the IUserPreferenceProfile when the Profile has been updated.
+     * It tells the CodeParser to parse the code again and the ViewController to reload
+     *
+     * @param IUserPreferenceProfile
+     */
     ScriptCoordinator.prototype.didUpdateProfile = function (from) {
-        this.parseCode();
+        this.codeParser.parse();
         this.rootViewController.presenter.reload();
     };
+    /**
+     * Called from the IUserPreferenceProfile when the an error occurred until login to the openAPE Server
+     * It tells ViewController to show an error Message.
+     *
+     * @param IUserPreferenceProfile
+     */
     ScriptCoordinator.prototype.recievedLoginErrorMessage = function (message, from) {
         this.rootViewController.presenter.showLoginErrorMessage(message);
     };
+    /**
+     * Called from the IUserPreferenceProfile when the an Persona is selected
+     * It tells ViewController to show that a Persona is selected.
+     *
+     * @param IUserPreferenceProfile
+     */
     ScriptCoordinator.prototype.didSelectPersona = function (persona, from) {
         this.rootViewController.presenter.selectedPersona(persona);
     };
@@ -133,9 +227,22 @@ exports.Factory = void 0;
 var Model_1 = require("./Model");
 var common = require("../common/utility");
 var utility_1 = require("../common/utility");
+/**
+ * @class Factory
+ *
+ * The Faabrik class is designed according to the design pattern Factory method.
+ * It contains static methods, which create objects and configure them appropriately,
+ * so that no new operator has to be used in the program.
+ */
 var Factory = /** @class */ (function () {
     function Factory() {
     }
+    /**
+     * Static function to create a Array of MediaDescriptor objects of the IMediaDescriptor type.
+     *
+     * @param cssCode  A string of css code.
+     * @returns A array of MediaDescriptor objects
+     */
     Factory.createMediaDescriptorsFromCSSString = function (cssCode) {
         var regex = new RegExp("@media.(.*?).\\{", "g");
         var matches = cssCode.matchAll(regex);
@@ -154,6 +261,13 @@ var Factory = /** @class */ (function () {
         }
         return mediaDescriptors;
     };
+    /**
+     * Static function to create a MediaDescriptor object of the IMediaDescriptor type. It will be called
+     * from the {@linkcode createMediaDescriptorsFromCSSString} function.
+     *
+     * @param cssCode  A string of css code.
+     * @returns A array of MediaDescriptor objects
+     */
     Factory.createMediaDescriptorFromMQStringAndBodyString = function (mediaQuery, body) {
         var _a;
         var query = mediaQuery;
@@ -187,7 +301,12 @@ var Factory = /** @class */ (function () {
         }
         return new Model_1.MediaDescriptor(unsupportedMediaQuery, supportedMediaQueryString, body, negated);
     };
-    //Zusammenwerfen ??
+    /**
+     * Static function to create a CommonTermList object of the ICommonTermList type.
+     *
+     * @param mediaQuery  A string of the media query.
+     * @returns A CommonTermList
+     */
     Factory.createCommonTermListFromMQString = function (mediaQuery) {
         var _a;
         var query = mediaQuery;
@@ -220,6 +339,14 @@ var Factory = /** @class */ (function () {
         }
         return new Model_1.CommonTermList(unsupportedMediaQuery, supportedMediaQueryString, negated);
     };
+    /**
+     * Static function to create a Media Feature object of the IMediaFeature type. It will be called
+     * from the {@linkcode createMediaDescriptorsFromCSSString} function
+     * and {@linkcode createCommonTermListFromMQString}.
+     *
+     * @param mediaQuery  A string of the media query.
+     * @returns A CommonTermList
+     */
     Factory.createMediaFeatureFrom = function (condition) {
         var conditionString = utility_1.removeUnimportantCharactersFrom(condition);
         var negated = false;
@@ -239,7 +366,6 @@ var Factory = /** @class */ (function () {
         }
         return new Model_1.MediaFeature(mediaFeature, negated, value);
     };
-    // checks if the media Query is negated or not.
     Factory.isMediaQueryNegated = function (mediaQuery) {
         if (mediaQuery.slice(0, 3).match("not")) {
             return [true, mediaQuery.slice(4)];
@@ -258,10 +384,22 @@ exports.Factory = Factory;
 },{"../common/utility":1,"./Model":5}],5:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SkipLinkValues = exports.Persona = exports.CommonTerm = exports.UserPreference = exports.MediaFeature = exports.VideoElement = exports.CommonTermList = exports.MediaDescriptor = exports.MediaQuery = exports.CommonTermUtil = void 0;
+exports.SkipLinkValues = exports.Persona = exports.CommonTerm = exports.UserPreference = exports.MediaFeature = exports.CommonTermList = exports.MediaDescriptor = exports.MediaQuery = exports.CommonTermUtil = void 0;
+/**
+ * @class CommonTermUtil
+ *
+ * Helper Class with static functions
+ */
 var CommonTermUtil = /** @class */ (function () {
     function CommonTermUtil() {
     }
+    /**
+     * Static function to check if a query contains a common term media feature
+     *
+     * @param query  A string of a media query.
+     * @returns A tuple with a boolean if the query contains a common term media feature
+     * and the media feature if it does.
+     */
     CommonTermUtil.containsCommonTermMediaFeature = function (query) {
         var result = [false, null];
         Object.keys(CommonTerm).forEach(function (key) {
@@ -275,6 +413,9 @@ var CommonTermUtil = /** @class */ (function () {
     return CommonTermUtil;
 }());
 exports.CommonTermUtil = CommonTermUtil;
+/**
+ * @class MediaQuery
+ */
 var MediaQuery = /** @class */ (function () {
     function MediaQuery(unSupportedMediaQuery, supportedMediaQuery, negated) {
         this.negated = negated;
@@ -284,6 +425,9 @@ var MediaQuery = /** @class */ (function () {
     return MediaQuery;
 }());
 exports.MediaQuery = MediaQuery;
+/**
+ * @class MediaDescriptor
+ */
 var MediaDescriptor = /** @class */ (function () {
     function MediaDescriptor(unSupportedMediaQuery, supportedMediaQuery, body, negated) {
         this.mediaQuery = new MediaQuery(unSupportedMediaQuery, supportedMediaQuery, negated);
@@ -292,30 +436,42 @@ var MediaDescriptor = /** @class */ (function () {
     return MediaDescriptor;
 }());
 exports.MediaDescriptor = MediaDescriptor;
+/**
+ * @class CommonTermList
+ */
 var CommonTermList = /** @class */ (function () {
     function CommonTermList(unSupportedMediaQuery, supportedMediaQuery, negated) {
         this.callbackFunction = function () { return void 0; };
         this.mediaQuery = new MediaQuery(unSupportedMediaQuery, supportedMediaQuery, negated);
         this.matchValue = false;
     }
+    /**
+     * Adds a Event Listener, which should be called, when the value changes
+     *
+     * @param event   For example "change"
+     * @param callback   The function which should be executet.
+     */
     CommonTermList.prototype.addListener = function (event, callback) {
         this.callbackFunction = callback;
     };
+    /**
+     * @returns True if the media query does match
+     */
     CommonTermList.prototype.matches = function () {
         return this.matchValue;
     };
+    /**
+     * @param value   Sets the match value.
+     */
     CommonTermList.prototype.setMatchValue = function (value) {
         this.matchValue = value;
     };
     return CommonTermList;
 }());
 exports.CommonTermList = CommonTermList;
-var VideoElement = /** @class */ (function () {
-    function VideoElement() {
-    }
-    return VideoElement;
-}());
-exports.VideoElement = VideoElement;
+/**
+ * @class MediaFeature
+ */
 var MediaFeature = /** @class */ (function () {
     function MediaFeature(mediaFeature, negated, value) {
         this.mediaFeature = mediaFeature;
@@ -325,6 +481,9 @@ var MediaFeature = /** @class */ (function () {
     return MediaFeature;
 }());
 exports.MediaFeature = MediaFeature;
+/**
+ * @class UserPreference
+ */
 var UserPreference = /** @class */ (function () {
     function UserPreference(mediaFeature, value) {
         this.mediaFeature = mediaFeature;
@@ -333,6 +492,11 @@ var UserPreference = /** @class */ (function () {
     return UserPreference;
 }());
 exports.UserPreference = UserPreference;
+/**
+ * @enum CommonTerm
+ *
+ * Contains all new media features from the common terms.
+ */
 var CommonTerm;
 (function (CommonTerm) {
     CommonTerm["displaySkiplinks"] = "displaySkiplinks";
@@ -346,6 +510,12 @@ var CommonTerm;
     CommonTerm["signLanguageEnabled"] = "signLanguageEnabled";
     CommonTerm["sessionTimeout"] = "sessionTimeout";
 })(CommonTerm = exports.CommonTerm || (exports.CommonTerm = {}));
+/**
+ * @enum Persona
+ *
+ * Contains all Personas from the 'A day in the life of …' descriptions
+ * [MOOCAP](https://moocap.gpii.eu/?page_id=33).
+ */
 var Persona;
 (function (Persona) {
     Persona["alexander"] = "Alexander";
@@ -358,6 +528,12 @@ var Persona;
     Persona["susan"] = "Susan";
     Persona["tom"] = "Tom";
 })(Persona = exports.Persona || (exports.Persona = {}));
+/**
+ * @enum SkipLinkValues
+ *
+ * The general term media feature 'dispalySkiplinks' has three values to choose from.
+ * It is the only one one that is not boolean and has a value of a set.
+ */
 var SkipLinkValues;
 (function (SkipLinkValues) {
     SkipLinkValues["onfocus"] = "onfocus";
@@ -407,6 +583,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.NetworkAPI = exports.NetworkUserResultUserPreference = void 0;
 var Model_1 = require("../model/Model");
 var Personas = require("./Personas/Personas");
+/**
+ * @class NetworkUserResultUserPreference
+ */
 var NetworkUserResultUserPreference = /** @class */ (function () {
     function NetworkUserResultUserPreference(success, errorMessage, userPreferences) {
         this.success = success;
@@ -416,10 +595,28 @@ var NetworkUserResultUserPreference = /** @class */ (function () {
     return NetworkUserResultUserPreference;
 }());
 exports.NetworkUserResultUserPreference = NetworkUserResultUserPreference;
+/**
+ * @class NetworkAPI
+ *
+ * This class uses the Javascript OpenAPEClient to load data from the client.
+ * It shields the external code from the rest of the program so that it can be easily replaced if necessary.
+ */
 var NetworkAPI = /** @class */ (function () {
     function NetworkAPI() {
         this.client = new OpenAPEClient();
     }
+    /**
+     * Loads the user context from a user. For this the method does several steps:
+     * 1. It logs the user in
+     * 2. It loads all the user Context Lists of the user
+     * 3. It loads all matching user preferences
+     * 4. it returns a NetworkUserResultUserPreference Object with either the UserPreferences or a error
+     * message
+     *
+     * @param username   the openAPE username
+     * @param passwort   the openAPE password
+     * @returns A Promise with the NetworkUserResultUserPreference Object.
+     */
     NetworkAPI.prototype.loadUserContext = function (username, password) {
         return __awaiter(this, void 0, void 0, function () {
             var userContextList, userPreferenceArrays, userPreferences;
@@ -469,16 +666,13 @@ var NetworkAPI = /** @class */ (function () {
             });
         });
     };
-    // private async getUserContextId(uri: string) {
-    //     console.log(uri)
-    //     this.client.getUserContext(uri)
-    //         .then(function(result){
-    //             console.log(result)
-    //         })
-    //         .catch(function(err){
-    //             console.log(err)
-    //         })
-    // }
+    /**
+     * Loads the user context of a Persona from the {@linkcode Persona}. For demo reasons the user context
+     * is not loaded from the OpenApe server, instead it is loaded from constants
+     *
+     * @param persona
+     * @returns A Promise with the NetworkUserResultUserPreference Object.
+     */
     NetworkAPI.prototype.loadPreferenceSetFromPersona = function (persona) {
         var userPreferences;
         switch (persona) {
@@ -515,6 +709,12 @@ var NetworkAPI = /** @class */ (function () {
         }
         return Promise.resolve(new NetworkUserResultUserPreference(true, null, userPreferences));
     };
+    /**
+     * Private function which creates the UserPreference Array from OpenAPE returned JSON
+     *
+     * @param json   From the openAPE Server
+     * @returns UserPreference Array
+     */
     // hier muss noch gecheckt werden wie der Kontext heißt...
     NetworkAPI.prototype.createUserPreferencesFromOpenAPEJSON = function (json) {
         var preferences = json;
@@ -570,6 +770,11 @@ var CONSTANTS = {
     OPENAPE_SERVER_URL: "https://openape.gpii.eu",
     CONTENT_TYPE: "application/json"
 };
+/**
+ * @class OpenAPEClient
+ *
+ * This class is a copy of the [JavaScript OpenAPE Client](https://github.com/REMEXLabs/openape.js).
+ */
 var OpenAPEClient = /** @class */ (function () {
     /**
      * constructor
@@ -589,6 +794,15 @@ var OpenAPEClient = /** @class */ (function () {
         this.serverUrl = serverUrl;
         this.token = null;
     }
+    /**
+     * login
+     *
+     * This function logs the current user in.
+     *
+     * @param {string} username
+     * @param {string} password
+     * @returns {Promise} - A JavaScript Promise object.
+     */
     OpenAPEClient.prototype.login = function (username, password) {
         return __awaiter(this, void 0, void 0, function () {
             var data, response, err_1;
@@ -621,6 +835,14 @@ var OpenAPEClient = /** @class */ (function () {
             });
         });
     };
+    /**
+     * getUserContexts
+     *
+     * This function gets the user ContextLists from the logged in user
+     *
+     * @param {string[]} userContextList
+     * @returns {Promise} - A JavaScript Promise object.
+     */
     OpenAPEClient.prototype.getUserContexts = function (userContextList) {
         return __awaiter(this, void 0, void 0, function () {
             var resultData;
@@ -645,6 +867,15 @@ var OpenAPEClient = /** @class */ (function () {
             });
         });
     };
+    /**
+     * fetchAPIPost
+     *
+     * This function fetchs the openAPE Server with a post request
+     *
+     * @param {string} url - The URL of the server.
+     * @param {URLSearchParams} The URL Search Params
+     * @returns {Promise} - A JavaScript Promise object.
+     */
     OpenAPEClient.prototype.fetchAPIPost = function (data, url) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
@@ -670,6 +901,14 @@ var OpenAPEClient = /** @class */ (function () {
             });
         });
     };
+    /**
+     * fetchAPIGet
+     *
+     * This function fetchs the openAPE Server with a get request
+     *
+     * @param {string} url - The URL of the server.
+     * @returns {Promise} - A JavaScript Promise object.
+     */
     OpenAPEClient.prototype.fetchAPIGet = function (url) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
@@ -711,14 +950,9 @@ var OpenAPEClient = /** @class */ (function () {
      * This function is used to retrieve a list of URIs to accessible user contexts.
      * It relates to ISO/IEC 24752-8 7.2.6.
      *
-     * @param {function} successCallback - The function to be called on success.
-     * @param {function} errorCallback - The function to be called on error.
-     * @param {string} [contentType="JSON"] - The content type to be used if the default set in the client
-     * should not be used. Can be "JSON" or "XML".
-     * @returns {object} - A JavaScript object with all user contexts information.
+     * @returns {Promise} - A JavaScript Promise object with the user context lists.
      */
-    OpenAPEClient.prototype.getUserContextList = function (contentType) {
-        if (contentType === void 0) { contentType = this.contentType; }
+    OpenAPEClient.prototype.getUserContextList = function () {
         return __awaiter(this, void 0, void 0, function () {
             var err_2;
             return __generator(this, function (_a) {
@@ -743,14 +977,9 @@ var OpenAPEClient = /** @class */ (function () {
      * It relates to ISO/ICE 24752-8 7.2.3.
      *
      * @param {string} userContextId - The ID of the stored user context that shall be retrieved.
-     * @param {function} successCallback - The function to be called on success.
-     * @param {function} errorCallback - The function to be called on error.
-     * @param {string} [contentType="JSON"] - The content type to be used if the default set in the client
-     * should not be used. Can be "JSON" or "XML".
-     * @returns {object} - A JavaScript object with the user context's information.
+     * @returns {Promise} - A JavaScript Promise object with the user context's information.
      */
-    OpenAPEClient.prototype.getUserContext = function (userContextId, contentType) {
-        if (contentType === void 0) { contentType = this.contentType; }
+    OpenAPEClient.prototype.getUserContext = function (userContextId) {
         return __awaiter(this, void 0, void 0, function () {
             var err_3;
             return __generator(this, function (_a) {
@@ -1043,17 +1272,32 @@ exports.examplePreferences = {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CSSCodeParser = void 0;
 var Model_1 = require("../model/Model");
+/**
+ * @class CSSCodeParser
+ *
+ * It is responsible to insert the correct CSS Code. It contains the CSS Reader
+ * to get the current media descriptor and the User Profile to get the current user preferences
+ */
 var CSSCodeParser = /** @class */ (function () {
     function CSSCodeParser(userPreferenceProfile, cssReader) {
         this.styleId = "common-terms-media-queries";
         this.cssReader = cssReader;
         this.userProfile = userPreferenceProfile;
     }
+    /**
+     * Inserts the CSS code into the page.
+     * First the inserted CSS code is reset and then a new CSS code is created and inserted.
+     */
     CSSCodeParser.prototype.parse = function () {
         this.resetCSSCode();
         var cssCode = this.createCSSCode();
         this.parseCSSCode(cssCode);
     };
+    /**
+     * Creates the appropriate CSS code by evaluating user preferences and media descriptors.
+     *
+     * @returns A string with the appropriate CSS Code
+     */
     CSSCodeParser.prototype.createCSSCode = function () {
         var cssStyle = [];
         var mediaDescriptors = this.cssReader.get();
@@ -1070,18 +1314,27 @@ var CSSCodeParser = /** @class */ (function () {
         var cssString = this.createCSSVariables() + cssStyle.join("\n");
         return cssString;
     };
+    /**
+     * Inserts the CSS code into the page.
+     */
     CSSCodeParser.prototype.parseCSSCode = function (cssCode) {
         var style = document.createElement('style');
         style.setAttribute("id", this.styleId);
         style.innerHTML = cssCode;
         document.head.appendChild(style);
     };
+    /**
+     * Resets the CSS code of the page
+     */
     CSSCodeParser.prototype.resetCSSCode = function () {
         var style = document.getElementById(this.styleId);
         if (style != null) {
             style.remove();
         }
     };
+    /**
+     * Creates CSS Variables
+     */
     CSSCodeParser.prototype.createCSSVariables = function () {
         var variables = ["--audio-description-enabled: " + this.userProfile.getValueForMediaFeature(Model_1.CommonTerm.audioDescriptionEnabled),
             "--captions-enabled: " + this.userProfile.getValueForMediaFeature(Model_1.CommonTerm.captionsEnabled),
@@ -1106,11 +1359,19 @@ exports.CSSCodeParser = CSSCodeParser;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CodeParser = void 0;
+/**
+ * @class CodeParser
+ *
+ * This class bundles all code parser. At the moment there are two: CSS Code parser and JS Code Parser
+ */
 var CodeParser = /** @class */ (function () {
     function CodeParser(jsVariableParser, cssCodeParser) {
         this.cssParser = cssCodeParser;
         this.jsParser = jsVariableParser;
     }
+    /**
+     * Is called when something changed and code needs to be parsed.
+     */
     CodeParser.prototype.parse = function () {
         this.jsParser.parse();
         this.cssParser.parse();
@@ -1125,6 +1386,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.JSVariableParser = void 0;
 var Model_1 = require("../model/Model");
 var Factory_1 = require("../model/Factory");
+/**
+ * @class JSVariableParser
+ *
+ * It is responsible for the Common Term Lists. It contains the User Profile and the active Common Term Lists
+ */
 var JSVariableParser = /** @class */ (function () {
     function JSVariableParser(userPreferenceProfile) {
         var _this = this;
@@ -1133,6 +1399,11 @@ var JSVariableParser = /** @class */ (function () {
         this.parse();
         window.matchCommonTermMedia = function (string) { return _this.createCommonTermList(string); };
     }
+    /**
+     * Creates a CommonTermList with a media query
+     *
+     * @returns A CommonTermList object
+     */
     JSVariableParser.prototype.createCommonTermList = function (string) {
         var list = Factory_1.Factory.createCommonTermListFromMQString(string);
         var matchValue = this.evaluateCommonTermList(list);
@@ -1140,6 +1411,10 @@ var JSVariableParser = /** @class */ (function () {
         this.commonTermLists.push(list);
         return list;
     };
+    /**
+     * In this case all stored CommonTermLists are iterated and checked if the match or not
+     * If the match value changes, the callback function of the CommonTermList is executed.
+     */
     JSVariableParser.prototype.parse = function () {
         var userPreferences = this.userProfile.getUserPreferences();
         for (var i = 0; i < userPreferences.length; i++) {
@@ -1147,6 +1422,9 @@ var JSVariableParser = /** @class */ (function () {
         }
         this.evaluateCommonTermLists();
     };
+    /**
+     * This function iterates over all stored CommonTermLists to evaluate each of them
+     */
     JSVariableParser.prototype.evaluateCommonTermLists = function () {
         for (var i = 0; i < this.commonTermLists.length; i++) {
             var newValue = this.evaluateCommonTermList(this.commonTermLists[i]);
@@ -1157,6 +1435,11 @@ var JSVariableParser = /** @class */ (function () {
             }
         }
     };
+    /**
+     * This function evaluates a CommonTermList
+     *
+     * @returns the current match value of the common term list
+     */
     JSVariableParser.prototype.evaluateCommonTermList = function (list) {
         console.log(list);
         if (this.userProfile.doesMediaQueryMatch(list.mediaQuery)) {
@@ -1175,6 +1458,9 @@ var JSVariableParser = /** @class */ (function () {
         var mediaQueryList = window.matchMedia(mediaQuery);
         return mediaQueryList.matches;
     };
+    /**
+     * Makes the User Preferences accessible as Variables in JS
+     */
     JSVariableParser.prototype.setJSVariableForUserPreference = function (userPreference) {
         switch (userPreference.mediaFeature) {
             case Model_1.CommonTerm.audioDescriptionEnabled:
@@ -1254,6 +1540,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CSSReader = void 0;
 var Factory = require("../model/Factory");
+/**
+ * @class UserPreferenceProfile
+ *
+ * The class manges the media descriptors and reads CSS Code
+ */
 var CSSReader = /** @class */ (function () {
     function CSSReader(delegate) {
         this.mediaDescriptors = [];
@@ -1261,9 +1552,19 @@ var CSSReader = /** @class */ (function () {
         this.delegate = delegate;
         this.readAutomatic();
     }
+    /**
+     * Returns the current media descriptors
+     *
+     * @returns An array of the media descriptors
+     */
     CSSReader.prototype.get = function () {
         return this.mediaDescriptors;
     };
+    /**
+     * Reads CSS Code.
+     *
+     * @param string   plain CSS Code to read
+     */
     CSSReader.prototype.read = function (string) {
         if (!this.plainCSS.includes(string)) {
             this.plainCSS.push(string);
@@ -1273,6 +1574,9 @@ var CSSReader = /** @class */ (function () {
             console.log("CSS Code is already included");
         }
     };
+    /**
+     * Searchs in the HTML Document for CSS Code
+     */
     CSSReader.prototype.readAutomatic = function () {
         return __awaiter(this, void 0, void 0, function () {
             var stylesSheets, i, link, text;
@@ -1300,6 +1604,10 @@ var CSSReader = /** @class */ (function () {
             });
         });
     };
+    /**
+     * Refresh method to create new media descriptors and to inform the delegate that
+     * the media descriptors has changed.
+     */
     CSSReader.prototype.refresh = function () {
         if (this.plainCSS.length != 0) {
             var plainCSSCodeString = this.plainCSS.reverse().join("\n");
@@ -1312,6 +1620,9 @@ var CSSReader = /** @class */ (function () {
         this.plainCSS = [];
         this.refresh();
     };
+    /**
+     * Loads a CSS File
+     */
     CSSReader.prototype.loadCSSFile = function (link) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
@@ -1336,6 +1647,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserPreferenceProfile = void 0;
 var Model = require("../model/Model");
 var Model_1 = require("../model/Model");
+/**
+ * @class UserPreferenceProfile
+ *
+ * The UserProfile is the only class in the Programm which uses the Network API.
+ * This is where user preferences are managed.
+ */
 var UserPreferenceProfile = /** @class */ (function () {
     function UserPreferenceProfile(delegate, network) {
         this.userPreferences = [];
@@ -1343,16 +1660,30 @@ var UserPreferenceProfile = /** @class */ (function () {
         this.delegate = delegate;
         this.network = network;
     }
+    /**
+     * Calls the delegate to inform, that the profile has updated.
+     */
     UserPreferenceProfile.prototype.refresh = function () {
         this.delegate.didUpdateProfile(this);
         console.log(this.userPreferences);
     };
+    /**
+     * Sets the default user preferences.
+     */
     UserPreferenceProfile.prototype.setDefaultValues = function () {
         this.userPreferences = defaultPreferences.slice();
         console.log("_-----------");
         console.log(defaultPreferences);
         console.log("_-----------");
     };
+    /**
+     * Logs a user into the Open APE Server and queries their user preferences.
+     * If the login is successful, the new user preferences are set. Otherwise,
+     * the delegate will inform that an error has occurred.
+     *
+     * @param username   the openAPE username
+     * @param passwort   the openAPE password
+     */
     UserPreferenceProfile.prototype.login = function (username, password) {
         var _this = this;
         this.network.loadUserContext(username, password)
@@ -1366,6 +1697,12 @@ var UserPreferenceProfile = /** @class */ (function () {
             return result;
         });
     };
+    /**
+     * Checks if a media feature does match the user preferences.
+     *
+     * @param mediaFeature   a common term media feature
+     * @returns True if a media feature matches the user preferences.
+     */
     UserPreferenceProfile.prototype.doesMediaFeatureMatch = function (mediaFeature) {
         for (var k = 0; k < this.userPreferences.length; k++) {
             var preference = this.userPreferences[k];
@@ -1378,6 +1715,13 @@ var UserPreferenceProfile = /** @class */ (function () {
         }
         return true;
     };
+    /**
+     * Checks if a media query does match the user preferences.
+     * For this purpose the {@linkcode doesMediaFeatureMatch} several times method is called.
+     *
+     * @param mediaFeature   a common term media query
+     * @returns True if the media feature matches the user preferences.
+     */
     UserPreferenceProfile.prototype.doesMediaQueryMatch = function (mediaQuery) {
         for (var i = 0; i < mediaQuery.unSupportedMediaQuery.length; i++) {
             var mediaFeature = mediaQuery.unSupportedMediaQuery[i];
@@ -1389,6 +1733,10 @@ var UserPreferenceProfile = /** @class */ (function () {
         }
         return true;
     };
+    /**
+     * @param mediaFeature   a common term media feature
+     * @returns The user preference value of a certain media feature
+     */
     UserPreferenceProfile.prototype.getValueForMediaFeature = function (mediaFeature) {
         for (var i = 0; i < this.userPreferences.length; i++) {
             if (this.userPreferences[i].mediaFeature == mediaFeature) {
@@ -1403,9 +1751,19 @@ var UserPreferenceProfile = /** @class */ (function () {
         }
         return "";
     };
+    /**
+     * @returns All user preferences
+     */
     UserPreferenceProfile.prototype.getUserPreferences = function () {
         return this.userPreferences;
     };
+    /**
+     * Changes the profile with a new user preference.
+     * If the new user preference is of the type 'sessionTimeout' and the value is > 1,
+     * the extendedSessionTimeout is set to true
+     *
+     * @param preference   a new UserPreference
+     */
     UserPreferenceProfile.prototype.changeUserPreference = function (preference) {
         for (var i = 0; i < this.userPreferences.length; i++) {
             if (this.userPreferences[i].mediaFeature == preference.mediaFeature) {
@@ -1420,6 +1778,13 @@ var UserPreferenceProfile = /** @class */ (function () {
             }
         }
     };
+    /**
+     * Changes the profile with new user preferences.
+     * At first the default values are set, then the new preferences are set
+     * and at least the refresh method is called
+     *
+     * @param preferences   new UserPreferences
+     */
     UserPreferenceProfile.prototype.setUserPreferences = function (preferences) {
         this.setDefaultValues();
         for (var i = 0; i < preferences.length; i++) {
@@ -1427,10 +1792,24 @@ var UserPreferenceProfile = /** @class */ (function () {
         }
         this.refresh();
     };
+    /**
+     * Changes the profile with a new user preference.
+     * At first the default values are set, then the new preferences are set
+     * and at least the refresh method is called
+     *
+     * @param preference   new UserPreference
+     */
     UserPreferenceProfile.prototype.setUserPreference = function (preference) {
         this.changeUserPreference(preference);
         this.refresh();
     };
+    /**
+     * Set the user preferences to those from a persona.
+     * After the pereferences are set the delegate the delegate
+     * will inform that an Persona is selected.
+     *
+     * @param persona
+     */
     UserPreferenceProfile.prototype.selectPersona = function (persona) {
         var _this = this;
         this.network.loadPreferenceSetFromPersona(persona)
@@ -1462,6 +1841,11 @@ var defaultPreferences = [new Model.UserPreference(Model_1.CommonTerm.audioDescr
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserPreferencePresenter = exports.UserPreferenceViewController = void 0;
 var UserPreferenceViews_1 = require("./UserPreferenceViews");
+/**
+ * @class UserPreferenceViewController
+ *
+ * This View Controller creates all views for the User Preference Panel.
+ */
 var UserPreferenceViewController = /** @class */ (function () {
     function UserPreferenceViewController(userProfile) {
         this.element = new UserPreferenceViews_1.HTMLBasicElement("div", "wrapper", null);
@@ -1488,49 +1872,72 @@ var UserPreferenceViewController = /** @class */ (function () {
         this.element.appendChild(this.showPanelButton.element);
         this.element.appendChild(this.panelWrapper);
     };
+    /**
+     * Lifecycle Method
+     * Inserts the view in the current HTML document
+     */
     UserPreferenceViewController.prototype.parseView = function () {
         // View is only shown, if the script is embeed at the bottom of the body and not in the header.
         if (document.body != null || document.body != undefined) {
             document.body.appendChild(this.element.element);
         }
     };
+    /**
+     * Lifecycle Method
+     * Removes the view from the current HTML document
+     */
     UserPreferenceViewController.prototype.removeView = function () {
         if (this.element.id != null) {
             var child = document.getElementById(this.element.id);
             if (child != null || child != undefined) {
-                document.removeChild(child);
+                document.body.removeChild(child);
             }
         }
-        // if(this.showPanelButton.element.id != null) {
-        //     let child = document.getElementById(this.showPanelButton.element.id)
-        //     if(child != null || child != undefined) {
-        //         document.removeChild(child);
-        //     }
-        // }
     };
+    /**
+     * Changes the right Attribute of the panel to show the panel
+     */
     UserPreferenceViewController.prototype.showPanel = function () {
         this.panelWrapper.element.style.right = "2vh";
         this.showPanelButton.element.element.style.right = "-200px";
-        //this.element.element.style.right = getComputedStyle(document.documentElement).getPropertyValue('--padding');
     };
+    /**
+     * Changes the right Attribute of the panel to hide the panel
+     */
     UserPreferenceViewController.prototype.hidePanel = function () {
         this.panelWrapper.element.style.right = "-400px";
         this.showPanelButton.element.element.style.right = "2vh";
     };
+    /**
+     * Shows the current user preferences. For that the values in the
+     * ListWrapperView will be set
+     */
     UserPreferenceViewController.prototype.selectUserPreferences = function (userPreferences) {
         for (var i = 0; i < userPreferences.length; i++) {
             this.listWrapper.setPreferences(userPreferences[i]);
         }
     };
+    /**
+     * Shows a error message in the LoginWrapperView
+     */
     UserPreferenceViewController.prototype.showLoginErrorMessage = function (message) {
         this.loginWrapper.showErrorMessage(message);
     };
+    /**
+     * Shows that a persona is selected.
+     */
     UserPreferenceViewController.prototype.selectPersona = function (persona) {
         this.personaWrapper.selectPersona(persona);
     };
+    /**
+     * Unselect all Personas
+     */
     UserPreferenceViewController.prototype.unselectAllPersona = function () {
         this.personaWrapper.unselectAllPersonas();
     };
+    /**
+     * @returns All set user preferences in the ListWrapperView
+     */
     UserPreferenceViewController.prototype.getAllSetPreferences = function () {
         return this.listWrapper.getAllPreferences();
     };
@@ -1563,49 +1970,95 @@ var UserPreferenceViewController = /** @class */ (function () {
     return UserPreferenceViewController;
 }());
 exports.UserPreferenceViewController = UserPreferenceViewController;
+/**
+ * @class UserPreferencePresenter
+ *
+ * Contains the logic of the view.
+ */
 var UserPreferencePresenter = /** @class */ (function () {
     function UserPreferencePresenter(view, userProfile) {
         this.userProfile = userProfile;
         this.view = view;
     }
+    /**
+     * Is called from the view, after the ViewController is created.
+     * It calls the reload function
+     */
     UserPreferencePresenter.prototype.viewDidLoad = function () {
         this.reload();
     };
+    /**
+     * Calls the refreshView method to reset the view.
+     */
     UserPreferencePresenter.prototype.reload = function () {
         this.refreshView();
     };
+    /**
+     * Calls the reload method to reset the view.
+     */
     UserPreferencePresenter.prototype.pressedCancel = function () {
         this.reload();
     };
+    /**
+     * Is called when the user does edit a preference. Then no persona should be selected.
+     */
     UserPreferencePresenter.prototype.editPreferences = function () {
         this.view.unselectAllPersona();
     };
+    /**
+     * Calls the User Profile to log a user in
+     *
+     * @param username   the openAPE username
+     * @param passwort   the openAPE password
+     */
     UserPreferencePresenter.prototype.pressedLogin = function (username, password) {
         this.userProfile.login(username, password);
         this.reload();
     };
+    /**
+     * Applies the user preferences set from the user.
+     * First the UserPreferenceProfil is updated, after the reload function is executed.
+     */
     UserPreferencePresenter.prototype.pressedApplyPreferences = function () {
         this.userProfile.setUserPreferences(this.view.getAllSetPreferences());
         this.reload();
     };
+    /**
+     * Calls the showPanel method of the view
+     */
     UserPreferencePresenter.prototype.pressedShowPanel = function () {
         this.view.showPanel();
     };
+    /**
+     * Calls the hidePanel method of the view
+     */
     UserPreferencePresenter.prototype.pressedHidePanel = function () {
         this.view.hidePanel();
         this.reload();
     };
+    /**
+     * Tells the UserPreferenceProfile that a persona is selected
+     */
     UserPreferencePresenter.prototype.selectPersona = function (persona) {
         this.userProfile.selectPersona(persona);
     };
+    /**
+     * Update the view to show that a persona is selcted
+     */
     UserPreferencePresenter.prototype.selectedPersona = function (persona) {
         this.view.unselectAllPersona();
         this.view.selectPersona(persona);
         this.reload();
     };
+    /**
+     * Tells the view to show a login error message
+     */
     UserPreferencePresenter.prototype.showLoginErrorMessage = function (message) {
         this.view.showLoginErrorMessage(message);
     };
+    /**
+     * Refreshs the view
+     */
     UserPreferencePresenter.prototype.refreshView = function () {
         this.view.selectUserPreferences(this.userProfile.getUserPreferences());
         console.log(this.userProfile.getUserPreferences());
