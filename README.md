@@ -20,8 +20,6 @@ This CSS Polyfill offers the possibility to use these media features.
 Part of the Polyfill is a panel view, where the user can make his settings.
 A login to OpenAPE to load the user context is also possible.
 
-Picture?
-
 #### Demo Websites
 - [Text demo website](https://gpii.eu/mq-5/example/text-website/index.html)
 - [Video demo website](https://gpii.eu/mq-5/example/video/index.html)
