@@ -41,7 +41,7 @@ To use the polyfill in any website, the two files from [built](https://gitlab.mi
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <link rel="stylesheet" href="global-style.css" type="text/css" />    
+        <link rel="stylesheet" href="preference-panel-style.css" type="text/css" />    
     </head>
     <body>
         ...
