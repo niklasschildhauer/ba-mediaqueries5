@@ -92,7 +92,7 @@ Simply use the @media-rule as usual and then write the CSS code.
      display: none;
      font: Arial, sans-serif
 }
-@media(displaySkiplinks: onfocus) {
+@media (displaySkiplinks: onfocus) {
     .skiplink:not(:focus) {
         position: absolute;
         height: 1px;
@@ -103,7 +103,7 @@ Simply use the @media-rule as usual and then write the CSS code.
         white-space: nowrap;
     }
 }
-@media(displaySkiplinks: never) {
+@media (displaySkiplinks: never) {
     .skiplinks {
         display: none;
     }
