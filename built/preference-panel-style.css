@@ -88,6 +88,7 @@
 
 .user-preference-view-persona-div {
     padding: calc(var(--padding) / 2);
+    cursor: pointer;
 }
 
 #user-preference-persona-selected {
@@ -156,6 +157,17 @@
 #user-preference-view-login-wrapper {
     display: flex;
     flex-direction: column;
+}
+
+#user-preference-view-open-ape-logo {
+    width: 125px;
+    cursor: pointer;
+}
+
+#user-preference-view-error-field {
+    width: calc(var(--width) - 2 * var(--padding));
+    color: red;
+
 }
 #user-preference-view-login-wrapper * {
     padding: 10px 0 10px 0;

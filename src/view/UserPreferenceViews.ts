@@ -63,6 +63,10 @@ export class HTMLTextElement extends HTMLBasicElement {
         let textNode = document.createTextNode(text);
         this.element.appendChild(textNode);
     }
+
+    public clearText(): void {
+        this.element.textContent = "";
+    }
 }
 
 export class HTMLImageElement extends HTMLBasicElement {
@@ -583,6 +587,7 @@ export class LoginWrapperView implements  ILoginWrapperView {
     private usernameLabel = new HTMLTextElement("label", null, "openape-label", "Username");
     private passwordField = new HTMLUserInputElement("password", "openape-password", "text-input", "Password");
     private passwordLabel = new HTMLTextElement("label", null, "openape-label", "Password");
+    private openAPEImage = new HTMLImageElement("img", "open-ape-logo", null, "https://gpii.eu/mq-5/assets/open-ape-logo.png", "Open Ape Logo");
 
 
     private loginButton = new LabelButtonView("login-button", "button", "Login", () => this.login());
@@ -596,16 +601,23 @@ export class LoginWrapperView implements  ILoginWrapperView {
     constructor(delegate: LoginDelegate) {
         this.delegate = delegate;
 
+        this.openAPEImage.addClickEventListener(this.openOpenAPE);
+
         this.element = new HTMLBasicElement("div", "login-wrapper", null);
-        this.element.appendChildren([this.usernameLabel, this.usernameField, this.passwordLabel, this.passwordField, this.loginButton, this.errorMessage]);
+        this.element.appendChildren([this.openAPEImage, this.usernameLabel, this.usernameField, this.passwordLabel, this.passwordField, this.loginButton, this.errorMessage]);
     }
 
     showErrorMessage(text: string) {
+        this.errorMessage.clearText();
         this.errorMessage.appendText(text);
     }
 
     private login(): void{
         this.delegate.didPressLogin(this.usernameField.getValue(), this.passwordField.getValue(), this);
+    }
+
+    private openOpenAPE(): void {
+        (window as any).open("https://openape.gpii.eu");
     }
 }
 

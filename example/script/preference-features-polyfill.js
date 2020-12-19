@@ -620,24 +620,27 @@ var NetworkAPI = /** @class */ (function () {
      */
     NetworkAPI.prototype.loadUserContext = function (username, password) {
         return __awaiter(this, void 0, void 0, function () {
-            var userContextList, userPreferenceArrays, userPreferences;
+            var e_1, userContextList, userPreferenceArrays, userPreferences;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.client.login(username, password)
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.client.login(username, password)];
+                    case 1:
+                        _a.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_1 = _a.sent();
+                        return [2 /*return*/, new NetworkUserResultUserPreference(false, "Login failed", [])];
+                    case 3: return [4 /*yield*/, this.client.getUserContextList()
+                            .then(function (result) {
+                            return result["user-context-uris"];
+                        })
                             .catch(function (err) {
                             return new NetworkUserResultUserPreference(false, err, []);
                         })];
-                    case 1:
-                        _a.sent();
-                        return [4 /*yield*/, this.client.getUserContextList()
-                                .then(function (result) {
-                                return result["user-context-uris"];
-                            })
-                                .catch(function (err) {
-                                return new NetworkUserResultUserPreference(false, err, []);
-                            })];
-                    case 2:
+                    case 4:
                         userContextList = _a.sent();
                         return [4 /*yield*/, Promise.all(userContextList.map(function (context) { return __awaiter(_this, void 0, void 0, function () {
                                 var _this = this;
@@ -651,7 +654,7 @@ var NetworkAPI = /** @class */ (function () {
                                     }
                                 });
                             }); }))];
-                    case 3:
+                    case 5:
                         userPreferenceArrays = _a.sent();
                         userPreferences = [];
                         userPreferenceArrays.forEach(function (array) {
@@ -662,6 +665,7 @@ var NetworkAPI = /** @class */ (function () {
                         if (userPreferences.length === 0) {
                             return [2 /*return*/, new NetworkUserResultUserPreference(false, "No suitable user context can be loaded", [])];
                         }
+                        this.client.token = null;
                         return [2 /*return*/, new NetworkUserResultUserPreference(true, null, userPreferences)];
                 }
             });
@@ -806,32 +810,27 @@ var OpenAPEClient = /** @class */ (function () {
      */
     OpenAPEClient.prototype.login = function (username, password) {
         return __awaiter(this, void 0, void 0, function () {
-            var data, response, err_1;
+            var data;
+            var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (!(this.isPasswordCorrect(password) && this.isUsernameCorrect(username))) return [3 /*break*/, 5];
+                        if (!(this.isPasswordCorrect(password) && this.isUsernameCorrect(username))) return [3 /*break*/, 2];
                         data = new URLSearchParams();
                         data.append("grant_type", "password");
                         data.append("username", username);
                         data.append("password", password);
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, this.fetchAPIPost(data, CONSTANTS.OPENAPE_SERVER_URL + CONSTANTS.TOKEN_PATH)];
+                        return [4 /*yield*/, this.fetchAPIPost(data, CONSTANTS.OPENAPE_SERVER_URL + CONSTANTS.TOKEN_PATH)
+                                .then(function (response) {
+                                _this.token = response.access_token;
+                            })];
+                    case 1: 
+                    // try {
+                    return [2 /*return*/, _a.sent()];
                     case 2:
-                        response = _a.sent();
-                        this.token = response.access_token;
-                        return [3 /*break*/, 4];
-                    case 3:
-                        err_1 = _a.sent();
-                        console.log('Fetch Error :-S', err_1);
-                        throw new Error("Login failed");
-                    case 4: return [3 /*break*/, 6];
-                    case 5:
                         console.log("Passord or username are not valid.");
-                        _a.label = 6;
-                    case 6: return [2 /*return*/];
+                        _a.label = 3;
+                    case 3: return [2 /*return*/];
                 }
             });
         });
@@ -955,7 +954,7 @@ var OpenAPEClient = /** @class */ (function () {
      */
     OpenAPEClient.prototype.getUserContextList = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var err_2;
+            var err_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -963,8 +962,8 @@ var OpenAPEClient = /** @class */ (function () {
                         return [4 /*yield*/, this.fetchAPIGet(CONSTANTS.OPENAPE_SERVER_URL + CONSTANTS.USER_CONTEXT_PATH)];
                     case 1: return [2 /*return*/, _a.sent()];
                     case 2:
-                        err_2 = _a.sent();
-                        console.log('Fetch Error :-S', err_2);
+                        err_1 = _a.sent();
+                        console.log('Fetch Error :-S', err_1);
                         throw new Error("Loading user contexts failed");
                     case 3: return [2 /*return*/];
                 }
@@ -982,7 +981,7 @@ var OpenAPEClient = /** @class */ (function () {
      */
     OpenAPEClient.prototype.getUserContext = function (userContextId) {
         return __awaiter(this, void 0, void 0, function () {
-            var err_3;
+            var err_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -996,8 +995,8 @@ var OpenAPEClient = /** @class */ (function () {
                         return [4 /*yield*/, this.fetchAPIGet(CONSTANTS.OPENAPE_SERVER_URL + CONSTANTS.USER_CONTEXT_PATH + '/' + userContextId)];
                     case 2: return [2 /*return*/, _a.sent()];
                     case 3:
-                        err_3 = _a.sent();
-                        console.log('Fetch Error :-S', err_3);
+                        err_2 = _a.sent();
+                        console.log('Fetch Error :-S', err_2);
                         throw new Error("Loading user context id failed");
                     case 4: return [2 /*return*/];
                 }
@@ -2130,6 +2129,9 @@ var HTMLTextElement = /** @class */ (function (_super) {
         var textNode = document.createTextNode(text);
         this.element.appendChild(textNode);
     };
+    HTMLTextElement.prototype.clearText = function () {
+        this.element.textContent = "";
+    };
     return HTMLTextElement;
 }(HTMLBasicElement));
 exports.HTMLTextElement = HTMLTextElement;
@@ -2500,17 +2502,23 @@ var LoginWrapperView = /** @class */ (function () {
         this.usernameLabel = new HTMLTextElement("label", null, "openape-label", "Username");
         this.passwordField = new HTMLUserInputElement("password", "openape-password", "text-input", "Password");
         this.passwordLabel = new HTMLTextElement("label", null, "openape-label", "Password");
+        this.openAPEImage = new HTMLImageElement("img", "open-ape-logo", null, "https://gpii.eu/mq-5/assets/open-ape-logo.png", "Open Ape Logo");
         this.loginButton = new LabelButtonView("login-button", "button", "Login", function () { return _this.login(); });
         this.errorMessage = new HTMLTextElement("p", "error-field", null, "");
         this.delegate = delegate;
+        this.openAPEImage.addClickEventListener(this.openOpenAPE);
         this.element = new HTMLBasicElement("div", "login-wrapper", null);
-        this.element.appendChildren([this.usernameLabel, this.usernameField, this.passwordLabel, this.passwordField, this.loginButton, this.errorMessage]);
+        this.element.appendChildren([this.openAPEImage, this.usernameLabel, this.usernameField, this.passwordLabel, this.passwordField, this.loginButton, this.errorMessage]);
     }
     LoginWrapperView.prototype.showErrorMessage = function (text) {
+        this.errorMessage.clearText();
         this.errorMessage.appendText(text);
     };
     LoginWrapperView.prototype.login = function () {
         this.delegate.didPressLogin(this.usernameField.getValue(), this.passwordField.getValue(), this);
+    };
+    LoginWrapperView.prototype.openOpenAPE = function () {
+        window.open("https://openape.gpii.eu");
     };
     return LoginWrapperView;
 }());

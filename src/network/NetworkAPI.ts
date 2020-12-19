@@ -64,10 +64,13 @@ export class NetworkAPI implements  INetworkAPI {
      * @returns A Promise with the NetworkUserResultUserPreference Object.
      */
     async loadUserContext(username: string, password: string): Promise<INetworkResultUserPreference> {
-        await this.client.login(username, password)
-            .catch(function (err) {
-                return new NetworkUserResultUserPreference(false, err, [])
-            })
+        try {
+            await this.client.login(username, password)
+        }
+        catch(e) {
+            return new NetworkUserResultUserPreference(false, "Login failed", [])
+        }
+
 
         let userContextList = await this.client.getUserContextList()
             .then(function (result) {
@@ -93,6 +96,8 @@ export class NetworkAPI implements  INetworkAPI {
         if(userPreferences.length === 0) {
             return new NetworkUserResultUserPreference(false, "No suitable user context can be loaded", [])
         }
+
+        this.client.token = null;
         return new NetworkUserResultUserPreference(true, null, userPreferences);
     }
 
@@ -247,13 +252,17 @@ class OpenAPEClient {
             data.append("grant_type", "password");
             data.append("username", username);
             data.append("password", password);
-            try {
-                let response = await this.fetchAPIPost(data, CONSTANTS.OPENAPE_SERVER_URL + CONSTANTS.TOKEN_PATH);
-                this.token = response.access_token;
-            } catch(err) {
-                console.log('Fetch Error :-S', err);
-                throw new Error("Login failed");
-            }
+           // try {
+                return await this.fetchAPIPost(data, CONSTANTS.OPENAPE_SERVER_URL + CONSTANTS.TOKEN_PATH)
+                    .then((response) => {
+                        this.token = response.access_token
+                    });
+                //this.token = response.access_token;
+            // }
+            // catch(err) {
+            //     console.log('Fetch Error :-S', err);
+            //     throw new Error("Login failed");
+            // }
         } else {
             console.log("Passord or username are not valid.")
         }
