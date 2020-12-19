@@ -146,6 +146,8 @@ If it is necessary to read the current value of a media feature candidate in JS,
     </script>
 </body>
 ```
+#### How to configure the script
+...
 
 #### How to contribute
 The script was developed in Typescript 4.1.2 and uses the npm-package manager.
