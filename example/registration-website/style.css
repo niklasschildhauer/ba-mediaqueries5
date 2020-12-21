@@ -11,7 +11,7 @@
     font-weight: bolder;
 }
 
-@media (extendedSessionTimeout) {
+@media (extended-session-timeout) {
     .countdown-wrapper {
         display: flex;
     }

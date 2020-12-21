@@ -1,7 +1,7 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTextBetweenBrackets = exports.removeUnimportantCharactersFrom = exports.removeSubstringFrom = exports.removeWhitespaceFrom = void 0;
+exports.enumKeys = exports.getTextBetweenBrackets = exports.removeUnimportantCharactersFrom = exports.removeSubstringFrom = exports.removeWhitespaceFrom = void 0;
 function removeWhitespaceFrom(string) {
     return string.replace(/\s/g, '');
 }
@@ -36,6 +36,10 @@ function getTextBetweenBrackets(text, firstBracket, lastBracket) {
     return string;
 }
 exports.getTextBetweenBrackets = getTextBetweenBrackets;
+function enumKeys(obj) {
+    return Object.keys(obj).filter(function (k) { return Number.isNaN(+k); });
+}
+exports.enumKeys = enumKeys;
 
 },{}],2:[function(require,module,exports){
 "use strict";
@@ -386,6 +390,7 @@ exports.Factory = Factory;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SkipLinkValues = exports.Persona = exports.CommonTerm = exports.UserPreference = exports.MediaFeature = exports.CommonTermList = exports.MediaDescriptor = exports.MediaQuery = exports.CommonTermUtil = void 0;
+var Util = require("../common/utility");
 /**
  * @class CommonTermUtil
  *
@@ -403,12 +408,13 @@ var CommonTermUtil = /** @class */ (function () {
      */
     CommonTermUtil.containsCommonTermMediaFeature = function (query) {
         var result = [false, null];
-        Object.keys(CommonTerm).forEach(function (key) {
-            if (query.match(key)) {
-                var commonTerm = key;
-                result = [true, commonTerm];
+        for (var _i = 0, _a = Util.enumKeys(CommonTerm); _i < _a.length; _i++) {
+            var value = _a[_i];
+            if (query.match(CommonTerm[value])) {
+                var commonTerm = CommonTerm[value];
+                return result = [true, commonTerm];
             }
-        });
+        }
         return result;
     };
     return CommonTermUtil;
@@ -500,16 +506,16 @@ exports.UserPreference = UserPreference;
  */
 var CommonTerm;
 (function (CommonTerm) {
-    CommonTerm["displaySkiplinks"] = "displaySkiplinks";
-    CommonTerm["audioDescriptionEnabled"] = "audioDescriptionEnabled";
-    CommonTerm["captionsEnabled"] = "captionsEnabled";
-    CommonTerm["pictogramsEnabled"] = "pictogramsEnabled";
-    CommonTerm["selfVoicingEnabled"] = "selfVoicingEnabled";
-    CommonTerm["tableOfContents"] = "tableOfContents";
-    CommonTerm["extendedSessionTimeout"] = "extendedSessionTimeout";
-    CommonTerm["signLanguage"] = "signLanguage";
-    CommonTerm["signLanguageEnabled"] = "signLanguageEnabled";
-    CommonTerm["sessionTimeout"] = "sessionTimeout";
+    CommonTerm["displaySkiplinks"] = "display-skiplinks";
+    CommonTerm["audioDescriptionEnabled"] = "audio-description-enabled";
+    CommonTerm["captionsEnabled"] = "captions-enabled";
+    CommonTerm["pictogramsEnabled"] = "pictograms-enabled";
+    CommonTerm["selfVoicingEnabled"] = "self-voicing-enabled";
+    CommonTerm["tableOfContents"] = "table-of-contents";
+    CommonTerm["extendedSessionTimeout"] = "extended-session-timeout";
+    CommonTerm["signLanguageEnabled"] = "sign-language-enabled";
+    CommonTerm["signLanguage"] = "sign-language";
+    CommonTerm["sessionTimeout"] = "session-timeout";
 })(CommonTerm = exports.CommonTerm || (exports.CommonTerm = {}));
 /**
  * @enum Persona
@@ -542,7 +548,7 @@ var SkipLinkValues;
     SkipLinkValues["never"] = "never";
 })(SkipLinkValues = exports.SkipLinkValues || (exports.SkipLinkValues = {}));
 
-},{}],6:[function(require,module,exports){
+},{"../common/utility":1}],6:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }

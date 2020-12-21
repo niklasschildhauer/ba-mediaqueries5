@@ -1,3 +1,4 @@
+import * as Util from "../common/utility"
 /**
  * @interface IMediaDescriptor
  *
@@ -64,12 +65,12 @@ export class CommonTermUtil {
      */
     public static  containsCommonTermMediaFeature(query: string): [boolean, CommonTerm | null] {
         let result: [boolean, CommonTerm | null] = [false, null];
-        Object.keys(CommonTerm).forEach((key) => {
-            if (query.match(key)) {
-                let commonTerm: CommonTerm = key as CommonTerm;
-                result = [true, commonTerm]
+        for (const value of Util.enumKeys(CommonTerm)) {
+            if (query.match(CommonTerm[value])) {
+                let commonTerm: CommonTerm = CommonTerm[value];
+                return result = [true, commonTerm]
             }
-        });
+        }
         return result;
     }
 }
@@ -193,16 +194,16 @@ export class UserPreference implements IUserPreference {
  * Contains all new media features from the common terms.
  */
 export enum CommonTerm {
-    displaySkiplinks = "displaySkiplinks",
-    audioDescriptionEnabled = "audioDescriptionEnabled",
-    captionsEnabled = "captionsEnabled",
-    pictogramsEnabled = "pictogramsEnabled",
-    selfVoicingEnabled = "selfVoicingEnabled",
-    tableOfContents = "tableOfContents",
-    extendedSessionTimeout = "extendedSessionTimeout",
-    signLanguage = "signLanguage",
-    signLanguageEnabled = "signLanguageEnabled",
-    sessionTimeout = "sessionTimeout"
+    displaySkiplinks = "display-skiplinks",
+    audioDescriptionEnabled = "audio-description-enabled",
+    captionsEnabled = "captions-enabled",
+    pictogramsEnabled = "pictograms-enabled",
+    selfVoicingEnabled = "self-voicing-enabled",
+    tableOfContents = "table-of-contents",
+    extendedSessionTimeout = "extended-session-timeout",
+    signLanguageEnabled = "sign-language-enabled",
+    signLanguage = "sign-language",
+    sessionTimeout = "session-timeout"
 }
 
 /**

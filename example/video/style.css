@@ -22,17 +22,17 @@ li a:hover {
     background-color: #111;
 }
 
-@media (audioDescriptionEnabled: false) {
+@media (audio-description-enabled: false) {
     #nav-audiodesk {
         display: none
     }
 }
-@media (signLanguageEnabled: false) {
+@media (sign-language-enabled: false) {
     #nav-signlang {
         display: none
     }
 }
-@media (captionsEnabled: false) {
+@media (captions-enabled: false) {
     #nav-captions {
         display: none
     }
