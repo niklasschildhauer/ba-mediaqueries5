@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../css/global-style.css" type="text/css" />
     <link rel="stylesheet" href="../css/preference-panel-style.css" type="text/css" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+
 
     <!--Able Player-->
     <link rel="stylesheet" href="able-player/build/ableplayer.min.css" type="text/css" />
     <title>Video Website Example</title>
+
+
 
     <style>
         h1 {
@@ -30,7 +34,18 @@
 <div class="skiplinks">
     <a class="skiplink" href="#video-wrapper">To video</a>
 </div>
-<h1>Video Website Example</h1>
+<h1>Video Streaming Website Example</h1>
+
+<div class="nav">
+    <ul>
+        <li><a>Home</a></li>
+        <li><a>Movies</a></li>
+        <li><a>Series</a></li>
+        <li id="nav-captions"><a>Content with Captions</a></li>
+        <li id="nav-audiodesk"><a>Content with Audio Description</a></li>
+        <li id="nav-signlang"><a>Content with SignLanguage</a></li>
+    </ul>
+</div>
 
 <div id="video-wrapper">
     <video id="video1" preload="auto" width="480" height="360" poster="./assets/wwa.jpg"

@@ -147,7 +147,27 @@ If it is necessary to read the current value of a media feature candidate in JS,
 </body>
 ```
 #### How to configure the script
-...
+There is a possibility to configure the script. The settings can be set by calling the following methods on window.userPreferenceSettings. 
+For example to show the user preference panel:
+```javascript
+window.userPreferenceSettings.showPreferencePanel();
+```
+
+| Funktion                        | Parameter            | Rückgabewert | Beschreibung                                     |
+|---------------------------------|----------------------|--------------|--------------------------------------------------|
+| addCSSCode                      | plainCSSCode: string | void         | Manually add CSS code afterwards                 |
+| setAudioDescriptionEnabledValue | value: string        | void         | Manually set the Audio Description Enabled value |
+| setCaptionsEnabledValue         | value: string        | void         | Manually set the Captions Enabled value          |
+| setTableOfContentsValue         | value: string        | void         | Manually set the Table Of Contents value         |
+| setSignLanguageValue            | value: string        | void         | Manually set the Sign Language value             |
+| setSignLanguageEnabledValue     | value: string        | void         | Manually set the Sign Language Enabled value     |
+| setPictogramsEnabledValue       | value: string        | void         | Manually set the Pictograms Enabled value        |
+| setSelfVoicingEnabledValue      | value: string        | void         | Manually set the Self-Voicing Enabled value      |
+| setSessionTimeoutValue          | value: string        | void         | Manually set the Session Timeout value           |
+| setDisplaySkiplinksValue        | value: string        | void         | Manually set the Display Skiplinks value         |
+| showPreferencePanel             | none                 | void         | Shows the preference panel view                  |
+| hidePreferencePanel             | none                 | void         | Hides the preferences panel view                 |
+| removePreferencePanel           | none                 | void         | Removes the preference panel view                |
 
 #### How to contribute
 The script was developed in Typescript 4.1.2 and uses the npm-package manager.
