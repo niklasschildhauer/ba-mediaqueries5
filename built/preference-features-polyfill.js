@@ -1898,15 +1898,12 @@ var UserPreferenceViewController = /** @class */ (function () {
     UserPreferenceViewController.prototype.didEditPreferences = function (from) {
         this.presenter.editPreferences();
     };
-    //Renamed!
     UserPreferenceViewController.prototype.didPressLogin = function (username, password, from) {
         this.presenter.pressedLogin(username, password);
     };
-    //nicht im Schaubild
     UserPreferenceViewController.prototype.didPressHidePanel = function (from) {
         this.presenter.pressedHidePanel();
     };
-    //nicht im Schaubild
     UserPreferenceViewController.prototype.didPressShowPanel = function (from) {
         this.presenter.pressedShowPanel();
     };

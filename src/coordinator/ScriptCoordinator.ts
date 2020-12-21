@@ -31,15 +31,15 @@ export interface ICoordinator<T> {
  */
 export interface IScriptCoordinator {
     addCSSCode(code: string): void;
-    setAudioDescriptionEnabledValue(value: string): void // noch nicht in Schaubild!
-    setCaptionsEnabledValue(value: string): void // noch nicht in Schaubild!
-    setTableOfContentsValue(value: string): void // noch nicht in Schaubild!
-    setSignLanguageValue(value: string): void // noch nicht in Schaubild!
-    setSignLanguageEnabledValue(value: string): void // noch nicht in Schaubild!
-    setPictogramsEnabledValue(value: string): void // noch nicht in Schaubild!
-    setSelfVoicingEnabledValue(value: string): void // noch nicht in Schaubild!
-    setSessionTimeoutValue(value: string): void // noch nicht in Schaubild!
-    setDisplaySkiplinksValue(value: string): void // noch nicht in Schaubild!
+    setAudioDescriptionEnabledValue(value: string): void;
+    setCaptionsEnabledValue(value: string): void;
+    setTableOfContentsValue(value: string): void;
+    setSignLanguageValue(value: string): void;
+    setSignLanguageEnabledValue(value: string): void;
+    setPictogramsEnabledValue(value: string): void;
+    setSelfVoicingEnabledValue(value: string): void;
+    setSessionTimeoutValue(value: string): void;
+    setDisplaySkiplinksValue(value: string): void;
     showPreferencePanel(): void;
     hidePreferencePanel(): void;
     removePreferencePanel(): void;
@@ -53,7 +53,7 @@ export interface IScriptCoordinator {
  */
 export class ScriptCoordinator implements ICoordinator<IUserPreferencePresenter>, IScriptCoordinator, Reader.CSSReaderDelegate, User.UserPreferenceProfileDelegate{
     private cssReader: Reader.IReader<Model.IMediaDescriptor>;
-    private userProfile: IUserPreferenceProfile; // noch nicht im Schaubild
+    private userProfile: IUserPreferenceProfile;
     private codeParser: ICodeParser;
     rootViewController: View.IViewController<View.IUserPreferencePresenter>;
 

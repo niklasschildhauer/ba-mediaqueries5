@@ -15,7 +15,7 @@ export interface IUserPreferenceProfile {
     getUserPreferences(): Model.IUserPreference[];
     selectPersona(persona: Model.Persona): void;
     setUserPreferences(preferences: IUserPreference[]): void;
-    setUserPreference(preference: IUserPreference): void; // nicht im Schaubild!!
+    setUserPreference(preference: IUserPreference): void;
     login(username: string, password: string): void;
 }
 
