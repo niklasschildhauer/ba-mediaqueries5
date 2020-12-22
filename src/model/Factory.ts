@@ -69,12 +69,6 @@ export class Factory {
                 supportedMediaQuery.push(condition);
             }
         }
-        console.log("---------------");
-        console.log(unsupportedMediaQuery);
-        console.log(body);
-        console.log(supportedMediaQuery.join("and"));
-        console.log(negated)
-        console.log("---------------");
 
         let supportedMediaQueryString: string | null = supportedMediaQuery.join("and")
         if (negated) {
@@ -111,11 +105,6 @@ export class Factory {
                 supportedMediaQuery.push(condition);
             }
         }
-        console.log("---------------");
-        console.log(unsupportedMediaQuery);
-        console.log(supportedMediaQuery.join("and"));
-        console.log(negated)
-        console.log("---------------");
 
         let supportedMediaQueryString: string | null = supportedMediaQuery.join("and")
         if (negated) {

@@ -291,12 +291,6 @@ var Factory = /** @class */ (function () {
                 supportedMediaQuery.push(condition);
             }
         }
-        console.log("---------------");
-        console.log(unsupportedMediaQuery);
-        console.log(body);
-        console.log(supportedMediaQuery.join("and"));
-        console.log(negated);
-        console.log("---------------");
         var supportedMediaQueryString = supportedMediaQuery.join("and");
         if (negated) {
             supportedMediaQueryString = "not " + supportedMediaQueryString;
@@ -330,11 +324,6 @@ var Factory = /** @class */ (function () {
                 supportedMediaQuery.push(condition);
             }
         }
-        console.log("---------------");
-        console.log(unsupportedMediaQuery);
-        console.log(supportedMediaQuery.join("and"));
-        console.log(negated);
-        console.log("---------------");
         var supportedMediaQueryString = supportedMediaQuery.join("and");
         if (negated) {
             supportedMediaQueryString = "not " + supportedMediaQueryString;

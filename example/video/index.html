@@ -96,6 +96,9 @@
         window.userPreferenceSettings.setSessionTimeoutValue(urlParams.get("session") );
     }
 
+    let mq = window.matchMedia("max-width: 600px");
+
+
     let mqAudioDesc = window.matchCommonTermMedia("(audio-description-enabled)")
     mqAudioDesc.addListener("change", reload);
 
