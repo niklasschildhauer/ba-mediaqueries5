@@ -59,28 +59,28 @@ It is important that the script is added to the body first, because the body ele
 The media featrue candidates can be combined arbitrarily with other media featrues and media types, using the 'and' keyword ('or‘ and ',' do not work).   
 
 ```css
-screen and (signLanguageEnabled: true) and (min-width: 600px) and (captionsEnabled: false)
+screen and (sign-language-enabled: true) and (min-width: 600px) and (captions-enabled: false)
 /* true if the user prefers signLanguage and does not prefer captions and has a screen width of min 600px. */
 ```
 They can also be negated with the 'not' modifier. Either the whole query or a single feature.
 
 ```css
-screen and (not audioDescriptionEnabled: true) 
+screen and (not audio-description-enabled: true) 
 /* true if the user does not prefer audio description and uses a device of the type screen. */
 ```
 ```css
-not screen and (audioDescriptionEnabled: true) 
+not screen and (audio-description-enabled: true) 
 /* true if the user does not prefer audio description and does not use a device of the type screen. */
 ```
 
 If no value is assigned, the value will be evaluated in the Boolean context.  
 
 ```css
-screen and (audioDescriptionEnabled) 
+screen and (audio-description-enabled) 
 /* audioDescriptionEnabled in this case has the boolean context: true. So the query will be true if the user prefers audio description */
 ```
 ```css
-screen and (not audioDescriptionEnabled) 
+screen and (not audio-description-enabled) 
 /* audioDescriptionEnabled in this case has the boolean context: false. So the query will be true if the user does not prefer audio description */
 ```
 
@@ -92,7 +92,7 @@ Simply use the @media-rule as usual and then write the CSS code.
      display: none;
      font: Arial, sans-serif
 }
-@media (displaySkiplinks: onfocus) {
+@media (display-skiplinks: onfocus) {
     .skiplink:not(:focus) {
         position: absolute;
         height: 1px;
@@ -103,7 +103,7 @@ Simply use the @media-rule as usual and then write the CSS code.
         white-space: nowrap;
     }
 }
-@media (displaySkiplinks: never) {
+@media (display-skiplinks: never) {
     .skiplinks {
         display: none;
     }
@@ -115,7 +115,7 @@ Instead of the window.matchMedia function, call the window.matchCommonTermMedia 
 This function also takes a media query string as parameter. 
 As usual, a callback function can be stored, which is called as soon as the value of the media query changes. 
 ```javascript
-let mqAudioDesc = window.matchCommonTermMedia("(audioDescriptionEnabled)")
+let mqAudioDesc = window.matchCommonTermMedia("(audio-description-enabled)")
     mqAudioDesc.addListener("change", callback);
 
 function callback() {
