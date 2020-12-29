@@ -181,6 +181,10 @@ npm run build
 ```
 Runs the tsc command to compile the TypeScript code to JS Code first and then runs browsify to bundle the JS code.    
 ```
+npm run test
+```
+Runs jest to test the script.
+```
 npm run release
 ```
 Runs the build process first, then copies the bundled JS code and stylesheet to the built folder and at the end uglifies the JS-File.
