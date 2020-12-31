@@ -63,7 +63,9 @@
 
 
 <script src="../script/preference-features-polyfill.js"></script>
-
+<script>
+    window.userPreferenceSettings.showPreferencePanel()
+</script>
 <script>
     var queryString = window.location.search;
     var urlParams = new URLSearchParams(queryString);
