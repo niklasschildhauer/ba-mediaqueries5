@@ -1,18 +1,16 @@
-import * as View from '../view/UserPreferenceViewController';
+import {IViewController, UserPreferenceViewController } from '../view/UserPreferenceViewController';
+import {CommonTerm, IMediaDescriptor, Persona, UserPreference} from "../model/Model";
 import {
-    IUserPreferencePresenter,
-    IViewController,
-    UserPreferenceViewController
-} from '../view/UserPreferenceViewController';
-import * as Reader from '../reader/CSSReader';
-import * as Model from "../model/Model";
-import {CommonTerm, UserPreference} from "../model/Model";
-import * as User from "../user/UserPreferenceProfile";
-import {IUserPreferenceProfile, UserPreferenceProfile} from "../user/UserPreferenceProfile";
+    IUserPreferenceProfile,
+    UserPreferenceProfile,
+    UserPreferenceProfileDelegate
+} from "../user/UserPreferenceProfile";
 import {JSVariableParser} from "../parser/JSVariableParser";
 import {CodeParser, ICodeParser} from "../parser/CodeParser";
 import {CSSCodeParser} from "../parser/CSSCodeParser";
 import {NetworkAPI} from "../network/NetworkAPI";
+import {IUserPreferencePresenter} from "../view/UserPreferencePresenter";
+import {CSSReader, CSSReaderDelegate, IReader} from "../reader/CSSReader";
 
 /**
  * @interface ICoordinator<T>
@@ -51,18 +49,18 @@ export interface IScriptCoordinator {
  * This Coordinator implements several delegate methods.
  * If something changes, it will be coordinated here.
  */
-export class ScriptCoordinator implements ICoordinator<IUserPreferencePresenter>, IScriptCoordinator, Reader.CSSReaderDelegate, User.UserPreferenceProfileDelegate{
-    private cssReader: Reader.IReader<Model.IMediaDescriptor>;
+export class ScriptCoordinator implements ICoordinator<IUserPreferencePresenter>, IScriptCoordinator, CSSReaderDelegate, UserPreferenceProfileDelegate{
+    private cssReader: IReader<IMediaDescriptor>;
     private userProfile: IUserPreferenceProfile; // noch nicht im Schaubild
     private codeParser: ICodeParser;
-    rootViewController: View.IViewController<View.IUserPreferencePresenter>;
+    rootViewController: IViewController<IUserPreferencePresenter>;
 
 
     public constructor() {
         console.log("Hello World");
         console.log("-----------");
 
-        this.cssReader = new Reader.CSSReader(this);
+        this.cssReader = new CSSReader(this);
         this.userProfile = this.createUserProfile()
         this.rootViewController = new UserPreferenceViewController(this.userProfile);
         this.codeParser = this.createCodeParser(this.userProfile);
@@ -190,7 +188,7 @@ export class ScriptCoordinator implements ICoordinator<IUserPreferencePresenter>
      *
      * @param CSSReader
      */
-    didUpdateMediaDescriptors(from: Reader.CSSReader): void {
+    didUpdateMediaDescriptors(from: CSSReader): void {
         this.codeParser.parse();
         console.log("update CSS Code!");
     }
@@ -201,7 +199,7 @@ export class ScriptCoordinator implements ICoordinator<IUserPreferencePresenter>
      *
      * @param IUserPreferenceProfile
      */
-    didUpdateProfile(from: User.IUserPreferenceProfile): void {
+    didUpdateProfile(from: IUserPreferenceProfile): void {
         this.codeParser.parse();
         this.rootViewController.presenter.reload();
     }
@@ -212,7 +210,7 @@ export class ScriptCoordinator implements ICoordinator<IUserPreferencePresenter>
      *
      * @param IUserPreferenceProfile
      */
-    recievedLoginErrorMessage(message: string, from: User.IUserPreferenceProfile): void {
+    recievedLoginErrorMessage(message: string, from: IUserPreferenceProfile): void {
         this.rootViewController.presenter.showLoginErrorMessage(message);
     }
 
@@ -222,7 +220,7 @@ export class ScriptCoordinator implements ICoordinator<IUserPreferencePresenter>
      *
      * @param IUserPreferenceProfile
      */
-    didSelectPersona(persona: Model.Persona, from: User.IUserPreferenceProfile): void {
+    didSelectPersona(persona: Persona, from: IUserPreferenceProfile): void {
         this.rootViewController.presenter.selectedPersona(persona);
     }
 }

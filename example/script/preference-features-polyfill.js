@@ -42,13 +42,13 @@ exports.getTextBetweenBrackets = getTextBetweenBrackets;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ScriptCoordinator = void 0;
 var UserPreferenceViewController_1 = require("../view/UserPreferenceViewController");
-var Reader = require("../reader/CSSReader");
 var Model_1 = require("../model/Model");
 var UserPreferenceProfile_1 = require("../user/UserPreferenceProfile");
 var JSVariableParser_1 = require("../parser/JSVariableParser");
 var CodeParser_1 = require("../parser/CodeParser");
 var CSSCodeParser_1 = require("../parser/CSSCodeParser");
 var NetworkAPI_1 = require("../network/NetworkAPI");
+var CSSReader_1 = require("../reader/CSSReader");
 /**
  * @class ScriptCoordinator
  *
@@ -59,7 +59,7 @@ var ScriptCoordinator = /** @class */ (function () {
     function ScriptCoordinator() {
         console.log("Hello World");
         console.log("-----------");
-        this.cssReader = new Reader.CSSReader(this);
+        this.cssReader = new CSSReader_1.CSSReader(this);
         this.userProfile = this.createUserProfile();
         this.rootViewController = new UserPreferenceViewController_1.UserPreferenceViewController(this.userProfile);
         this.codeParser = this.createCodeParser(this.userProfile);
@@ -214,7 +214,7 @@ var ScriptCoordinator = /** @class */ (function () {
 }());
 exports.ScriptCoordinator = ScriptCoordinator;
 
-},{"../model/Model":5,"../network/NetworkAPI":6,"../parser/CSSCodeParser":8,"../parser/CodeParser":9,"../parser/JSVariableParser":10,"../reader/CSSReader":11,"../user/UserPreferenceProfile":12,"../view/UserPreferenceViewController":13}],3:[function(require,module,exports){
+},{"../model/Model":5,"../network/NetworkAPI":6,"../parser/CSSCodeParser":8,"../parser/CodeParser":9,"../parser/JSVariableParser":10,"../reader/CSSReader":11,"../user/UserPreferenceProfile":12,"../view/UserPreferenceViewController":14}],3:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Coordinator = require("./coordinator/ScriptCoordinator");
@@ -1776,8 +1776,111 @@ var defaultPreferences = [new Model.UserPreference(Model_1.CommonTerm.audioDescr
 },{"../model/Model":5}],13:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserPreferencePresenter = exports.UserPreferenceViewController = void 0;
+exports.UserPreferencePresenter = void 0;
+/**
+ * @class UserPreferencePresenter
+ *
+ * Contains the logic of the view.
+ */
+var UserPreferencePresenter = /** @class */ (function () {
+    function UserPreferencePresenter(view, userProfile) {
+        this.userProfile = userProfile;
+        this.view = view;
+    }
+    /**
+     * Is called from the view, after the ViewController is created.
+     * It calls the reload function
+     */
+    UserPreferencePresenter.prototype.viewDidLoad = function () {
+        this.reload();
+    };
+    /**
+     * Calls the refreshView method to reset the view.
+     */
+    UserPreferencePresenter.prototype.reload = function () {
+        this.refreshView();
+    };
+    /**
+     * Calls the reload method to reset the view.
+     */
+    UserPreferencePresenter.prototype.pressedCancel = function () {
+        this.reload();
+    };
+    /**
+     * Is called when the user does edit a preference. Then no persona should be selected.
+     */
+    UserPreferencePresenter.prototype.editPreferences = function () {
+        this.view.unselectAllPersona();
+        this.pressedApplyPreferences();
+    };
+    /**
+     * Calls the User Profile to log a user in
+     *
+     * @param username   the openAPE username
+     * @param passwort   the openAPE password
+     */
+    UserPreferencePresenter.prototype.pressedLogin = function (username, password) {
+        this.userProfile.login(username, password);
+        this.reload();
+    };
+    /**
+     * Applies the user preferences set from the user.
+     * First the UserPreferenceProfil is updated, after the reload function is executed.
+     */
+    UserPreferencePresenter.prototype.pressedApplyPreferences = function () {
+        this.userProfile.setUserPreferences(this.view.getAllSetPreferences());
+        this.reload();
+    };
+    /**
+     * Calls the showPanel method of the view
+     */
+    UserPreferencePresenter.prototype.pressedShowPanel = function () {
+        this.view.showPanel();
+    };
+    /**
+     * Calls the hidePanel method of the view
+     */
+    UserPreferencePresenter.prototype.pressedHidePanel = function () {
+        this.view.hidePanel();
+        this.reload();
+    };
+    /**
+     * Tells the UserPreferenceProfile that a persona is selected
+     */
+    UserPreferencePresenter.prototype.selectPersona = function (persona) {
+        this.userProfile.selectPersona(persona);
+    };
+    /**
+     * Update the view to show that a persona is selcted
+     */
+    UserPreferencePresenter.prototype.selectedPersona = function (persona) {
+        this.view.unselectAllPersona();
+        this.view.selectPersona(persona);
+        this.reload();
+    };
+    /**
+     * Tells the view to show a login error message
+     */
+    UserPreferencePresenter.prototype.showLoginErrorMessage = function (message) {
+        this.view.showLoginErrorMessage(message);
+    };
+    /**
+     * Refreshs the view
+     */
+    UserPreferencePresenter.prototype.refreshView = function () {
+        this.view.selectUserPreferences(this.userProfile.getUserPreferences());
+        console.log(this.userProfile.getUserPreferences());
+    };
+    return UserPreferencePresenter;
+}());
+exports.UserPreferencePresenter = UserPreferencePresenter;
+
+},{}],14:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UserPreferenceViewController = void 0;
 var UserPreferenceViews_1 = require("./UserPreferenceViews");
+var UserPreferencePresenter_1 = require("./UserPreferencePresenter");
 /**
  * @class UserPreferenceViewController
  *
@@ -1795,7 +1898,7 @@ var UserPreferenceViewController = /** @class */ (function () {
         this.loginWrapper = new UserPreferenceViews_1.LoginWrapperView(this);
         // nicht im Schaubild // Button muss auf den Server zum download!
         this.showPanelButton = new UserPreferenceViews_1.OpenButtonView(this);
-        this.presenter = new UserPreferencePresenter(this, userProfile);
+        this.presenter = new UserPreferencePresenter_1.UserPreferencePresenter(this, userProfile);
         this.createView();
         this.parseView();
         this.presenter.viewDidLoad();
@@ -1805,7 +1908,7 @@ var UserPreferenceViewController = /** @class */ (function () {
         this.panelWrapper.appendChild(this.personaWrapper.element);
         this.panelWrapper.appendChild(this.listWrapper.element);
         this.panelWrapper.appendChild(this.loginWrapper.element);
-        this.panelWrapper.appendChild(this.applyButtonWrapper.element);
+        // this.panelWrapper.appendChild(this.applyButtonWrapper.element);
         this.element.appendChild(this.showPanelButton.element);
         this.element.appendChild(this.panelWrapper);
     };
@@ -1907,104 +2010,8 @@ var UserPreferenceViewController = /** @class */ (function () {
     return UserPreferenceViewController;
 }());
 exports.UserPreferenceViewController = UserPreferenceViewController;
-/**
- * @class UserPreferencePresenter
- *
- * Contains the logic of the view.
- */
-var UserPreferencePresenter = /** @class */ (function () {
-    function UserPreferencePresenter(view, userProfile) {
-        this.userProfile = userProfile;
-        this.view = view;
-    }
-    /**
-     * Is called from the view, after the ViewController is created.
-     * It calls the reload function
-     */
-    UserPreferencePresenter.prototype.viewDidLoad = function () {
-        this.reload();
-    };
-    /**
-     * Calls the refreshView method to reset the view.
-     */
-    UserPreferencePresenter.prototype.reload = function () {
-        this.refreshView();
-    };
-    /**
-     * Calls the reload method to reset the view.
-     */
-    UserPreferencePresenter.prototype.pressedCancel = function () {
-        this.reload();
-    };
-    /**
-     * Is called when the user does edit a preference. Then no persona should be selected.
-     */
-    UserPreferencePresenter.prototype.editPreferences = function () {
-        this.view.unselectAllPersona();
-    };
-    /**
-     * Calls the User Profile to log a user in
-     *
-     * @param username   the openAPE username
-     * @param passwort   the openAPE password
-     */
-    UserPreferencePresenter.prototype.pressedLogin = function (username, password) {
-        this.userProfile.login(username, password);
-        this.reload();
-    };
-    /**
-     * Applies the user preferences set from the user.
-     * First the UserPreferenceProfil is updated, after the reload function is executed.
-     */
-    UserPreferencePresenter.prototype.pressedApplyPreferences = function () {
-        this.userProfile.setUserPreferences(this.view.getAllSetPreferences());
-        this.reload();
-    };
-    /**
-     * Calls the showPanel method of the view
-     */
-    UserPreferencePresenter.prototype.pressedShowPanel = function () {
-        this.view.showPanel();
-    };
-    /**
-     * Calls the hidePanel method of the view
-     */
-    UserPreferencePresenter.prototype.pressedHidePanel = function () {
-        this.view.hidePanel();
-        this.reload();
-    };
-    /**
-     * Tells the UserPreferenceProfile that a persona is selected
-     */
-    UserPreferencePresenter.prototype.selectPersona = function (persona) {
-        this.userProfile.selectPersona(persona);
-    };
-    /**
-     * Update the view to show that a persona is selcted
-     */
-    UserPreferencePresenter.prototype.selectedPersona = function (persona) {
-        this.view.unselectAllPersona();
-        this.view.selectPersona(persona);
-        this.reload();
-    };
-    /**
-     * Tells the view to show a login error message
-     */
-    UserPreferencePresenter.prototype.showLoginErrorMessage = function (message) {
-        this.view.showLoginErrorMessage(message);
-    };
-    /**
-     * Refreshs the view
-     */
-    UserPreferencePresenter.prototype.refreshView = function () {
-        this.view.selectUserPreferences(this.userProfile.getUserPreferences());
-        console.log(this.userProfile.getUserPreferences());
-    };
-    return UserPreferencePresenter;
-}());
-exports.UserPreferencePresenter = UserPreferencePresenter;
 
-},{"./UserPreferenceViews":14}],14:[function(require,module,exports){
+},{"./UserPreferencePresenter":13,"./UserPreferenceViews":15}],15:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
