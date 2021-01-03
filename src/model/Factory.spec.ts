@@ -3,7 +3,7 @@ import * as Model from './Model'
 import {CommonTerm} from './Model'
 
 test('Media Feature Factory - createMediaFeatureFrom #1', () => {
-    let factoryModel = Factory.createMediaFeatureFrom("(displaySkiplinks: true)");
+    let factoryModel = Factory.createMediaFeatureFrom("(display-skiplinks: true)");
     let model = new Model.MediaFeature(CommonTerm.displaySkiplinks, false, "true")
     expect(factoryModel.mediaFeature).toBe(model.mediaFeature);
     expect(factoryModel.negated).toBe(model.negated);
@@ -17,7 +17,7 @@ test('Media Feature Factory - createMediaFeatureFrom #2', () => {
 });
 
 test('Media Feature Factory - createMediaFeatureFrom #3', () => {
-    let factoryModel = Factory.createMediaFeatureFrom('(signLanguage: "dgs")');
+    let factoryModel = Factory.createMediaFeatureFrom('(sign-language: "dgs")');
     let model = new Model.MediaFeature(CommonTerm.signLanguage, false, "dgs")
     expect(factoryModel.mediaFeature).toBe(model.mediaFeature);
     expect(factoryModel.negated).toBe(model.negated);
@@ -25,7 +25,7 @@ test('Media Feature Factory - createMediaFeatureFrom #3', () => {
 });
 
 test('Media Feature Factory - createMediaFeatureFrom #3.1', () => {
-    let factoryModel = Factory.createMediaFeatureFrom('(signLanguage: dgs)');
+    let factoryModel = Factory.createMediaFeatureFrom('(sign-language: dgs)');
     let model = new Model.MediaFeature(CommonTerm.signLanguage, false, "dgs")
     expect(factoryModel.mediaFeature).toBe(model.mediaFeature);
     expect(factoryModel.negated).toBe(model.negated);
@@ -33,7 +33,7 @@ test('Media Feature Factory - createMediaFeatureFrom #3.1', () => {
 });
 
 test('Media Feature Factory - createMediaFeatureFrom #3.2', () => {
-    let factoryModel = Factory.createMediaFeatureFrom("(signLanguage: 'dgs')");
+    let factoryModel = Factory.createMediaFeatureFrom("(sign-language: 'dgs')");
     let model = new Model.MediaFeature(CommonTerm.signLanguage, false, "dgs")
     expect(factoryModel.mediaFeature).toBe(model.mediaFeature);
     expect(factoryModel.negated).toBe(model.negated);
@@ -41,8 +41,8 @@ test('Media Feature Factory - createMediaFeatureFrom #3.2', () => {
 });
 
 test('Media Feature Factory - createMediaFeatureFrom #4', () => {
-    let factoryModel = Factory.createMediaFeatureFrom('not (signLanguageEnabled: false)');
-    let model = new Model.MediaFeature(CommonTerm.signLanguage, true, "false")
+    let factoryModel = Factory.createMediaFeatureFrom('not (sign-language-enabled: false)');
+    let model = new Model.MediaFeature(CommonTerm.signLanguageEnabled, true, "false")
     expect(factoryModel.mediaFeature).toBe(model.mediaFeature);
     expect(factoryModel.negated).toBe(model.negated);
     expect(factoryModel.value).toBe(model.value);
@@ -53,7 +53,7 @@ test('Media Descriptor Factory - createMediaDescriptorFromMQStringAndBodyString 
     let unsupportedMediaQuery = [new Model.MediaFeature(CommonTerm.displaySkiplinks, false, "always")];
     let supportedMediaQuery = "screen ";
 
-    let result = Factory.createMediaDescriptorFromMQStringAndBodyString("screen and (displaySkiplinks: always)", body);
+    let result = Factory.createMediaDescriptorFromMQStringAndBodyString("screen and (display-skiplinks: always)", body);
 
     let model = new Model.MediaDescriptor(unsupportedMediaQuery, supportedMediaQuery, body, false)
     expect(result.body).toBe(model.body);
@@ -67,7 +67,7 @@ test('Media Descriptor Factory - createMediaDescriptorFromMQStringAndBodyString 
     let unsupportedMediaQuery = [new Model.MediaFeature(CommonTerm.displaySkiplinks, false, "always")];
     let supportedMediaQuery = "screen and (max-width: 300px)";
 
-    let result = Factory.createMediaDescriptorFromMQStringAndBodyString("screen and (displaySkiplinks: always) and (max-width: 300px)", body);
+    let result = Factory.createMediaDescriptorFromMQStringAndBodyString("screen and (display-skiplinks: always) and (max-width: 300px)", body);
 
     let model = new Model.MediaDescriptor(unsupportedMediaQuery, supportedMediaQuery, body, false)
     expect(result.body).toBe(model.body);
@@ -81,7 +81,7 @@ test('Media Descriptor Factory - createMediaDescriptorFromMQStringAndBodyString 
     let unsupportedMediaQuery = [new Model.MediaFeature(CommonTerm.displaySkiplinks, false, "always")];
     let supportedMediaQuery = "screen and (min-width: 100px) and (max-width: 300px)";
 
-    let result = Factory.createMediaDescriptorFromMQStringAndBodyString("screen and (min-width: 100px) and (displaySkiplinks: always) and (max-width: 300px)", body);
+    let result = Factory.createMediaDescriptorFromMQStringAndBodyString("screen and (min-width: 100px) and (display-skiplinks: always) and (max-width: 300px)", body);
 
     let model = new Model.MediaDescriptor(unsupportedMediaQuery, supportedMediaQuery, body, false)
     expect(result.body).toBe(model.body);
@@ -95,7 +95,7 @@ test('Media Descriptor Factory - createMediaDescriptorFromMQStringAndBodyString 
     let unsupportedMediaQuery = [new Model.MediaFeature(CommonTerm.displaySkiplinks, false, "always")];
     let supportedMediaQuery = "not screen and (min-width: 100px) and (max-width: 300px)";
 
-    let result = Factory.createMediaDescriptorFromMQStringAndBodyString("not screen and (min-width: 100px) and (displaySkiplinks: always) and (max-width: 300px)", body);
+    let result = Factory.createMediaDescriptorFromMQStringAndBodyString("not screen and (min-width: 100px) and (display-skiplinks: always) and (max-width: 300px)", body);
 
     let model = new Model.MediaDescriptor(unsupportedMediaQuery, supportedMediaQuery, body, true)
     expect(result.body).toBe(model.body);
@@ -110,7 +110,7 @@ test('Media Descriptor Factory - createMediaDescriptorFromMQStringAndBodyString 
                                 new Model.MediaFeature(CommonTerm.tableOfContents, true, "true")];
     let supportedMediaQuery = null;
 
-    let result = Factory.createMediaDescriptorFromMQStringAndBodyString("(displaySkiplinks: always) and not (tableOfContents)", body);
+    let result = Factory.createMediaDescriptorFromMQStringAndBodyString("(display-skiplinks: always) and not (table-of-contents)", body);
 
     let model = new Model.MediaDescriptor(unsupportedMediaQuery, supportedMediaQuery, body, false)
     expect(result.body).toBe(model.body);
@@ -120,11 +120,11 @@ test('Media Descriptor Factory - createMediaDescriptorFromMQStringAndBodyString 
 });
 
 test('Media Descriptor Factory - createMediaDescriptorFromCSSString #1', () => {
-    let css = "@media not screen and (displaySkiplinks: onfocus) {" +
+    let css = "@media not screen and (display-skiplinks: onfocus) {" +
         "body { background: black; }" +
         "}" +
         "\n" +
-        "@media (pictogramsEnabled) {" +
+        "@media (pictograms-enabled) {" +
         "body { background: yellow; }" +
         "}"
     let body1 = "body { background: black; }"
@@ -142,11 +142,11 @@ test('Media Descriptor Factory - createMediaDescriptorFromCSSString #1', () => {
 });
 
 test('Media Descriptor Factory - createMediaDescriptorFromCSSString #2', () => {
-    let css = "@media not screen and not (displaySkiplinks: onfocus) and (signLanguage: gsd) and (signLanguage: 'fsd') {" +
+    let css = "@media not screen and not (display-skiplinks: onfocus) and (sign-language: gsd) and (sign-language: 'fsd') {" +
         "body { background: black; }" +
         "}" +
         "\n" +
-        "@media print (pictogramsEnabled) and not (sessionTimeout: 2.4) {" +
+        "@media print (pictograms-enabled) and not (session-timeout: 2.4) {" +
         "body { background: yellow; }" +
         "}"
     let body1 = "body { background: black; }"
@@ -173,7 +173,7 @@ test('Media Descriptor Factory - createCommonTermListFromMQString #1', () => {
     let unsupportedMediaQuery = [new Model.MediaFeature(CommonTerm.displaySkiplinks, false, "always")];
     let supportedMediaQuery = "screen ";
 
-    let result = Factory.createCommonTermListFromMQString("screen and (displaySkiplinks: always)");
+    let result = Factory.createCommonTermListFromMQString("screen and (display-skiplinks: always)");
 
     let model = new Model.CommonTermList(unsupportedMediaQuery, supportedMediaQuery, false)
     expect(result.mediaQuery.negated).toBe(model.mediaQuery.negated);

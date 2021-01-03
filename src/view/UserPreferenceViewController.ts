@@ -32,9 +32,8 @@ export interface IUserPreferenceViewController {
     unselectAllPersona(): void;
     getAllSetPreferences(): IUserPreference[];
     selectUserPreferences(userPreferences: IUserPreference[]): void
-
-    showPanel(): void; // nicht im Schaubild
-    hidePanel(): void; // nicht im Schuabild
+    showPanel(): void;
+    hidePanel(): void;
 }
 
 /**
@@ -186,15 +185,14 @@ export class UserPreferenceViewController implements IViewController<IUserPrefer
         this.presenter.editPreferences();
     }
 
-    //Renamed!
     didPressLogin(username: string, password: string, from: ILoginWrapperView): void {
         this.presenter.pressedLogin(username, password);
     }
-    //nicht im Schaubild
+
     didPressHidePanel(from: IHeaderWrapperView): void {
         this.presenter.pressedHidePanel();
     }
-    //nicht im Schaubild
+
     didPressShowPanel(from: IOpenButtonView): void {
         this.presenter.pressedShowPanel();
     }

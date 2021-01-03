@@ -98,13 +98,16 @@
         window.userPreferenceSettings.setSessionTimeoutValue(urlParams.get("session") );
     }
 
-    let mqAudioDesc = window.matchCommonTermMedia("(audioDescriptionEnabled)")
+    let mq = window.matchMedia("max-width: 600px");
+
+
+    let mqAudioDesc = window.matchCommonTermMedia("(audio-description-enabled)")
     mqAudioDesc.addListener("change", reload);
 
-    let mqCaption = window.matchCommonTermMedia("(captionsEnabled)")
+    let mqCaption = window.matchCommonTermMedia("(captions-enabled)")
     mqCaption.addListener("change", reload);
 
-    let mqSignLang = window.matchCommonTermMedia("(signLanguageEnabled)")
+    let mqSignLang = window.matchCommonTermMedia("(sign-language-enabled)")
     mqSignLang.addListener("change", reload);
 
     function reload() {
