@@ -230,5 +230,5 @@ const defaultPreferences = [new Model.UserPreference(CommonTerm.audioDescription
     new Model.UserPreference(CommonTerm.sessionTimeout, "1"),
     new Model.UserPreference(CommonTerm.signLanguage, ""),
     new Model.UserPreference(CommonTerm.signLanguageEnabled, "false"),
-    new Model.UserPreference(CommonTerm.tableOfContents, "true")
+    new Model.UserPreference(CommonTerm.tableOfContents, "false")
 ];

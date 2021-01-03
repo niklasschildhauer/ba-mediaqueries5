@@ -1099,7 +1099,8 @@ exports.annaPreferences = {
             "preferences": {
                 "http://registry.gpii.eu/common/selfVoicingEnabled": true,
                 "http://registry.gpii.eu/common/pictogramsEnabled": true,
-                "http://registry.gpii.eu/common/sessionTimeout": 1.5
+                "http://registry.gpii.eu/common/sessionTimeout": 1.5,
+                "http://registry.gpii.eu/common/tableOfContents": true,
             }
         }
     }
@@ -1110,8 +1111,9 @@ exports.carolePreferences = {
             "name": "Default preferences",
             "preferences": {
                 "http://registry.gpii.eu/common/audioDescriptionEnabled": true,
-                "http://registry.gpii.eu/common/displaySkiplinks": "onfocus",
-                "http://registry.gpii.eu/common/sessionTimeout": 1.8
+                "http://registry.gpii.eu/common/displaySkiplinks": "always",
+                "http://registry.gpii.eu/common/sessionTimeout": 2,
+                "http://registry.gpii.eu/common/tableOfContents": true,
             }
         }
     }
@@ -1123,7 +1125,7 @@ exports.larsPreferences = {
             "preferences": {
                 "http://registry.gpii.eu/common/captionsEnabled": true,
                 "http://registry.gpii.eu/common/signLanguageEnabled": true,
-                "http://registry.gpii.eu/common/signLanguage": "nsl"
+                "http://registry.gpii.eu/common/signLanguage": "gsg"
             }
         }
     }
@@ -1134,7 +1136,8 @@ exports.mariaPreferences = {
             "name": "Default preferences",
             "preferences": {
                 "http://registry.gpii.eu/common/selfVoicingEnabled": true,
-                "http://registry.gpii.eu/common/sessionTimeout": 1.3
+                "http://registry.gpii.eu/common/sessionTimeout": 2.0,
+                "http://registry.gpii.eu/common/tableOfContents": true,
             }
         }
     }
@@ -1144,7 +1147,8 @@ exports.maryPreferences = {
         "name": null,
         "preferences": {
             "http://registry.gpii.eu/common/displaySkiplinks": "always",
-            "http://registry.gpii.eu/common/sessionTimeout": 2
+            "http://registry.gpii.eu/common/sessionTimeout": 2.0,
+            "http://registry.gpii.eu/common/tableOfContents": true,
         }
     }
 };
@@ -1154,8 +1158,8 @@ exports.monikaPreferences = {
             "name": "Default preferences",
             "preferences": {
                 "http://registry.gpii.eu/common/selfVoicingEnabled": true,
-                "http://registry.gpii.eu/common/pictogramsEnabled": true,
-                "http://registry.gpii.eu/common/sessionTimeout": 2
+                "http://registry.gpii.eu/common/sessionTimeout": 2,
+                "http://registry.gpii.eu/common/tableOfContents": true,
             }
         }
     }
@@ -1175,7 +1179,9 @@ exports.tomPreferences = {
         "gpii-default": {
             "name": "Default preferences",
             "preferences": {
-                "http://registry.gpii.eu/common/displaySkiplinks": "onfocus"
+                "http://registry.gpii.eu/common/displaySkiplinks": "onfocus",
+                "http://registry.gpii.eu/common/sessionTimeout": 5,
+                "http://registry.gpii.eu/common/tableOfContents": true,
             }
         }
     }
@@ -1190,7 +1196,7 @@ exports.examplePreferences = {
                 "http://registry.gpii.eu/common/pictogramsEnabled": true,
                 "http://registry.gpii.eu/common/audioDescriptionEnabled": true,
                 "http://registry.gpii.eu/common/captionsEnabled": true,
-                "http://registry.gpii.eu/common/tableOfContents": false,
+                "http://registry.gpii.eu/common/tableOfContents": true,
                 "http://registry.gpii.eu/common/displaySkiplinks": "some",
                 "http://registry.gpii.eu/common/sessionTimeout": 1.2,
                 "http://registry.gpii.eu/common/selfVoicingEnabled": true
