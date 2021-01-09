@@ -13,7 +13,7 @@ html {
     padding-left: 30px;
 }
 
-@media(table-of-contents: false) {
+@media(table-of-contents: hide) {
     .table-of-content {
         display: none;
     }

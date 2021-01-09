@@ -227,11 +227,21 @@ export enum Persona {
 /**
  * @enum SkipLinkValues
  *
- * The general term media feature 'dispalySkiplinks' has three values to choose from.
- * It is the only one one that is not boolean and has a value of a set.
+ * The common term media feature 'dispaly-skiplinks' has three values to choose from.
  */
 export enum SkipLinkValues {
     onfocus = "onfocus",
     always = "always",
     never = "never"
+}
+
+/**
+ * @enum TableOfContentsValues
+ *
+ * The common term media feature 'table-of-contents' has three values to choose from.
+ */
+export enum TableOfContentsValue {
+    noPreferences = "no-preferences",
+    show = "show",
+    hide = "hide"
 }

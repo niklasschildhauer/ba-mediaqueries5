@@ -1,4 +1,4 @@
-@media (selfVoicingEnabled: false) {
+@media (self-voicing-enabled: false) {
     .self-voicing-controls {
         display: none;
     }
@@ -7,7 +7,7 @@
     }
 }
 
-@media (selfVoicingEnabled: true) {
+@media (self-voicing-enabled: true) {
     #passage-text-normal {
         display: none;
     }
@@ -42,7 +42,7 @@
     z-index: 1;
 }
 
-@media (pictogramsEnabled) {
+@media (pictograms-enabled) {
     .tooltip {
         border-top: 1px solid black;
     }

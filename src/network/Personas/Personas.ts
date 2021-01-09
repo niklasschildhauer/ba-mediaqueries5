@@ -19,7 +19,7 @@ export const annaPreferences = {
                 "http://registry.gpii.eu/common/selfVoicingEnabled": true,
                 "http://registry.gpii.eu/common/pictogramsEnabled": true,
                 "http://registry.gpii.eu/common/sessionTimeout": 1.5,
-                "http://registry.gpii.eu/common/tableOfContents": true,
+                "http://registry.gpii.eu/common/tableOfContents": "show",
             }
         }
     }
@@ -33,7 +33,7 @@ export const carolePreferences = {
                 "http://registry.gpii.eu/common/audioDescriptionEnabled": true,
                 "http://registry.gpii.eu/common/displaySkiplinks": "always",
                 "http://registry.gpii.eu/common/sessionTimeout": 2,
-                "http://registry.gpii.eu/common/tableOfContents": true,
+                "http://registry.gpii.eu/common/tableOfContents": "show",
             }
         }
     }
@@ -59,7 +59,7 @@ export const mariaPreferences = {
             "preferences": {
                 "http://registry.gpii.eu/common/selfVoicingEnabled": true,
                 "http://registry.gpii.eu/common/sessionTimeout": 2.0,
-                "http://registry.gpii.eu/common/tableOfContents": true,
+                "http://registry.gpii.eu/common/tableOfContents": "show",
             }
         }
     }
@@ -71,7 +71,7 @@ export const maryPreferences =  {
         "preferences": {
             "http://registry.gpii.eu/common/displaySkiplinks": "always",
             "http://registry.gpii.eu/common/sessionTimeout": 2.0,
-            "http://registry.gpii.eu/common/tableOfContents": true,
+            "http://registry.gpii.eu/common/tableOfContents": "show",
         }
     }
 }
@@ -83,7 +83,7 @@ export const monikaPreferences = {
             "preferences": {
                 "http://registry.gpii.eu/common/selfVoicingEnabled": true,
                 "http://registry.gpii.eu/common/sessionTimeout": 2,
-                "http://registry.gpii.eu/common/tableOfContents": true,
+                "http://registry.gpii.eu/common/tableOfContents": "show",
             }
         }
     }
@@ -107,7 +107,7 @@ export const tomPreferences = {
             "preferences": {
                 "http://registry.gpii.eu/common/displaySkiplinks": "onfocus",
                 "http://registry.gpii.eu/common/sessionTimeout": 5,
-                "http://registry.gpii.eu/common/tableOfContents": true,
+                "http://registry.gpii.eu/common/tableOfContents": "show",
             }
         }
     }

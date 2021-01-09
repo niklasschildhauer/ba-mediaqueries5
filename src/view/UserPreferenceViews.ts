@@ -1,5 +1,4 @@
-import {CommonTerm, Persona, SkipLinkValues, UserPreference} from "../model/Model";
-import {UserPreferenceProfile} from "../user/UserPreferenceProfile";
+import {CommonTerm, Persona, SkipLinkValues, TableOfContentsValue, UserPreference} from "../model/Model";
 
 interface IHTMLElementModel<T> {
     type: string;
@@ -519,7 +518,7 @@ export class ListWrapperView implements  IListWrapperView {
     private audioDescriptionListEntry = new CommonTermListEntryBooleanView("Audio Description Enabled", CommonTerm.audioDescriptionEnabled, () => this.editPreference());
     private captionsEnabledListEntry = new CommonTermListEntryBooleanView("Captions Enabled", CommonTerm.captionsEnabled, () => this.editPreference());
     private pictogramsEnabledListEntry = new CommonTermListEntryBooleanView("Pictograms Enabled", CommonTerm.pictogramsEnabled, () => this.editPreference());
-    private tableOfContentsListEntry = new CommonTermListEntryBooleanView("Table of Contents", CommonTerm.tableOfContents, () => this.editPreference());
+    // private tableOfContentsListEntry = new CommonTermListEntryBooleanView("Table of Contents", CommonTerm.tableOfContents, () => this.editPreference());
     private selfVoicingEnabledListEntry = new CommonTermListEntryBooleanView("Self-Voicing Enabled", CommonTerm.selfVoicingEnabled, () => this.editPreference());
     private signLanguageEnabledListEntry = new CommonTermListEntryBooleanView("Sign Language Enabled", CommonTerm.signLanguageEnabled, () => this.editPreference());
 
@@ -527,15 +526,16 @@ export class ListWrapperView implements  IListWrapperView {
     private signLanguage = new CommonTermListEntryTextInputView("Sign Language", CommonTerm.signLanguage, () => this.editPreference());
 
     private displaySkiplinks = new CommonTermListEntryRadioInputView("Display Skiplinks", CommonTerm.displaySkiplinks, [SkipLinkValues.onfocus, SkipLinkValues.always, SkipLinkValues.never], () => this.editPreference());
+    private tableOfContents = new CommonTermListEntryRadioInputView("Table Of Contents", CommonTerm.tableOfContents, [TableOfContentsValue.show, TableOfContentsValue.noPreferences, TableOfContentsValue.hide], () => this.editPreference());
 
     private listEntries = [this.audioDescriptionListEntry,
         this.captionsEnabledListEntry,
         this.pictogramsEnabledListEntry,
-        this.tableOfContentsListEntry,
         this.selfVoicingEnabledListEntry,
         this.signLanguageEnabledListEntry,
         this.signLanguage,
         this.sessionTimeout,
+        this.tableOfContents,
         this.displaySkiplinks,
     ]
 
