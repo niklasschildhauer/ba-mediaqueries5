@@ -13,9 +13,9 @@
     <a class="skiplink" href="#main">To main content</a>
 </div>
 <h1>Text Website Example</h1>
-<div class="table-of-content">
-    <p>Table of contents:</p>
-    <ol>
+<div class="table-of-contents">
+    <p class="table-of-contents-header">Table of contents:</p>
+    <ol class="table-of-contents-list">
         <li><a href="#main" class="table-link">The Birth of Jesus Christ</a></li>
         <li><a href="#main" class="table-link">The Shepherds and the Angels</a></li>
     </ol>
@@ -404,6 +404,21 @@
 <!-- Self vocing -->
 <script>
     window.userPreferenceSettings.showPreferencePanel()
+
+    var coll = document.getElementsByClassName("table-of-contents-header");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } else {
+                content.style.display = "block";
+            }
+        });
+    }
 </script>
 <script src="self-voicing/read-along.js"></script>
 <script src="self-voicing/main.js"></script>
