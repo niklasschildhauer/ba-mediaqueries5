@@ -447,15 +447,19 @@ var CommonTermList = /** @class */ (function () {
      * @param event   For example "change"
      * @param callback   The function which should be executet.
      */
-    CommonTermList.prototype.addListener = function (event, callback) {
+    CommonTermList.prototype.addListener = function (callback) {
         this.callbackFunction = callback;
     };
-    /**
-     * @returns True if the media query does match
-     */
-    CommonTermList.prototype.matches = function () {
-        return this.matchValue;
-    };
+    Object.defineProperty(CommonTermList.prototype, "matches", {
+        /**
+         * @returns True if the media query does match
+         */
+        get: function () {
+            return this.matchValue;
+        },
+        enumerable: false,
+        configurable: true
+    });
     /**
      * @param value   Sets the match value.
      */
@@ -1376,7 +1380,7 @@ var JSVariableParser = /** @class */ (function () {
     JSVariableParser.prototype.evaluateCommonTermLists = function () {
         for (var i = 0; i < this.commonTermLists.length; i++) {
             var newValue = this.evaluateCommonTermList(this.commonTermLists[i]);
-            var oldValue = this.commonTermLists[i].matches();
+            var oldValue = this.commonTermLists[i].matches;
             if (oldValue != newValue) {
                 this.commonTermLists[i].setMatchValue(newValue);
                 this.commonTermLists[i].callbackFunction();

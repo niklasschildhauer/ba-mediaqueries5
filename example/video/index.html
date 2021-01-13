@@ -102,13 +102,13 @@
 
 
     let mqAudioDesc = window.matchCommonTermMedia("(audio-description-enabled)")
-    mqAudioDesc.addListener("change", reload);
+    mqAudioDesc.addListener(reload);
 
     let mqCaption = window.matchCommonTermMedia("(captions-enabled)")
-    mqCaption.addListener("change", reload);
+    mqCaption.addListener(reload);
 
     let mqSignLang = window.matchCommonTermMedia("(sign-language-enabled)")
-    mqSignLang.addListener("change", reload);
+    mqSignLang.addListener(reload);
 
     function reload() {
         let audioDescValue = window.audioDescriptionEnabled;

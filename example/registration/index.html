@@ -47,10 +47,10 @@
 
     var mq = window.matchCommonTermMedia("(extended-session-timeout)");
 
-    mq.addListener("change", () => this.timeoutExtended());
+    mq.addListener( () => this.timeoutExtended());
 
     function timeoutExtended() {
-        if(mq.matches()) {
+        if(mq.matches) {
             this.resetSessionTimeout();
         }
     }

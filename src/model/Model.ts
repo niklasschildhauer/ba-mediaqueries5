@@ -115,8 +115,8 @@ export class MediaDescriptor implements IMediaDescriptor {
 export interface ICommonTermList {
     callbackFunction: () => any;
     mediaQuery: IMediaQuery;
-    addListener(event: string, callback: () => any): void;
-    matches(): boolean;
+    readonly matches: boolean;
+    addListener(callback: () => any): void;
     setMatchValue(value: boolean): void;
 }
 
@@ -139,14 +139,14 @@ export class CommonTermList implements ICommonTermList {
      * @param event   For example "change"
      * @param callback   The function which should be executet.
      */
-    addListener(event: string, callback: () => any): void {
+    addListener(callback: () => any): void {
         this.callbackFunction = callback;
     }
 
     /**
      * @returns True if the media query does match
      */
-    matches():boolean {
+    get matches():boolean {
         return this.matchValue;
     }
 
