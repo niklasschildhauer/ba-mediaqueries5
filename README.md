@@ -89,7 +89,7 @@ Simply use the @media-rule as usual and then write the CSS code.
 
 ```css
 .skiplink {
-     display: none;
+     display: block;
      font: Arial, sans-serif
 }
 @media (display-skiplinks: onfocus) {
@@ -116,10 +116,10 @@ This function also takes a media query string as parameter.
 As usual, a callback function can be stored, which is called as soon as the value of the media query changes. 
 ```javascript
 let mqAudioDesc = window.matchCommonTermMedia("(audio-description-enabled)")
-    mqAudioDesc.addListener("change", callback);
+    mqAudioDesc.addListener(callback);
 
 function callback() {
-    if(mqAudioDesc.matches()) {
+    if(mqAudioDesc.matches) {
         // turn audio description on
     } else {
         // turn audio description off
