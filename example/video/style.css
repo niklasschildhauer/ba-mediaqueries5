@@ -3,23 +3,25 @@ ul {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #333;
+    background-color: #E2E2E2;
+    border-radius: 10px;
 }
 
 li {
     float: left;
+    cursor: pointer;
 }
 
 li a {
     display: block;
-    color: white;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
 }
 
 li a:hover {
-    background-color: #111;
+    background-color: #4A4E51;
+    color: white;
 }
 
 @media (audio-description-enabled: false) {
