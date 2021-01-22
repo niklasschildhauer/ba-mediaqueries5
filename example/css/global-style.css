@@ -59,3 +59,10 @@ html {
         display: block;
     }
 }
+
+@media (prefers-color-scheme: dark) {
+    html {
+        background-color: black;
+        color: white;
+    }
+}

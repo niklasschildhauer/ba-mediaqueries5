@@ -24,6 +24,25 @@ li a:hover {
     color: white;
 }
 
+#video-wrapper {
+    align-self: center;
+}
+
+.suggestions {
+    display: flex;
+    width: 100%;
+    overflow-x: scroll;
+}
+
+.video-su {
+    padding: 10px 10px 10px 0;
+    height: 200px;
+}
+
+#more-videos {
+    padding-top: 30px;
+}
+
 @media (audio-description-enabled: false) {
     #nav-audiodesk {
         display: none
@@ -38,4 +57,15 @@ li a:hover {
     #nav-captions {
         display: none
     }
+}
+
+@media (prefers-color-scheme: dark) {
+    ul {
+        background-color: #4A4E51;
+    }
+
+    li a:hover {
+        background-color: #1A2023;
+    }
+
 }

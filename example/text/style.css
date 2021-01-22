@@ -1,3 +1,14 @@
+.self-voicing-controls {
+    display: none;
+}
+#passage-text {
+    display: none;
+}
+
+#passage-text-normal {
+    display: block;
+}
+
 @media (self-voicing-enabled: false) {
     .self-voicing-controls {
         display: none;
@@ -8,6 +19,12 @@
 }
 
 @media (self-voicing-enabled: true) {
+    .self-voicing-controls {
+        display: block;
+    }
+    #passage-text {
+        display: block;
+    }
     #passage-text-normal {
         display: none;
     }
@@ -72,13 +89,7 @@
     padding-right: 10px;
 }
 
-@media(table-of-contents: hide) {
-    .table-of-contents-container{
-        display: none;
-    }
-}
 
-@media(table-of-contents: no-preferences) {
     .table-of-contents-list,
     .show,
     .hide:target {
@@ -89,11 +100,42 @@
     .hide:target ~ .table-of-contents-list {
         display: block;
     }
+
+
+@media(table-of-contents: hide) {
+    .table-of-contents-container{
+        display: none;
+    }
 }
 
 @media(table-of-contents: show) {
     .hide, .table-of-contents-container > a > img {
         display: none;
     }
+
+    .table-of-contents-list,
+    .show,
+    .hide:target {
+        display: block;
+    }
 }
 
+
+@media(prefers-color-scheme: dark) {
+    .table-of-contents-container {
+        background-color: #4A4E51;
+        color: white;
+    }
+
+    a {
+        color: #4da6ff;
+    }
+
+    .table-of-contents-container > a {
+        color: white;
+    }
+
+    .table-of-contents-container > a > img{
+        color-adjust: white;
+    }
+}

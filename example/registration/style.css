@@ -1,3 +1,28 @@
+html {
+    background-color: #2b91af;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+
+.content {
+    width: 20em;
+    background-color: white;
+    padding: 25px;
+    border-radius: 20px;
+}
+
+.welcome {
+    color: white;
+    padding: 120px 0 20px 0;
+    text-align: center;
+}
+
 .buttons {
     display: flex;
     justify-content: space-between;
@@ -13,11 +38,14 @@
 
 .countdown-wrapper {
     position: absolute;
+    text-align: left;
     top: 20px;
     right: 40px;
-    background-color: #E2E2E2;
+    background-color: white;
     border-radius: 10px;
     padding: 20px;
+    align-items: center;
+    justify-content: center;
 }
 
 @media(min-width: 1200px) {
@@ -55,4 +83,17 @@ button:hover {
 #countdown-text {
     width: 215px;
     padding: 0px 0px 0px 20px;
+}
+
+@media (prefers-color-scheme: dark) {
+    html {
+        background-color: #294281;
+    }
+    .content {
+        background-color: #333333;
+    }
+
+    .countdown-wrapper{
+        background-color: #333333;
+    }
 }
