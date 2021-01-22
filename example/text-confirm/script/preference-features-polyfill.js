@@ -1,7 +1,7 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTextBetweenBrackets = exports.removeUnimportantCharactersFrom = exports.removeSubstringFrom = exports.removeWhitespaceFrom = void 0;
+exports.enumKeys = exports.getTextBetweenBrackets = exports.removeUnimportantCharactersFrom = exports.removeSubstringFrom = exports.removeWhitespaceFrom = void 0;
 function removeWhitespaceFrom(string) {
     return string.replace(/\s/g, '');
 }
@@ -36,6 +36,10 @@ function getTextBetweenBrackets(text, firstBracket, lastBracket) {
     return string;
 }
 exports.getTextBetweenBrackets = getTextBetweenBrackets;
+function enumKeys(obj) {
+    return Object.keys(obj).filter(function (k) { return Number.isNaN(+k); });
+}
+exports.enumKeys = enumKeys;
 
 },{}],2:[function(require,module,exports){
 "use strict";
@@ -218,8 +222,10 @@ exports.ScriptCoordinator = ScriptCoordinator;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Coordinator = require("./coordinator/ScriptCoordinator");
-var coordinator = new Coordinator.ScriptCoordinator();
-window.userPreferenceSettings = coordinator;
+if (confirm("This site uses your user preferences to customise the website to your needs. Do you agree and allow the sharing of your preferences?")) {
+    var coordinator = new Coordinator.ScriptCoordinator();
+    window.userPreferenceSettings = coordinator;
+}
 
 },{"./coordinator/ScriptCoordinator":2}],4:[function(require,module,exports){
 "use strict";
@@ -287,12 +293,6 @@ var Factory = /** @class */ (function () {
                 supportedMediaQuery.push(condition);
             }
         }
-        console.log("---------------");
-        console.log(unsupportedMediaQuery);
-        console.log(body);
-        console.log(supportedMediaQuery.join("and"));
-        console.log(negated);
-        console.log("---------------");
         var supportedMediaQueryString = supportedMediaQuery.join("and");
         if (negated) {
             supportedMediaQueryString = "not " + supportedMediaQueryString;
@@ -326,11 +326,6 @@ var Factory = /** @class */ (function () {
                 supportedMediaQuery.push(condition);
             }
         }
-        console.log("---------------");
-        console.log(unsupportedMediaQuery);
-        console.log(supportedMediaQuery.join("and"));
-        console.log(negated);
-        console.log("---------------");
         var supportedMediaQueryString = supportedMediaQuery.join("and");
         if (negated) {
             supportedMediaQueryString = "not " + supportedMediaQueryString;
@@ -385,7 +380,8 @@ exports.Factory = Factory;
 },{"../common/utility":1,"./Model":5}],5:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SkipLinkValues = exports.Persona = exports.CommonTerm = exports.UserPreference = exports.MediaFeature = exports.CommonTermList = exports.MediaDescriptor = exports.MediaQuery = exports.CommonTermUtil = void 0;
+exports.TableOfContentsValue = exports.SkipLinkValues = exports.Persona = exports.CommonTerm = exports.UserPreference = exports.MediaFeature = exports.CommonTermList = exports.MediaDescriptor = exports.MediaQuery = exports.CommonTermUtil = void 0;
+var Util = require("../common/utility");
 /**
  * @class CommonTermUtil
  *
@@ -403,12 +399,13 @@ var CommonTermUtil = /** @class */ (function () {
      */
     CommonTermUtil.containsCommonTermMediaFeature = function (query) {
         var result = [false, null];
-        Object.keys(CommonTerm).forEach(function (key) {
-            if (query.match(key)) {
-                var commonTerm = key;
-                result = [true, commonTerm];
+        for (var _i = 0, _a = Util.enumKeys(CommonTerm); _i < _a.length; _i++) {
+            var value = _a[_i];
+            if (query.match(CommonTerm[value])) {
+                var commonTerm = CommonTerm[value];
+                return result = [true, commonTerm];
             }
-        });
+        }
         return result;
     };
     return CommonTermUtil;
@@ -452,15 +449,19 @@ var CommonTermList = /** @class */ (function () {
      * @param event   For example "change"
      * @param callback   The function which should be executet.
      */
-    CommonTermList.prototype.addListener = function (event, callback) {
+    CommonTermList.prototype.addListener = function (callback) {
         this.callbackFunction = callback;
     };
-    /**
-     * @returns True if the media query does match
-     */
-    CommonTermList.prototype.matches = function () {
-        return this.matchValue;
-    };
+    Object.defineProperty(CommonTermList.prototype, "matches", {
+        /**
+         * @returns True if the media query does match
+         */
+        get: function () {
+            return this.matchValue;
+        },
+        enumerable: false,
+        configurable: true
+    });
     /**
      * @param value   Sets the match value.
      */
@@ -500,16 +501,16 @@ exports.UserPreference = UserPreference;
  */
 var CommonTerm;
 (function (CommonTerm) {
-    CommonTerm["displaySkiplinks"] = "displaySkiplinks";
-    CommonTerm["audioDescriptionEnabled"] = "audioDescriptionEnabled";
-    CommonTerm["captionsEnabled"] = "captionsEnabled";
-    CommonTerm["pictogramsEnabled"] = "pictogramsEnabled";
-    CommonTerm["selfVoicingEnabled"] = "selfVoicingEnabled";
-    CommonTerm["tableOfContents"] = "tableOfContents";
-    CommonTerm["extendedSessionTimeout"] = "extendedSessionTimeout";
-    CommonTerm["signLanguage"] = "signLanguage";
-    CommonTerm["signLanguageEnabled"] = "signLanguageEnabled";
-    CommonTerm["sessionTimeout"] = "sessionTimeout";
+    CommonTerm["displaySkiplinks"] = "display-skiplinks";
+    CommonTerm["audioDescriptionEnabled"] = "audio-description-enabled";
+    CommonTerm["captionsEnabled"] = "captions-enabled";
+    CommonTerm["pictogramsEnabled"] = "pictograms-enabled";
+    CommonTerm["selfVoicingEnabled"] = "self-voicing-enabled";
+    CommonTerm["tableOfContents"] = "table-of-contents";
+    CommonTerm["extendedSessionTimeout"] = "extended-session-timeout";
+    CommonTerm["signLanguageEnabled"] = "sign-language-enabled";
+    CommonTerm["signLanguage"] = "sign-language";
+    CommonTerm["sessionTimeout"] = "session-timeout";
 })(CommonTerm = exports.CommonTerm || (exports.CommonTerm = {}));
 /**
  * @enum Persona
@@ -532,8 +533,7 @@ var Persona;
 /**
  * @enum SkipLinkValues
  *
- * The general term media feature 'dispalySkiplinks' has three values to choose from.
- * It is the only one one that is not boolean and has a value of a set.
+ * The common term media feature 'dispaly-skiplinks' has three values to choose from.
  */
 var SkipLinkValues;
 (function (SkipLinkValues) {
@@ -541,8 +541,19 @@ var SkipLinkValues;
     SkipLinkValues["always"] = "always";
     SkipLinkValues["never"] = "never";
 })(SkipLinkValues = exports.SkipLinkValues || (exports.SkipLinkValues = {}));
+/**
+ * @enum TableOfContentsValues
+ *
+ * The common term media feature 'table-of-contents' has three values to choose from.
+ */
+var TableOfContentsValue;
+(function (TableOfContentsValue) {
+    TableOfContentsValue["noPreferences"] = "no-preferences";
+    TableOfContentsValue["show"] = "show";
+    TableOfContentsValue["hide"] = "hide";
+})(TableOfContentsValue = exports.TableOfContentsValue || (exports.TableOfContentsValue = {}));
 
-},{}],6:[function(require,module,exports){
+},{"../common/utility":1}],6:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -1104,7 +1115,8 @@ exports.annaPreferences = {
             "preferences": {
                 "http://registry.gpii.eu/common/selfVoicingEnabled": true,
                 "http://registry.gpii.eu/common/pictogramsEnabled": true,
-                "http://registry.gpii.eu/common/sessionTimeout": 1.5
+                "http://registry.gpii.eu/common/sessionTimeout": 1.5,
+                "http://registry.gpii.eu/common/tableOfContents": "show",
             }
         }
     }
@@ -1115,8 +1127,9 @@ exports.carolePreferences = {
             "name": "Default preferences",
             "preferences": {
                 "http://registry.gpii.eu/common/audioDescriptionEnabled": true,
-                "http://registry.gpii.eu/common/displaySkiplinks": "onfocus",
-                "http://registry.gpii.eu/common/sessionTimeout": 1.8
+                "http://registry.gpii.eu/common/displaySkiplinks": "always",
+                "http://registry.gpii.eu/common/sessionTimeout": 2,
+                "http://registry.gpii.eu/common/tableOfContents": "show",
             }
         }
     }
@@ -1128,7 +1141,7 @@ exports.larsPreferences = {
             "preferences": {
                 "http://registry.gpii.eu/common/captionsEnabled": true,
                 "http://registry.gpii.eu/common/signLanguageEnabled": true,
-                "http://registry.gpii.eu/common/signLanguage": "nsl"
+                "http://registry.gpii.eu/common/signLanguage": "gsg"
             }
         }
     }
@@ -1139,7 +1152,8 @@ exports.mariaPreferences = {
             "name": "Default preferences",
             "preferences": {
                 "http://registry.gpii.eu/common/selfVoicingEnabled": true,
-                "http://registry.gpii.eu/common/sessionTimeout": 1.3
+                "http://registry.gpii.eu/common/sessionTimeout": 2.0,
+                "http://registry.gpii.eu/common/tableOfContents": "show",
             }
         }
     }
@@ -1149,7 +1163,8 @@ exports.maryPreferences = {
         "name": null,
         "preferences": {
             "http://registry.gpii.eu/common/displaySkiplinks": "always",
-            "http://registry.gpii.eu/common/sessionTimeout": 2
+            "http://registry.gpii.eu/common/sessionTimeout": 2.0,
+            "http://registry.gpii.eu/common/tableOfContents": "show",
         }
     }
 };
@@ -1159,8 +1174,8 @@ exports.monikaPreferences = {
             "name": "Default preferences",
             "preferences": {
                 "http://registry.gpii.eu/common/selfVoicingEnabled": true,
-                "http://registry.gpii.eu/common/pictogramsEnabled": true,
-                "http://registry.gpii.eu/common/sessionTimeout": 2
+                "http://registry.gpii.eu/common/sessionTimeout": 2,
+                "http://registry.gpii.eu/common/tableOfContents": "show",
             }
         }
     }
@@ -1180,7 +1195,9 @@ exports.tomPreferences = {
         "gpii-default": {
             "name": "Default preferences",
             "preferences": {
-                "http://registry.gpii.eu/common/displaySkiplinks": "onfocus"
+                "http://registry.gpii.eu/common/displaySkiplinks": "onfocus",
+                "http://registry.gpii.eu/common/sessionTimeout": 5,
+                "http://registry.gpii.eu/common/tableOfContents": "show",
             }
         }
     }
@@ -1195,7 +1212,7 @@ exports.examplePreferences = {
                 "http://registry.gpii.eu/common/pictogramsEnabled": true,
                 "http://registry.gpii.eu/common/audioDescriptionEnabled": true,
                 "http://registry.gpii.eu/common/captionsEnabled": true,
-                "http://registry.gpii.eu/common/tableOfContents": false,
+                "http://registry.gpii.eu/common/tableOfContents": true,
                 "http://registry.gpii.eu/common/displaySkiplinks": "some",
                 "http://registry.gpii.eu/common/sessionTimeout": 1.2,
                 "http://registry.gpii.eu/common/selfVoicingEnabled": true
@@ -1365,7 +1382,7 @@ var JSVariableParser = /** @class */ (function () {
     JSVariableParser.prototype.evaluateCommonTermLists = function () {
         for (var i = 0; i < this.commonTermLists.length; i++) {
             var newValue = this.evaluateCommonTermList(this.commonTermLists[i]);
-            var oldValue = this.commonTermLists[i].matches();
+            var oldValue = this.commonTermLists[i].matches;
             if (oldValue != newValue) {
                 this.commonTermLists[i].setMatchValue(newValue);
                 this.commonTermLists[i].callbackFunction();
@@ -1770,7 +1787,7 @@ var defaultPreferences = [new Model.UserPreference(Model_1.CommonTerm.audioDescr
     new Model.UserPreference(Model_1.CommonTerm.sessionTimeout, "1"),
     new Model.UserPreference(Model_1.CommonTerm.signLanguage, ""),
     new Model.UserPreference(Model_1.CommonTerm.signLanguageEnabled, "false"),
-    new Model.UserPreference(Model_1.CommonTerm.tableOfContents, "true")
+    new Model.UserPreference(Model_1.CommonTerm.tableOfContents, "no-preferences")
 ];
 
 },{"../model/Model":5}],13:[function(require,module,exports){
@@ -1995,15 +2012,12 @@ var UserPreferenceViewController = /** @class */ (function () {
     UserPreferenceViewController.prototype.didEditPreferences = function (from) {
         this.presenter.editPreferences();
     };
-    //Renamed!
     UserPreferenceViewController.prototype.didPressLogin = function (username, password, from) {
         this.presenter.pressedLogin(username, password);
     };
-    //nicht im Schaubild
     UserPreferenceViewController.prototype.didPressHidePanel = function (from) {
         this.presenter.pressedHidePanel();
     };
-    //nicht im Schaubild
     UserPreferenceViewController.prototype.didPressShowPanel = function (from) {
         this.presenter.pressedShowPanel();
     };
@@ -2396,20 +2410,21 @@ var ListWrapperView = /** @class */ (function () {
         this.audioDescriptionListEntry = new CommonTermListEntryBooleanView("Audio Description Enabled", Model_1.CommonTerm.audioDescriptionEnabled, function () { return _this.editPreference(); });
         this.captionsEnabledListEntry = new CommonTermListEntryBooleanView("Captions Enabled", Model_1.CommonTerm.captionsEnabled, function () { return _this.editPreference(); });
         this.pictogramsEnabledListEntry = new CommonTermListEntryBooleanView("Pictograms Enabled", Model_1.CommonTerm.pictogramsEnabled, function () { return _this.editPreference(); });
-        this.tableOfContentsListEntry = new CommonTermListEntryBooleanView("Table of Contents", Model_1.CommonTerm.tableOfContents, function () { return _this.editPreference(); });
+        // private tableOfContentsListEntry = new CommonTermListEntryBooleanView("Table of Contents", CommonTerm.tableOfContents, () => this.editPreference());
         this.selfVoicingEnabledListEntry = new CommonTermListEntryBooleanView("Self-Voicing Enabled", Model_1.CommonTerm.selfVoicingEnabled, function () { return _this.editPreference(); });
         this.signLanguageEnabledListEntry = new CommonTermListEntryBooleanView("Sign Language Enabled", Model_1.CommonTerm.signLanguageEnabled, function () { return _this.editPreference(); });
         this.sessionTimeout = new CommonTermListEntryTextInputView("Session Timeout", Model_1.CommonTerm.sessionTimeout, function () { return _this.editPreference(); });
         this.signLanguage = new CommonTermListEntryTextInputView("Sign Language", Model_1.CommonTerm.signLanguage, function () { return _this.editPreference(); });
         this.displaySkiplinks = new CommonTermListEntryRadioInputView("Display Skiplinks", Model_1.CommonTerm.displaySkiplinks, [Model_1.SkipLinkValues.onfocus, Model_1.SkipLinkValues.always, Model_1.SkipLinkValues.never], function () { return _this.editPreference(); });
+        this.tableOfContents = new CommonTermListEntryRadioInputView("Table Of Contents", Model_1.CommonTerm.tableOfContents, [Model_1.TableOfContentsValue.show, Model_1.TableOfContentsValue.noPreferences, Model_1.TableOfContentsValue.hide], function () { return _this.editPreference(); });
         this.listEntries = [this.audioDescriptionListEntry,
             this.captionsEnabledListEntry,
             this.pictogramsEnabledListEntry,
-            this.tableOfContentsListEntry,
             this.selfVoicingEnabledListEntry,
             this.signLanguageEnabledListEntry,
             this.signLanguage,
             this.sessionTimeout,
+            this.tableOfContents,
             this.displaySkiplinks,
         ];
         var element = new HTMLBasicElement("div", "ct-list-wrapper", null);

@@ -339,3 +339,29 @@
     display: flex;
     justify-content: center;
 }
+
+.user-preference-view-text-input, #user-preference-view-openape-username, #user-preference-view-openape-password {
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    border: 1px solid #848484;
+    outline:0;
+    height:25px;
+    padding-left: 10px;
+    padding-right: 10px;
+
+}
+
+#user-preference-view-sign-language-input,  #user-preference-view-session-timeout-input{
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    border-radius: 30px;
+    width: 100px;
+    text-align: right;
+}
+
+@media (prefers-color-scheme: dark) {
+    .user-preference-view-text-input{
+        background-color: var(--secondary-color);
+    }
+}

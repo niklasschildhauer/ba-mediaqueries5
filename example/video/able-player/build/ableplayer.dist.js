@@ -1442,19 +1442,19 @@ var AblePlayerInstances = [];
 
 		var audioDescMQ = window.matchCommonTermMedia("(audio-description-enabled)");	
 		var descriptionVal = 0;
-		if(audioDescMQ.matches()) {
+		if(audioDescMQ.matches) {
 			descriptionVal = 1;
 		}
 
 		var signLangMQ = window.matchCommonTermMedia("(sign-language-enabled)");	
 		var singLangVal = 0;
-		if(signLangMQ.matches()) {
+		if(signLangMQ.matches) {
 			singLangVal = 1;
 		}
 
 		var captionsMQ = window.matchCommonTermMedia("(captions-enabled)");	
 		var captionVal = 0;
-		if(captionsMQ.matches()) {
+		if(captionsMQ.matches) {
 			captionVal = 1;
 		}
 		

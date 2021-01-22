@@ -49,7 +49,7 @@ export class JSVariableParser implements ICodeParser {
     private evaluateCommonTermLists(): void {
         for (let i = 0; i < this.commonTermLists.length; i++) {
             const newValue = this.evaluateCommonTermList(this.commonTermLists[i]);
-            let oldValue = this.commonTermLists[i].matches()
+            let oldValue = this.commonTermLists[i].matches;
             if(oldValue != newValue) {
                 this.commonTermLists[i].setMatchValue(newValue);
                 this.commonTermLists[i].callbackFunction();

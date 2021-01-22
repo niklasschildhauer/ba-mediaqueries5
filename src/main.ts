@@ -6,4 +6,3 @@ const coordinator: Coordinator.IScriptCoordinator = new Coordinator.ScriptCoordi
 
 
 
-

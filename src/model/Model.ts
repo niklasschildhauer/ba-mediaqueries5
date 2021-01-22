@@ -115,8 +115,8 @@ export class MediaDescriptor implements IMediaDescriptor {
 export interface ICommonTermList {
     callbackFunction: () => any;
     mediaQuery: IMediaQuery;
-    addListener(event: string, callback: () => any): void;
-    matches(): boolean;
+    readonly matches: boolean;
+    addListener(callback: () => any): void;
     setMatchValue(value: boolean): void;
 }
 
@@ -139,14 +139,14 @@ export class CommonTermList implements ICommonTermList {
      * @param event   For example "change"
      * @param callback   The function which should be executet.
      */
-    addListener(event: string, callback: () => any): void {
+    addListener(callback: () => any): void {
         this.callbackFunction = callback;
     }
 
     /**
      * @returns True if the media query does match
      */
-    matches():boolean {
+    get matches():boolean {
         return this.matchValue;
     }
 
@@ -227,11 +227,21 @@ export enum Persona {
 /**
  * @enum SkipLinkValues
  *
- * The general term media feature 'dispalySkiplinks' has three values to choose from.
- * It is the only one one that is not boolean and has a value of a set.
+ * The common term media feature 'dispaly-skiplinks' has three values to choose from.
  */
 export enum SkipLinkValues {
     onfocus = "onfocus",
     always = "always",
     never = "never"
+}
+
+/**
+ * @enum TableOfContentsValues
+ *
+ * The common term media feature 'table-of-contents' has three values to choose from.
+ */
+export enum TableOfContentsValue {
+    noPreferences = "no-preferences",
+    show = "show",
+    hide = "hide"
 }

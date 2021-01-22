@@ -378,7 +378,7 @@ exports.Factory = Factory;
 },{"../common/utility":1,"./Model":5}],5:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SkipLinkValues = exports.Persona = exports.CommonTerm = exports.UserPreference = exports.MediaFeature = exports.CommonTermList = exports.MediaDescriptor = exports.MediaQuery = exports.CommonTermUtil = void 0;
+exports.TableOfContentsValue = exports.SkipLinkValues = exports.Persona = exports.CommonTerm = exports.UserPreference = exports.MediaFeature = exports.CommonTermList = exports.MediaDescriptor = exports.MediaQuery = exports.CommonTermUtil = void 0;
 var Util = require("../common/utility");
 /**
  * @class CommonTermUtil
@@ -447,15 +447,19 @@ var CommonTermList = /** @class */ (function () {
      * @param event   For example "change"
      * @param callback   The function which should be executet.
      */
-    CommonTermList.prototype.addListener = function (event, callback) {
+    CommonTermList.prototype.addListener = function (callback) {
         this.callbackFunction = callback;
     };
-    /**
-     * @returns True if the media query does match
-     */
-    CommonTermList.prototype.matches = function () {
-        return this.matchValue;
-    };
+    Object.defineProperty(CommonTermList.prototype, "matches", {
+        /**
+         * @returns True if the media query does match
+         */
+        get: function () {
+            return this.matchValue;
+        },
+        enumerable: false,
+        configurable: true
+    });
     /**
      * @param value   Sets the match value.
      */
@@ -527,8 +531,7 @@ var Persona;
 /**
  * @enum SkipLinkValues
  *
- * The general term media feature 'dispalySkiplinks' has three values to choose from.
- * It is the only one one that is not boolean and has a value of a set.
+ * The common term media feature 'dispaly-skiplinks' has three values to choose from.
  */
 var SkipLinkValues;
 (function (SkipLinkValues) {
@@ -536,6 +539,17 @@ var SkipLinkValues;
     SkipLinkValues["always"] = "always";
     SkipLinkValues["never"] = "never";
 })(SkipLinkValues = exports.SkipLinkValues || (exports.SkipLinkValues = {}));
+/**
+ * @enum TableOfContentsValues
+ *
+ * The common term media feature 'table-of-contents' has three values to choose from.
+ */
+var TableOfContentsValue;
+(function (TableOfContentsValue) {
+    TableOfContentsValue["noPreferences"] = "no-preferences";
+    TableOfContentsValue["show"] = "show";
+    TableOfContentsValue["hide"] = "hide";
+})(TableOfContentsValue = exports.TableOfContentsValue || (exports.TableOfContentsValue = {}));
 
 },{"../common/utility":1}],6:[function(require,module,exports){
 "use strict";
@@ -1100,7 +1114,7 @@ exports.annaPreferences = {
                 "http://registry.gpii.eu/common/selfVoicingEnabled": true,
                 "http://registry.gpii.eu/common/pictogramsEnabled": true,
                 "http://registry.gpii.eu/common/sessionTimeout": 1.5,
-                "http://registry.gpii.eu/common/tableOfContents": true,
+                "http://registry.gpii.eu/common/tableOfContents": "show",
             }
         }
     }
@@ -1113,7 +1127,7 @@ exports.carolePreferences = {
                 "http://registry.gpii.eu/common/audioDescriptionEnabled": true,
                 "http://registry.gpii.eu/common/displaySkiplinks": "always",
                 "http://registry.gpii.eu/common/sessionTimeout": 2,
-                "http://registry.gpii.eu/common/tableOfContents": true,
+                "http://registry.gpii.eu/common/tableOfContents": "show",
             }
         }
     }
@@ -1137,7 +1151,7 @@ exports.mariaPreferences = {
             "preferences": {
                 "http://registry.gpii.eu/common/selfVoicingEnabled": true,
                 "http://registry.gpii.eu/common/sessionTimeout": 2.0,
-                "http://registry.gpii.eu/common/tableOfContents": true,
+                "http://registry.gpii.eu/common/tableOfContents": "show",
             }
         }
     }
@@ -1148,7 +1162,7 @@ exports.maryPreferences = {
         "preferences": {
             "http://registry.gpii.eu/common/displaySkiplinks": "always",
             "http://registry.gpii.eu/common/sessionTimeout": 2.0,
-            "http://registry.gpii.eu/common/tableOfContents": true,
+            "http://registry.gpii.eu/common/tableOfContents": "show",
         }
     }
 };
@@ -1159,7 +1173,7 @@ exports.monikaPreferences = {
             "preferences": {
                 "http://registry.gpii.eu/common/selfVoicingEnabled": true,
                 "http://registry.gpii.eu/common/sessionTimeout": 2,
-                "http://registry.gpii.eu/common/tableOfContents": true,
+                "http://registry.gpii.eu/common/tableOfContents": "show",
             }
         }
     }
@@ -1181,7 +1195,7 @@ exports.tomPreferences = {
             "preferences": {
                 "http://registry.gpii.eu/common/displaySkiplinks": "onfocus",
                 "http://registry.gpii.eu/common/sessionTimeout": 5,
-                "http://registry.gpii.eu/common/tableOfContents": true,
+                "http://registry.gpii.eu/common/tableOfContents": "show",
             }
         }
     }
@@ -1366,7 +1380,7 @@ var JSVariableParser = /** @class */ (function () {
     JSVariableParser.prototype.evaluateCommonTermLists = function () {
         for (var i = 0; i < this.commonTermLists.length; i++) {
             var newValue = this.evaluateCommonTermList(this.commonTermLists[i]);
-            var oldValue = this.commonTermLists[i].matches();
+            var oldValue = this.commonTermLists[i].matches;
             if (oldValue != newValue) {
                 this.commonTermLists[i].setMatchValue(newValue);
                 this.commonTermLists[i].callbackFunction();
@@ -1771,7 +1785,7 @@ var defaultPreferences = [new Model.UserPreference(Model_1.CommonTerm.audioDescr
     new Model.UserPreference(Model_1.CommonTerm.sessionTimeout, "1"),
     new Model.UserPreference(Model_1.CommonTerm.signLanguage, ""),
     new Model.UserPreference(Model_1.CommonTerm.signLanguageEnabled, "false"),
-    new Model.UserPreference(Model_1.CommonTerm.tableOfContents, "true")
+    new Model.UserPreference(Model_1.CommonTerm.tableOfContents, "no-preferences")
 ];
 
 },{"../model/Model":5}],13:[function(require,module,exports){
@@ -2394,20 +2408,21 @@ var ListWrapperView = /** @class */ (function () {
         this.audioDescriptionListEntry = new CommonTermListEntryBooleanView("Audio Description Enabled", Model_1.CommonTerm.audioDescriptionEnabled, function () { return _this.editPreference(); });
         this.captionsEnabledListEntry = new CommonTermListEntryBooleanView("Captions Enabled", Model_1.CommonTerm.captionsEnabled, function () { return _this.editPreference(); });
         this.pictogramsEnabledListEntry = new CommonTermListEntryBooleanView("Pictograms Enabled", Model_1.CommonTerm.pictogramsEnabled, function () { return _this.editPreference(); });
-        this.tableOfContentsListEntry = new CommonTermListEntryBooleanView("Table of Contents", Model_1.CommonTerm.tableOfContents, function () { return _this.editPreference(); });
+        // private tableOfContentsListEntry = new CommonTermListEntryBooleanView("Table of Contents", CommonTerm.tableOfContents, () => this.editPreference());
         this.selfVoicingEnabledListEntry = new CommonTermListEntryBooleanView("Self-Voicing Enabled", Model_1.CommonTerm.selfVoicingEnabled, function () { return _this.editPreference(); });
         this.signLanguageEnabledListEntry = new CommonTermListEntryBooleanView("Sign Language Enabled", Model_1.CommonTerm.signLanguageEnabled, function () { return _this.editPreference(); });
         this.sessionTimeout = new CommonTermListEntryTextInputView("Session Timeout", Model_1.CommonTerm.sessionTimeout, function () { return _this.editPreference(); });
         this.signLanguage = new CommonTermListEntryTextInputView("Sign Language", Model_1.CommonTerm.signLanguage, function () { return _this.editPreference(); });
         this.displaySkiplinks = new CommonTermListEntryRadioInputView("Display Skiplinks", Model_1.CommonTerm.displaySkiplinks, [Model_1.SkipLinkValues.onfocus, Model_1.SkipLinkValues.always, Model_1.SkipLinkValues.never], function () { return _this.editPreference(); });
+        this.tableOfContents = new CommonTermListEntryRadioInputView("Table Of Contents", Model_1.CommonTerm.tableOfContents, [Model_1.TableOfContentsValue.show, Model_1.TableOfContentsValue.noPreferences, Model_1.TableOfContentsValue.hide], function () { return _this.editPreference(); });
         this.listEntries = [this.audioDescriptionListEntry,
             this.captionsEnabledListEntry,
             this.pictogramsEnabledListEntry,
-            this.tableOfContentsListEntry,
             this.selfVoicingEnabledListEntry,
             this.signLanguageEnabledListEntry,
             this.signLanguage,
             this.sessionTimeout,
+            this.tableOfContents,
             this.displaySkiplinks,
         ];
         var element = new HTMLBasicElement("div", "ct-list-wrapper", null);

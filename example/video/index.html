@@ -14,19 +14,17 @@
 
 
     <style>
-        h1 {
-            text-align: center;
-        }
+
         body{
             display: flex;
             flex-direction: column;
-            align-content: center;
-            justify-content: center;
+            align-content: flex-start;
+            justify-content: flex-start;
         }
         #video-wrapper {
             display: flex;
-            align-content: center;
-            justify-content: center;
+            align-content: flex-start;
+            justify-content: flex-start;
         }
     </style>
 </head>
@@ -41,9 +39,9 @@
         <li><a>Home</a></li>
         <li><a>Movies</a></li>
         <li><a>Series</a></li>
-        <li id="nav-captions"><a>Content with Captions</a></li>
-        <li id="nav-audiodesk"><a>Content with Audio Description</a></li>
-        <li id="nav-signlang"><a>Content with SignLanguage</a></li>
+        <li id="nav-captions"><a>Videos with Captions</a></li>
+        <li id="nav-audiodesk"><a>Videos with Audio Description</a></li>
+        <li id="nav-signlang"><a>Videos with Sign Language</a></li>
     </ul>
 </div>
 
@@ -60,6 +58,19 @@
         <track kind="descriptions" src="./assets/wwa_description_en.vtt" srclang="en" />
     </video>
 </div>
+
+<h2 id="more-videos">More videos</h2>
+<div class="suggestions">
+    <img src="assets/dummy/red.svg" class="video-su" alt="dummy video">
+    <img src="assets/dummy/yellow.svg" class="video-su" alt="dummy video">
+    <img src="assets/dummy/blue.svg" class="video-su" alt="dummy video">
+    <img src="assets/dummy/cyan.svg" class="video-su" alt="dummy video">
+</div>
+
+<p class="credits">
+    The video is the sample video of the
+    <a href="https://ableplayer.github.io/ableplayer/" title="Able-Playerr">Able-Player</a>.
+</p>
 
 
 <script src="../script/preference-features-polyfill.js"></script>
@@ -98,17 +109,29 @@
         window.userPreferenceSettings.setSessionTimeoutValue(urlParams.get("session") );
     }
 
-    let mq = window.matchMedia("max-width: 600px");
+
+    if(window.audioDescriptionEnabled === "true") {
+        let title = document.getElementById("more-videos");
+        title.innerText = "More videos with audio description"
+    }
+    if(window.signLanguageEnabled === "true") {
+        let title = document.getElementById("more-videos");
+        title.innerText = "More videos with sign language"
+    }
+    if(window.captionsEnabled === "true") {
+        let title = document.getElementById("more-videos");
+        title.innerText = "More videos with captions"
+    }
 
 
     let mqAudioDesc = window.matchCommonTermMedia("(audio-description-enabled)")
-    mqAudioDesc.addListener("change", reload);
+    mqAudioDesc.addListener(reload);
 
     let mqCaption = window.matchCommonTermMedia("(captions-enabled)")
-    mqCaption.addListener("change", reload);
+    mqCaption.addListener(reload);
 
     let mqSignLang = window.matchCommonTermMedia("(sign-language-enabled)")
-    mqSignLang.addListener("change", reload);
+    mqSignLang.addListener(reload);
 
     function reload() {
         let audioDescValue = window.audioDescriptionEnabled;

@@ -3,23 +3,44 @@ ul {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #333;
+    background-color: #E2E2E2;
+    border-radius: 10px;
 }
 
 li {
     float: left;
+    cursor: pointer;
 }
 
 li a {
     display: block;
-    color: white;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
 }
 
 li a:hover {
-    background-color: #111;
+    background-color: #4A4E51;
+    color: white;
+}
+
+#video-wrapper {
+    align-self: center;
+}
+
+.suggestions {
+    display: flex;
+    width: 100%;
+    overflow-x: scroll;
+}
+
+.video-su {
+    padding: 10px 10px 10px 0;
+    height: 200px;
+}
+
+#more-videos {
+    padding-top: 30px;
 }
 
 @media (audio-description-enabled: false) {
@@ -36,4 +57,15 @@ li a:hover {
     #nav-captions {
         display: none
     }
+}
+
+@media (prefers-color-scheme: dark) {
+    ul {
+        background-color: #4A4E51;
+    }
+
+    li a:hover {
+        background-color: #1A2023;
+    }
+
 }
