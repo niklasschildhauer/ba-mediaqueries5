@@ -6,8 +6,6 @@
     <link rel="stylesheet" href="../css/global-style.css" type="text/css" />
     <link rel="stylesheet" href="style.css" type="text/css" />
 
-
-
     <title>Text Website Example</title>
 </head>
 <body>
@@ -408,10 +406,14 @@
 </div>
 
 
-
-<script src="../script/preference-features-polyfill.js"></script>
+<script src="./script/preference-features-polyfill.js"></script>
 <script>
     window.userPreferenceSettings.showPreferencePanel()
+
+    function showModal() {
+        let alert = document.getElementById("alert");
+        alert.style.display = "block";
+    }
 </script>
 <script src="self-voicing/read-along.js"></script>
 <script src="self-voicing/main.js"></script>
