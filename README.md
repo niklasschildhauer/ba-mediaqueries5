@@ -6,16 +6,16 @@ In the scope of this bachelor thesis, the new prefers- media features from the M
 In addition, further user preference media features were investigated. These are taken from the [List](https://www.w3.org/WAI/APA/wiki/Media_features_use_cases_for_personalization) of personalization media features.
 
 The candidates are:
-* AudioDescriptionEnabled
-* CaptionsEnabled
-* PictogramsEnabled
-* SignLanguage & SignLanguageEnabled
-* TableOfContents
-* DisplaySkiplinks
-* SessionTimeout & ExtendedSessionTimeout
-* SelfVoicingEnabled
+* [Captions Enabled](https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/wikis/Captions-Enabled)
+* [Audio Description Enabled](https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/wikis/Audio-Description-Enabled)
+* [Sign Language & Sign Language Enabled](https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/wikis/Sign-Language-and-Sign-Language-Enabled)
+* [Pictograms Enabled](https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/wikis/Pictograms-Enabled)
+* [Self-Voicing Enabled](https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/wikis/Self-Voicing-Enabled)
+* [Display Skiplinks](https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/wikis/Display-Skiplinks)
+* [Table of Contents](https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/wikis/Table-of-Contents)
+* [Session Timeout & Extended ession Timeout](https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/wikis/Session-Timeout-und-Extended-Session-Timeout)
 
-The advantages of these candidates are described at (link). 
+The advantages of these candidates are described at the [Wiki](https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/wikis/Wiki) of this repositoy. 
 This CSS Polyfill offers the possibility to use these media features. 
 Part of the Polyfill is a panel view, where the user can make his settings.
 A login to OpenAPE to load the user context is also possible.
@@ -32,7 +32,7 @@ These would actually be ignored by the browser.
 The script runs its own algorithm to evaluate them. 
 Afterwards a modified CSS code is generated, which is inserted into the HTML document as style-element. 
 Each time a preference is changed, the process is triggered again.
-In addition, the skirpt also makes the media feature candidates available in JS as a media query list, as well as the candidate value as a variable. 
+In addition, the scirpt also makes the media feature candidates available in JS as a media query list, as well variables. 
 
 #### How to setup the polyfill
 To use the polyfill in any website, the two files from [built](https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/tree/master/built) must be embedded in the HTML document as follows:
@@ -179,7 +179,7 @@ Installs all project dependencies.
 ```
 npm run build
 ```
-Runs the tsc command to compile the TypeScript code to JS Code first and then runs browsify to bundle the JS code.    
+Runs the tsc command to compile the TypeScript code to JS Code first and then runs browserify to bundle the JS code.    
 ```
 npm run test
 ```
@@ -189,3 +189,9 @@ npm run release
 ```
 Runs the build process first, then copies the bundled JS code and stylesheet to the built folder and at the end uglifies the JS-File.
 
+#### Dependencies
+- [TypeScript 4.1.2](https://www.typescriptlang.org)
+- [npm](https://www.npmjs.com)
+- [Jest](https://jestjs.io)
+- [Browserify](http://browserify.org)
+- [OpenAPE Client](https://github.com/REMEXLabs/openape.js)
