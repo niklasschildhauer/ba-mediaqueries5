@@ -1,6 +1,6 @@
 # User Preference Media Features - CSS Polyfill
 
-Wiki: [Presentation](https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/wikis/Presentation:-Common-Terms-as-Media-Features)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/blob/master/LICENSE)
 
 In the scope of this bachelor thesis, the new prefers- media features from the Media Queries Level 5 were examined. 
 In addition, further user preference media features were investigated. These are taken from the [List](https://www.w3.org/WAI/APA/wiki/Media_features_use_cases_for_personalization) of personalization media features.
@@ -195,6 +195,3 @@ Runs the build process first, then copies the bundled JS code and stylesheet to 
 - [Jest](https://jestjs.io)
 - [Browserify](http://browserify.org)
 - [OpenAPE Client](https://github.com/REMEXLabs/openape.js)
-
-#### License
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/blob/master/LICENSE)
