@@ -195,3 +195,6 @@ Runs the build process first, then copies the bundled JS code and stylesheet to 
 - [Jest](https://jestjs.io)
 - [Browserify](http://browserify.org)
 - [OpenAPE Client](https://github.com/REMEXLabs/openape.js)
+
+#### License
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/blob/master/LICENSE)
