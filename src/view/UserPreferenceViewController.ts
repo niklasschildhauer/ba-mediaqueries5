@@ -168,31 +168,66 @@ export class UserPreferenceViewController implements IViewController<IUserPrefer
 
 
     // DELEGATE FUNCTIONS
+    /**
+     * Called from the PersonasWrapperView when a persona is selected
+     *
+     * @param IApplyButtonWrapperView, Persona
+     */
     didSelectPersona(persona: Persona, from: PersonasWrapperView): void {
         console.log("Did select hier " + persona);
         this.presenter.selectPersona(persona);
     }
 
+    /**
+     * Called from the IApplyButtonWrapperView when apply is pressed
+     *
+     * @param IApplyButtonWrapperView
+     */
     didPressApply(from: IApplyButtonWrapperView): void {
         this.presenter.pressedApplyPreferences();
     }
 
+    /**
+     * Called from the IApplyButtonWrapperView when cancel is pressed
+     *
+     * @param IApplyButtonWrapperView
+     */
     didPressCancel(from: IApplyButtonWrapperView): void {
         this.presenter.pressedCancel();
     }
 
+    /**
+     * Called from the IListWrapperView when a preference is edited
+     *
+     * @param IHeaderWrapperView
+     */
     didEditPreferences(from: IListWrapperView): void {
         this.presenter.editPreferences();
     }
 
+    /**
+     * Called from the ILoginWrapperView when to login the user
+     *
+     * @param IHeaderWrapperView, password: string, username: string
+     */
     didPressLogin(username: string, password: string, from: ILoginWrapperView): void {
         this.presenter.pressedLogin(username, password);
     }
 
+    /**
+     * Called from the IHeaderWrapperView when the button is pressed to hide the panel
+     *
+     * @param IHeaderWrapperView
+     */
     didPressHidePanel(from: IHeaderWrapperView): void {
         this.presenter.pressedHidePanel();
     }
 
+    /**
+     * Called from the IOpenButtonView when the button is pressed to show the panel
+     *
+     * @param IOpenButtonView
+     */
     didPressShowPanel(from: IOpenButtonView): void {
         this.presenter.pressedShowPanel();
     }

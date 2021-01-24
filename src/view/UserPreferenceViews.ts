@@ -11,6 +11,11 @@ interface IHTMLElementModel<T> {
     setAttribute(attribute: string, value: string): void
 }
 
+/**
+ * @class HTMLBasicElement
+ *
+ * Represents the basic html element and configures it
+ */
 export class HTMLBasicElement implements  IHTMLElementModel<HTMLElement> {
     id: string | null = null;
     type: string;
@@ -52,6 +57,11 @@ export class HTMLBasicElement implements  IHTMLElementModel<HTMLElement> {
     }
 }
 
+/**
+ * @class HTMLTextElement
+ *
+ * Represents a html text element. It extends the HTMLBasicElement class
+ */
 export class HTMLTextElement extends HTMLBasicElement {
     constructor(type: string, id: string | null, classString: string | null, text: string) {
         super(type, id, classString);
@@ -68,6 +78,11 @@ export class HTMLTextElement extends HTMLBasicElement {
     }
 }
 
+/**
+ * @class HTMLImageElement
+ *
+ * Represents a html image element. It extends the HTMLBasicElement class
+ */
 export class HTMLImageElement extends HTMLBasicElement {
     constructor(type: string, id: string | null, classString: string | null, src: string, alt: string) {
         super(type, id, classString);
@@ -76,6 +91,11 @@ export class HTMLImageElement extends HTMLBasicElement {
     }
 }
 
+/**
+ * @class HTMLImageElement
+ *
+ * Represents a html user input element
+ */
 export class HTMLUserInputElement implements IHTMLElementModel<HTMLInputElement> {
     class: string | null = null;
     element: HTMLInputElement;
