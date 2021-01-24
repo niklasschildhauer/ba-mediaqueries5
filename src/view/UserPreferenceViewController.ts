@@ -174,7 +174,6 @@ export class UserPreferenceViewController implements IViewController<IUserPrefer
      * @param IApplyButtonWrapperView, Persona
      */
     didSelectPersona(persona: Persona, from: PersonasWrapperView): void {
-        console.log("Did select hier " + persona);
         this.presenter.selectPersona(persona);
     }
 

@@ -50,7 +50,7 @@ test('User Preference Profile - doesMediaQueryMatch #1', () => {
     let network = new NetworkAPI();
     let profile = new UserPreferenceProfile(delegate, network);
 
-    let mediaFeatures = [new MediaFeature(CommonTerm.tableOfContents, false, "true"),
+    let mediaFeatures = [new MediaFeature(CommonTerm.tableOfContents, false, "no-preferences"),
                         new MediaFeature(CommonTerm.signLanguage, true, "gsd"),
                         new MediaFeature(CommonTerm.extendedSessionTimeout, false, "false")]
 

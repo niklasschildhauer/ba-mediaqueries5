@@ -27,7 +27,7 @@ test('Network API - loadPreferenceSetFromPersona #3', (done) => {
 
     let test = network.loadPreferenceSetFromPersona(Persona.mary)
     test.then((result) => {
-        expect(result.userPreferences[0]).toStrictEqual(new UserPreference(CommonTerm.displaySkiplinks, "always"));
+        expect(result.userPreferences[0]).toStrictEqual(new UserPreference(CommonTerm.tableOfContents, "show"));
         done();
     });
 });

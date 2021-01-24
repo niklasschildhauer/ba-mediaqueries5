@@ -79,7 +79,6 @@ export class ScriptCoordinator implements ICoordinator<IUserPreferencePresenter>
      */
     public addCSSCode(string: string) {
         this.cssReader.read(string);
-        console.log(this.cssReader.get());
     }
     /**
      * Changes the AudioDescriptionEnabled Value
@@ -186,7 +185,6 @@ export class ScriptCoordinator implements ICoordinator<IUserPreferencePresenter>
      */
     didUpdateMediaDescriptors(from: CSSReader): void {
         this.codeParser.parse();
-        console.log("update CSS Code!");
     }
 
     /**

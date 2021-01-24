@@ -119,7 +119,6 @@ export class UserPreferencePresenter implements IUserPreferencePresenter {
      */
     private refreshView() {
         this.view.selectUserPreferences(this.userProfile.getUserPreferences());
-        console.log(this.userProfile.getUserPreferences());
     }
 
 }

@@ -54,7 +54,6 @@ export class UserPreferenceProfile implements IUserPreferenceProfile {
      */
     private refresh() {
         this.delegate.didUpdateProfile(this);
-        console.log(this.userPreferences);
     }
 
     /**
@@ -62,9 +61,6 @@ export class UserPreferenceProfile implements IUserPreferenceProfile {
      */
     private setDefaultValues() {
         this.userPreferences = defaultPreferences.slice();
-        console.log("_-----------")
-        console.log(defaultPreferences);
-        console.log("_-----------")
     }
 
     /**

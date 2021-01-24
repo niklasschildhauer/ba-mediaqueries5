@@ -63,17 +63,12 @@ export class JSVariableParser implements ICodeParser {
      * @returns the current match value of the common term list
      */
     private evaluateCommonTermList(list: ICommonTermList): boolean {
-        console.log(list);
         if(this.userProfile.doesMediaQueryMatch(list.mediaQuery)) {
-            console.log("1");
             if(list.mediaQuery.supportedMediaQuery !== null) {
-                console.log("2");
                 return this.evaluateMediaQuery(list.mediaQuery.supportedMediaQuery);
             }
-            console.log("3");
             return true;
         }
-        console.log("4");
         return false;
     }
 

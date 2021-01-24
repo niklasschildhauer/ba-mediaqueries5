@@ -83,7 +83,6 @@ var ScriptCoordinator = /** @class */ (function () {
      */
     ScriptCoordinator.prototype.addCSSCode = function (string) {
         this.cssReader.read(string);
-        console.log(this.cssReader.get());
     };
     /**
      * Changes the AudioDescriptionEnabled Value
@@ -184,7 +183,6 @@ var ScriptCoordinator = /** @class */ (function () {
      */
     ScriptCoordinator.prototype.didUpdateMediaDescriptors = function (from) {
         this.codeParser.parse();
-        console.log("update CSS Code!");
     };
     /**
      * Called from the IUserPreferenceProfile when the Profile has been updated.
@@ -1393,17 +1391,12 @@ var JSVariableParser = /** @class */ (function () {
      * @returns the current match value of the common term list
      */
     JSVariableParser.prototype.evaluateCommonTermList = function (list) {
-        console.log(list);
         if (this.userProfile.doesMediaQueryMatch(list.mediaQuery)) {
-            console.log("1");
             if (list.mediaQuery.supportedMediaQuery !== null) {
-                console.log("2");
                 return this.evaluateMediaQuery(list.mediaQuery.supportedMediaQuery);
             }
-            console.log("3");
             return true;
         }
-        console.log("4");
         return false;
     };
     JSVariableParser.prototype.evaluateMediaQuery = function (mediaQuery) {
@@ -1617,16 +1610,12 @@ var UserPreferenceProfile = /** @class */ (function () {
      */
     UserPreferenceProfile.prototype.refresh = function () {
         this.delegate.didUpdateProfile(this);
-        console.log(this.userPreferences);
     };
     /**
      * Sets the default user preferences.
      */
     UserPreferenceProfile.prototype.setDefaultValues = function () {
         this.userPreferences = defaultPreferences.slice();
-        console.log("_-----------");
-        console.log(defaultPreferences);
-        console.log("_-----------");
     };
     /**
      * Logs a user into the Open APE Server and queries their user preferences.
@@ -1884,7 +1873,6 @@ var UserPreferencePresenter = /** @class */ (function () {
      */
     UserPreferencePresenter.prototype.refreshView = function () {
         this.view.selectUserPreferences(this.userProfile.getUserPreferences());
-        console.log(this.userProfile.getUserPreferences());
     };
     return UserPreferencePresenter;
 }());
@@ -1997,25 +1985,59 @@ var UserPreferenceViewController = /** @class */ (function () {
         return this.listWrapper.getAllPreferences();
     };
     // DELEGATE FUNCTIONS
+    /**
+     * Called from the PersonasWrapperView when a persona is selected
+     *
+     * @param IApplyButtonWrapperView, Persona
+     */
     UserPreferenceViewController.prototype.didSelectPersona = function (persona, from) {
-        console.log("Did select hier " + persona);
         this.presenter.selectPersona(persona);
     };
+    /**
+     * Called from the IApplyButtonWrapperView when apply is pressed
+     *
+     * @param IApplyButtonWrapperView
+     */
     UserPreferenceViewController.prototype.didPressApply = function (from) {
         this.presenter.pressedApplyPreferences();
     };
+    /**
+     * Called from the IApplyButtonWrapperView when cancel is pressed
+     *
+     * @param IApplyButtonWrapperView
+     */
     UserPreferenceViewController.prototype.didPressCancel = function (from) {
         this.presenter.pressedCancel();
     };
+    /**
+     * Called from the IListWrapperView when a preference is edited
+     *
+     * @param IHeaderWrapperView
+     */
     UserPreferenceViewController.prototype.didEditPreferences = function (from) {
         this.presenter.editPreferences();
     };
+    /**
+     * Called from the ILoginWrapperView when to login the user
+     *
+     * @param IHeaderWrapperView, password: string, username: string
+     */
     UserPreferenceViewController.prototype.didPressLogin = function (username, password, from) {
         this.presenter.pressedLogin(username, password);
     };
+    /**
+     * Called from the IHeaderWrapperView when the button is pressed to hide the panel
+     *
+     * @param IHeaderWrapperView
+     */
     UserPreferenceViewController.prototype.didPressHidePanel = function (from) {
         this.presenter.pressedHidePanel();
     };
+    /**
+     * Called from the IOpenButtonView when the button is pressed to show the panel
+     *
+     * @param IOpenButtonView
+     */
     UserPreferenceViewController.prototype.didPressShowPanel = function (from) {
         this.presenter.pressedShowPanel();
     };
@@ -2041,6 +2063,11 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OpenButtonView = exports.LoginWrapperView = exports.ListWrapperView = exports.HeaderWrapperView = exports.ApplyButtonWrapperView = exports.LabelButtonView = exports.ImageButtonView = exports.RadioButtonView = exports.SwitchControlView = exports.PersonasWrapperView = exports.HTMLUserInputElement = exports.HTMLImageElement = exports.HTMLTextElement = exports.HTMLBasicElement = void 0;
 var Model_1 = require("../model/Model");
+/**
+ * @class HTMLBasicElement
+ *
+ * Implements IHTMLElementModel as basic HTMLBasicElement and configures it
+ */
 var HTMLBasicElement = /** @class */ (function () {
     function HTMLBasicElement(type, id, classString) {
         this.id = null;
@@ -2074,6 +2101,11 @@ var HTMLBasicElement = /** @class */ (function () {
     return HTMLBasicElement;
 }());
 exports.HTMLBasicElement = HTMLBasicElement;
+/**
+ * @class HTMLTextElement
+ *
+ * Implements IHTMLElementModel as html text element. It extends the HTMLBasicElement class
+ */
 var HTMLTextElement = /** @class */ (function (_super) {
     __extends(HTMLTextElement, _super);
     function HTMLTextElement(type, id, classString, text) {
@@ -2091,6 +2123,11 @@ var HTMLTextElement = /** @class */ (function (_super) {
     return HTMLTextElement;
 }(HTMLBasicElement));
 exports.HTMLTextElement = HTMLTextElement;
+/**
+ * @class HTMLImageElement
+ *
+ * Represents a html image element. It extends the HTMLBasicElement class
+ */
 var HTMLImageElement = /** @class */ (function (_super) {
     __extends(HTMLImageElement, _super);
     function HTMLImageElement(type, id, classString, src, alt) {
@@ -2102,6 +2139,11 @@ var HTMLImageElement = /** @class */ (function (_super) {
     return HTMLImageElement;
 }(HTMLBasicElement));
 exports.HTMLImageElement = HTMLImageElement;
+/**
+ * @class HTMLImageElement
+ *
+ * Represents a html user input element. Implements IHTMLElementModel
+ */
 var HTMLUserInputElement = /** @class */ (function () {
     function HTMLUserInputElement(type, id, classString, placeholder) {
         this.class = null;
@@ -2151,6 +2193,11 @@ var HTMLUserInputElement = /** @class */ (function () {
     return HTMLUserInputElement;
 }());
 exports.HTMLUserInputElement = HTMLUserInputElement;
+/**
+ * @class PersonaView
+ *
+ * UIView of a persona. The picture and the name are displayed.
+ */
 var PersonaView = /** @class */ (function () {
     function PersonaView(name, imageSource) {
         this.imageElement = new HTMLImageElement("img", null, "persona-image", imageSource, "Zeichnung aus den Alltagsbeschreibungen");
@@ -2168,6 +2215,12 @@ var PersonaView = /** @class */ (function () {
     };
     return PersonaView;
 }());
+/**
+ * @class PersonasWrapperView
+ *
+ * UIView of the persona section. It contains all personas from
+ * the MOOCAP project
+ */
 var PersonasWrapperView = /** @class */ (function () {
     function PersonasWrapperView(delegate) {
         var _this = this;
@@ -2218,6 +2271,11 @@ var PersonasWrapperView = /** @class */ (function () {
     return PersonasWrapperView;
 }());
 exports.PersonasWrapperView = PersonasWrapperView;
+/**
+ * @class SwitchControlView
+ *
+ * Switch control to active and deactivate.
+ */
 var SwitchControlView = /** @class */ (function () {
     function SwitchControlView(name) {
         this.checkBoxElement = new HTMLUserInputElement("checkbox", name + "-switcher", "switch-input", null);
@@ -2238,6 +2296,11 @@ var SwitchControlView = /** @class */ (function () {
     return SwitchControlView;
 }());
 exports.SwitchControlView = SwitchControlView;
+/**
+ * @class RadioButtonView
+ *
+ * Radio button control to choose a value of a set of values.
+ */
 var RadioButtonView = /** @class */ (function () {
     function RadioButtonView(name, values) {
         this.element = new HTMLBasicElement("div", null, "radio-label");
@@ -2272,6 +2335,11 @@ var RadioButtonView = /** @class */ (function () {
     return RadioButtonView;
 }());
 exports.RadioButtonView = RadioButtonView;
+/**
+ * @class ImageButtonView
+ *
+ * UIView with a image as button
+ */
 var ImageButtonView = /** @class */ (function (_super) {
     __extends(ImageButtonView, _super);
     function ImageButtonView(id, classString, imagePath, altText, functionCall) {
@@ -2285,6 +2353,11 @@ var ImageButtonView = /** @class */ (function (_super) {
     return ImageButtonView;
 }(HTMLBasicElement));
 exports.ImageButtonView = ImageButtonView;
+/**
+ * @class LabelButtonView
+ *
+ * UIView with a label as button
+ */
 var LabelButtonView = /** @class */ (function (_super) {
     __extends(LabelButtonView, _super);
     function LabelButtonView(id, classString, label, functionCall) {
@@ -2298,6 +2371,11 @@ var LabelButtonView = /** @class */ (function (_super) {
     return LabelButtonView;
 }(HTMLBasicElement));
 exports.LabelButtonView = LabelButtonView;
+/**
+ * @class ApplyButtonWrapperView
+ *
+ * UIView with confirm and cancel button
+ */
 var ApplyButtonWrapperView = /** @class */ (function () {
     function ApplyButtonWrapperView(delegate) {
         var _this = this;
@@ -2325,6 +2403,11 @@ var ApplyButtonWrapperView = /** @class */ (function () {
     return ApplyButtonWrapperView;
 }());
 exports.ApplyButtonWrapperView = ApplyButtonWrapperView;
+/**
+ * @class ApplyButtonWrapperView
+ *
+ * Header view with title and close button
+ */
 var HeaderWrapperView = /** @class */ (function () {
     function HeaderWrapperView(delegate) {
         var _this = this;
@@ -2341,6 +2424,12 @@ var HeaderWrapperView = /** @class */ (function () {
     return HeaderWrapperView;
 }());
 exports.HeaderWrapperView = HeaderWrapperView;
+/**
+ * @class CommonTermListEntryBooleanView
+ *
+ * Is a list entry with a switch control on the right side to active and
+ * deactivate.
+ */
 var CommonTermListEntryBooleanView = /** @class */ (function () {
     function CommonTermListEntryBooleanView(name, commonTerm, valueChangedCall) {
         this.label = new HTMLTextElement("p", null, "list-entry-label", name);
@@ -2364,6 +2453,11 @@ var CommonTermListEntryBooleanView = /** @class */ (function () {
     };
     return CommonTermListEntryBooleanView;
 }());
+/**
+ * @class CommonTermListEntryTextInputView
+ *
+ * Is a list entry with text input on the right side
+ */
 var CommonTermListEntryTextInputView = /** @class */ (function () {
     function CommonTermListEntryTextInputView(name, commonTerm, valueChangedCall) {
         this.label = new HTMLTextElement("p", null, "list-entry-label", name);
@@ -2382,6 +2476,12 @@ var CommonTermListEntryTextInputView = /** @class */ (function () {
     };
     return CommonTermListEntryTextInputView;
 }());
+/**
+ * @class CommonTermListEntryTextInputView
+ *
+ * Is a list entry with radio button on the right side
+ * to choose a value of a set of values
+ */
 var CommonTermListEntryRadioInputView = /** @class */ (function () {
     function CommonTermListEntryRadioInputView(name, commonTerm, values, valueChangedCall) {
         this.label = new HTMLTextElement("p", null, "list-entry-label", name);
@@ -2402,6 +2502,11 @@ var CommonTermListEntryRadioInputView = /** @class */ (function () {
     };
     return CommonTermListEntryRadioInputView;
 }());
+/**
+ * @class ListWrapperView
+ *
+ * View which contains all list entries to set the user preferences
+ */
 var ListWrapperView = /** @class */ (function () {
     function ListWrapperView(delegate) {
         var _this = this;
@@ -2452,6 +2557,11 @@ var ListWrapperView = /** @class */ (function () {
     return ListWrapperView;
 }());
 exports.ListWrapperView = ListWrapperView;
+/**
+ * @class LoginWrapperView
+ *
+ * Login wrapper view to log into an openAPE account
+ */
 var LoginWrapperView = /** @class */ (function () {
     function LoginWrapperView(delegate) {
         var _this = this;
@@ -2480,6 +2590,11 @@ var LoginWrapperView = /** @class */ (function () {
     return LoginWrapperView;
 }());
 exports.LoginWrapperView = LoginWrapperView;
+/**
+ * @class LoginWrapperView
+ *
+ * Button view to open the user preference panel
+ */
 var OpenButtonView = /** @class */ (function () {
     function OpenButtonView(delegate) {
         var _this = this;
