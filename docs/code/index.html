@@ -7,6 +7,7 @@
 	<meta name="description" content="Documentation for ba-mq5">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
+	<script async src="assets/js/search.js" id="search-script"></script>
 </head>
 <body>
 <header>
@@ -40,8 +41,6 @@
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
 							<input type="checkbox" id="tsd-filter-externals" checked />
 							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -51,11 +50,6 @@
 	</div>
 	<div class="tsd-page-title">
 		<div class="container">
-			<ul class="tsd-breadcrumb">
-				<li>
-					<a href="globals.html">Globals</a>
-				</li>
-			</ul>
 			<h1>ba-mq5</h1>
 		</div>
 	</div>
@@ -64,77 +58,324 @@
 	<div class="row">
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
-				<a href="#bachelorarbeit-media-queries-level-5" id="bachelorarbeit-media-queries-level-5" style="color: inherit; text-decoration: none;">
-					<h1>Bachelorarbeit: Media Queries Level 5</h1>
+				<a href="#user-preference-media-features---css-polyfill" id="user-preference-media-features---css-polyfill" style="color: inherit; text-decoration: none;">
+					<h1>User Preference Media Features - CSS Polyfill</h1>
 				</a>
-				<p>Wiki: <a href="https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/wikis/Presentation:-Common-Terms-as-Media-Features">Presentation</a></p>
+				<p><a href="https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a></p>
+				<p>In the scope of this bachelor thesis, the new prefers- media features from the Media Queries Level 5 were examined.
+				In addition, further user preference media features were investigated. These are taken from the <a href="https://www.w3.org/WAI/APA/wiki/Media_features_use_cases_for_personalization">List</a> of personalization media features.</p>
+				<p>The candidates are:</p>
+				<ul>
+					<li><a href="https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/wikis/Captions-Enabled">Captions Enabled</a></li>
+					<li><a href="https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/wikis/Audio-Description-Enabled">Audio Description Enabled</a></li>
+					<li><a href="https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/wikis/Sign-Language-and-Sign-Language-Enabled">Sign Language &amp; Sign Language Enabled</a></li>
+					<li><a href="https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/wikis/Pictograms-Enabled">Pictograms Enabled</a></li>
+					<li><a href="https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/wikis/Self-Voicing-Enabled">Self-Voicing Enabled</a></li>
+					<li><a href="https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/wikis/Display-Skiplinks">Display Skiplinks</a></li>
+					<li><a href="https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/wikis/Table-of-Contents">Table of Contents</a></li>
+					<li><a href="https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/wikis/Session-Timeout-und-Extended-Session-Timeout">Session Timeout &amp; Extended ession Timeout</a></li>
+				</ul>
+				<p>The advantages of these candidates are described at the <a href="https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/wikis/Wiki">Wiki</a> of this repositoy.
+					This CSS Polyfill offers the possibility to use these media features.
+					Part of the Polyfill is a panel view, where the user can make his settings.
+				A login to OpenAPE to load the user context is also possible.</p>
+				<a href="#demo-websites" id="demo-websites" style="color: inherit; text-decoration: none;">
+					<h4>Demo Websites</h4>
+				</a>
+				<ul>
+					<li><a href="https://gpii.eu/mq-5/example/text-website/index.html">Text demo website</a></li>
+					<li><a href="https://gpii.eu/mq-5/example/video/index.html">Video demo website</a></li>
+					<li><a href="https://gpii.eu/mq-5/example/registration-website/index.html">Registration demo website</a></li>
+				</ul>
+				<a href="#operating-principle" id="operating-principle" style="color: inherit; text-decoration: none;">
+					<h4>Operating Principle</h4>
+				</a>
+				<p>After the web page is loaded, the script fetch the external stylesheets to get the plain CSS text.
+					Then it searches for media queries that contain media feature candidates.
+					These would actually be ignored by the browser.
+					The script runs its own algorithm to evaluate them.
+					Afterwards a modified CSS code is generated, which is inserted into the HTML document as style-element.
+					Each time a preference is changed, the process is triggered again.
+				In addition, the scirpt also makes the media feature candidates available in JS as a media query list, as well variables. </p>
+				<a href="#how-to-setup-the-polyfill" id="how-to-setup-the-polyfill" style="color: inherit; text-decoration: none;">
+					<h4>How to setup the polyfill</h4>
+				</a>
+				<p>To use the polyfill in any website, the two files from <a href="https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/tree/master/built">built</a> must be embedded in the HTML document as follows:</p>
+				<pre><code class="language-html"><span style="color: #800000">&lt;!DOCTYPE</span><span style="color: #000000"> </span><span style="color: #FF0000">html</span><span style="color: #800000">&gt;</span>
+<span style="color: #800000">&lt;html</span><span style="color: #000000"> </span><span style="color: #FF0000">lang</span><span style="color: #000000">=</span><span style="color: #0000FF">&quot;en&quot;</span><span style="color: #800000">&gt;</span>
+<span style="color: #000000">    </span><span style="color: #800000">&lt;head&gt;</span>
+<span style="color: #000000">        </span><span style="color: #800000">&lt;link</span><span style="color: #000000"> </span><span style="color: #FF0000">rel</span><span style="color: #000000">=</span><span style="color: #0000FF">&quot;stylesheet&quot;</span><span style="color: #000000"> </span><span style="color: #FF0000">href</span><span style="color: #000000">=</span><span style="color: #0000FF">&quot;preference-panel-style.css&quot;</span><span style="color: #000000"> </span><span style="color: #FF0000">type</span><span style="color: #000000">=</span><span style="color: #0000FF">&quot;text/css&quot;</span><span style="color: #000000"> </span><span style="color: #800000">/&gt;</span><span style="color: #000000">    </span>
+<span style="color: #000000">    </span><span style="color: #800000">&lt;/head&gt;</span>
+<span style="color: #000000">    </span><span style="color: #800000">&lt;body&gt;</span>
+<span style="color: #000000">        ...</span>
+<span style="color: #000000">        </span><span style="color: #800000">&lt;script</span><span style="color: #000000FF"> </span><span style="color: #FF0000">src</span><span style="color: #000000FF">=</span><span style="color: #0000FF">&quot;preference-features-polyfill.js&quot;</span><span style="color: #800000">&gt;&lt;/script&gt;</span>
+<span style="color: #000000">        </span><span style="color: #800000">&lt;script&gt;</span>
+<span style="color: #000000FF">            </span><span style="color: #008000">// other scripts</span>
+<span style="color: #000000FF">        </span><span style="color: #800000">&lt;/script&gt;</span>
+<span style="color: #000000">    </span><span style="color: #800000">&lt;/body&gt;</span>
+<span style="color: #800000">&lt;/html&gt;</span>
+</code></pre>
+				<p>It is important that the script is added to the body first, because the body element must be loaded in order to add the panel view.</p>
+				<a href="#how-to-use-the-candidates" id="how-to-use-the-candidates" style="color: inherit; text-decoration: none;">
+					<h4>How to use the candidates...</h4>
+				</a>
+				<a href="#-in-a-media-query" id="-in-a-media-query" style="color: inherit; text-decoration: none;">
+					<h5>... in a Media Query</h5>
+				</a>
+				<p>The media featrue candidates can be combined arbitrarily with other media featrues and media types, using the &#39;and&#39; keyword (&#39;or‘ and &#39;,&#39; do not work).   </p>
+				<pre><code class="language-css"><span style="color: #000000">screen and (</span><span style="color: #800000">sign-language-enabled</span><span style="color: #000000">: true) and (</span><span style="color: #800000">min-width</span><span style="color: #000000">: 600px) and (</span><span style="color: #800000">captions-enabled</span><span style="color: #000000">: false)</span>
+<span style="color: #008000">/* true if the user prefers signLanguage and does not prefer captions and has a screen width of min 600px. */</span>
+</code></pre>
+				<p>They can also be negated with the &#39;not&#39; modifier. Either the whole query or a single feature.</p>
+				<pre><code class="language-css"><span style="color: #000000">screen and (not </span><span style="color: #800000">audio-description-enabled</span><span style="color: #000000">: true) </span>
+<span style="color: #008000">/* true if the user does not prefer audio description and uses a device of the type screen. */</span>
+</code></pre>
+				<pre><code class="language-css"><span style="color: #000000">not screen and (</span><span style="color: #800000">audio-description-enabled</span><span style="color: #000000">: true) </span>
+<span style="color: #008000">/* true if the user does not prefer audio description and does not use a device of the type screen. */</span>
+</code></pre>
+				<p>If no value is assigned, the value will be evaluated in the Boolean context.  </p>
+				<pre><code class="language-css"><span style="color: #000000">screen and (</span><span style="color: #800000">audio-description-enabled</span><span style="color: #000000">) </span>
+<span style="color: #008000">/* audioDescriptionEnabled in this case has the boolean context: true. So the query will be true if the user prefers audio description */</span>
+</code></pre>
+				<pre><code class="language-css"><span style="color: #000000">screen and (not </span><span style="color: #800000">audio-description-enabled</span><span style="color: #000000">) </span>
+<span style="color: #008000">/* audioDescriptionEnabled in this case has the boolean context: false. So the query will be true if the user does not prefer audio description */</span>
+</code></pre>
+				<a href="#1-css" id="1-css" style="color: inherit; text-decoration: none;">
+					<h6>1. CSS</h6>
+				</a>
+				<p>Simply use the @media-rule as usual and then write the CSS code. </p>
+				<pre><code class="language-css"><span style="color: #800000">.skiplink</span><span style="color: #000000"> {</span>
+<span style="color: #000000">     </span><span style="color: #FF0000">display</span><span style="color: #000000">: </span><span style="color: #0451A5">block</span><span style="color: #000000">;</span>
+<span style="color: #000000">     </span><span style="color: #FF0000">font</span><span style="color: #000000">: </span><span style="color: #0451A5">Arial</span><span style="color: #000000">, </span><span style="color: #0451A5">sans-serif</span>
+<span style="color: #000000">}</span>
+<span style="color: #AF00DB">@media</span><span style="color: #000000"> (display-skiplinks: onfocus) {</span>
+<span style="color: #000000">    </span><span style="color: #800000">.skiplink:not</span><span style="color: #000000">(</span><span style="color: #800000">:focus</span><span style="color: #000000">) {</span>
+<span style="color: #000000">        </span><span style="color: #FF0000">position</span><span style="color: #000000">: </span><span style="color: #0451A5">absolute</span><span style="color: #000000">;</span>
+<span style="color: #000000">        </span><span style="color: #FF0000">height</span><span style="color: #000000">: </span><span style="color: #098658">1px</span><span style="color: #000000">;</span>
+<span style="color: #000000">        </span><span style="color: #FF0000">width</span><span style="color: #000000">: </span><span style="color: #098658">1px</span><span style="color: #000000">;</span>
+<span style="color: #000000">        </span><span style="color: #FF0000">overflow</span><span style="color: #000000">: </span><span style="color: #0451A5">hidden</span><span style="color: #000000">;</span>
+<span style="color: #000000">        </span><span style="color: #FF0000">clip</span><span style="color: #000000">: </span><span style="color: #795E26">rect</span><span style="color: #000000">(</span><span style="color: #098658">0</span><span style="color: #000000"> </span><span style="color: #098658">0</span><span style="color: #000000"> </span><span style="color: #098658">0</span><span style="color: #000000"> </span><span style="color: #098658">0</span><span style="color: #000000">);</span>
+<span style="color: #000000">        </span><span style="color: #FF0000">clip-path</span><span style="color: #000000">: </span><span style="color: #795E26">inset</span><span style="color: #000000">(</span><span style="color: #098658">100%</span><span style="color: #000000">);</span>
+<span style="color: #000000">        </span><span style="color: #FF0000">white-space</span><span style="color: #000000">: </span><span style="color: #0451A5">nowrap</span><span style="color: #000000">;</span>
+<span style="color: #000000">    }</span>
+<span style="color: #000000">}</span>
+<span style="color: #AF00DB">@media</span><span style="color: #000000"> (display-skiplinks: never) {</span>
+<span style="color: #000000">    </span><span style="color: #800000">.skiplinks</span><span style="color: #000000"> {</span>
+<span style="color: #000000">        </span><span style="color: #FF0000">display</span><span style="color: #000000">: </span><span style="color: #0451A5">none</span><span style="color: #000000">;</span>
+<span style="color: #000000">    }</span>
+<span style="color: #000000">}</span>
+</code></pre>
+				<a href="#2-js" id="2-js" style="color: inherit; text-decoration: none;">
+					<h6>2. JS</h6>
+				</a>
+				<p>Instead of the window.matchMedia function, call the window.matchCommonTermMedia function, which is part of the polyfill script.
+					This function also takes a media query string as parameter.
+				As usual, a callback function can be stored, which is called as soon as the value of the media query changes. </p>
+				<pre><code class="language-javascript"><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">mqAudioDesc</span><span style="color: #000000"> = </span><span style="color: #001080">window</span><span style="color: #000000">.</span><span style="color: #795E26">matchCommonTermMedia</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;(audio-description-enabled)&quot;</span><span style="color: #000000">)</span>
+<span style="color: #000000">    </span><span style="color: #001080">mqAudioDesc</span><span style="color: #000000">.</span><span style="color: #795E26">addListener</span><span style="color: #000000">(</span><span style="color: #001080">callback</span><span style="color: #000000">);</span>
+
+<span style="color: #0000FF">function</span><span style="color: #000000"> </span><span style="color: #795E26">callback</span><span style="color: #000000">() {</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">if</span><span style="color: #000000">(</span><span style="color: #001080">mqAudioDesc</span><span style="color: #000000">.</span><span style="color: #001080">matches</span><span style="color: #000000">) {</span>
+<span style="color: #000000">        </span><span style="color: #008000">// turn audio description on</span>
+<span style="color: #000000">    } </span><span style="color: #AF00DB">else</span><span style="color: #000000"> {</span>
+<span style="color: #000000">        </span><span style="color: #008000">// turn audio description off</span>
+<span style="color: #000000">    }</span>
+<span style="color: #000000">}</span>
+</code></pre>
+				<a href="#-as-variables" id="-as-variables" style="color: inherit; text-decoration: none;">
+					<h5>... as Variables</h5>
+				</a>
+				<p>If it is necessary to read the current value of a media feature candidate in JS, you can do this as follows:</p>
+				<pre><code class="language-html"><span style="color: #800000">&lt;body&gt;</span>
+<span style="color: #000000">    ...</span>
+<span style="color: #000000">    </span><span style="color: #800000">&lt;script</span><span style="color: #000000FF"> </span><span style="color: #FF0000">src</span><span style="color: #000000FF">=</span><span style="color: #0000FF">&quot;preference-features-polyfill.js&quot;</span><span style="color: #800000">&gt;&lt;/script&gt;</span>
+<span style="color: #000000">    </span><span style="color: #800000">&lt;script&gt;</span>
+<span style="color: #000000FF">        </span><span style="color: #0000FF">let</span><span style="color: #000000FF"> </span><span style="color: #001080">audioDescValue</span><span style="color: #000000FF"> </span><span style="color: #000000">=</span><span style="color: #000000FF"> </span><span style="color: #001080">window</span><span style="color: #000000FF">.</span><span style="color: #001080">audioDescriptionEnabled</span><span style="color: #000000FF">;</span>
+<span style="color: #000000FF">        </span><span style="color: #0000FF">let</span><span style="color: #000000FF"> </span><span style="color: #001080">captionValue</span><span style="color: #000000FF"> </span><span style="color: #000000">=</span><span style="color: #000000FF"> </span><span style="color: #001080">window</span><span style="color: #000000FF">.</span><span style="color: #001080">captionsEnabled</span><span style="color: #000000FF">;</span>
+<span style="color: #000000FF">        </span><span style="color: #0000FF">let</span><span style="color: #000000FF"> </span><span style="color: #001080">signLangValue</span><span style="color: #000000FF"> </span><span style="color: #000000">=</span><span style="color: #000000FF"> </span><span style="color: #001080">window</span><span style="color: #000000FF">.</span><span style="color: #001080">signLanguageEnabled</span><span style="color: #000000FF">;</span>
+<span style="color: #000000FF">        </span><span style="color: #0000FF">let</span><span style="color: #000000FF"> </span><span style="color: #001080">skipLinkValue</span><span style="color: #000000FF"> </span><span style="color: #000000">=</span><span style="color: #000000FF"> </span><span style="color: #001080">window</span><span style="color: #000000FF">.</span><span style="color: #001080">displaySkiplinks</span><span style="color: #000000FF">;</span>
+<span style="color: #000000FF">        </span><span style="color: #0000FF">let</span><span style="color: #000000FF"> </span><span style="color: #001080">signLanguageValue</span><span style="color: #000000FF"> </span><span style="color: #000000">=</span><span style="color: #000000FF"> </span><span style="color: #001080">window</span><span style="color: #000000FF">.</span><span style="color: #001080">signLanguage</span><span style="color: #000000FF">;</span>
+<span style="color: #000000FF">        </span><span style="color: #0000FF">let</span><span style="color: #000000FF"> </span><span style="color: #001080">contentsValue</span><span style="color: #000000FF"> </span><span style="color: #000000">=</span><span style="color: #000000FF"> </span><span style="color: #001080">window</span><span style="color: #000000FF">.</span><span style="color: #001080">tableOfContents</span><span style="color: #000000FF">;</span>
+<span style="color: #000000FF">        </span><span style="color: #0000FF">let</span><span style="color: #000000FF"> </span><span style="color: #001080">sessionValue</span><span style="color: #000000FF"> </span><span style="color: #000000">=</span><span style="color: #000000FF"> </span><span style="color: #001080">window</span><span style="color: #000000FF">.</span><span style="color: #001080">sessionTimeout</span><span style="color: #000000FF">;</span>
+<span style="color: #000000FF">        </span><span style="color: #0000FF">let</span><span style="color: #000000FF"> </span><span style="color: #001080">selfVoicingValue</span><span style="color: #000000FF"> </span><span style="color: #000000">=</span><span style="color: #000000FF"> </span><span style="color: #001080">window</span><span style="color: #000000FF">.</span><span style="color: #001080">selfVoicingEnabled</span><span style="color: #000000FF">;</span>
+<span style="color: #000000FF">        </span><span style="color: #0000FF">let</span><span style="color: #000000FF"> </span><span style="color: #001080">pictoValue</span><span style="color: #000000FF"> </span><span style="color: #000000">=</span><span style="color: #000000FF"> </span><span style="color: #001080">window</span><span style="color: #000000FF">.</span><span style="color: #001080">pictogramsEnabled</span><span style="color: #000000FF">;</span>
+<span style="color: #000000FF">    </span><span style="color: #800000">&lt;/script&gt;</span>
+<span style="color: #800000">&lt;/body&gt;</span>
+</code></pre>
+				<a href="#how-to-configure-the-script" id="how-to-configure-the-script" style="color: inherit; text-decoration: none;">
+					<h4>How to configure the script</h4>
+				</a>
+				<p>There is a possibility to configure the script. The settings can be set by calling the following methods on window.userPreferenceSettings.
+				For example to show the user preference panel:</p>
+				<pre><code class="language-javascript"><span style="color: #001080">window</span><span style="color: #000000">.</span><span style="color: #001080">userPreferenceSettings</span><span style="color: #000000">.</span><span style="color: #795E26">showPreferencePanel</span><span style="color: #000000">();</span>
+</code></pre>
+				<table>
+					<thead>
+						<tr>
+							<th>Funktion</th>
+							<th>Parameter</th>
+							<th>Rückgabewert</th>
+							<th>Beschreibung</th>
+						</tr>
+					</thead>
+					<tbody><tr>
+							<td>addCSSCode</td>
+							<td>plainCSSCode: string</td>
+							<td>void</td>
+							<td>Manually add CSS code afterwards</td>
+						</tr>
+						<tr>
+							<td>setAudioDescriptionEnabledValue</td>
+							<td>value: string</td>
+							<td>void</td>
+							<td>Manually set the Audio Description Enabled value</td>
+						</tr>
+						<tr>
+							<td>setCaptionsEnabledValue</td>
+							<td>value: string</td>
+							<td>void</td>
+							<td>Manually set the Captions Enabled value</td>
+						</tr>
+						<tr>
+							<td>setTableOfContentsValue</td>
+							<td>value: string</td>
+							<td>void</td>
+							<td>Manually set the Table Of Contents value</td>
+						</tr>
+						<tr>
+							<td>setSignLanguageValue</td>
+							<td>value: string</td>
+							<td>void</td>
+							<td>Manually set the Sign Language value</td>
+						</tr>
+						<tr>
+							<td>setSignLanguageEnabledValue</td>
+							<td>value: string</td>
+							<td>void</td>
+							<td>Manually set the Sign Language Enabled value</td>
+						</tr>
+						<tr>
+							<td>setPictogramsEnabledValue</td>
+							<td>value: string</td>
+							<td>void</td>
+							<td>Manually set the Pictograms Enabled value</td>
+						</tr>
+						<tr>
+							<td>setSelfVoicingEnabledValue</td>
+							<td>value: string</td>
+							<td>void</td>
+							<td>Manually set the Self-Voicing Enabled value</td>
+						</tr>
+						<tr>
+							<td>setSessionTimeoutValue</td>
+							<td>value: string</td>
+							<td>void</td>
+							<td>Manually set the Session Timeout value</td>
+						</tr>
+						<tr>
+							<td>setDisplaySkiplinksValue</td>
+							<td>value: string</td>
+							<td>void</td>
+							<td>Manually set the Display Skiplinks value</td>
+						</tr>
+						<tr>
+							<td>showPreferencePanel</td>
+							<td>none</td>
+							<td>void</td>
+							<td>Shows the preference panel view</td>
+						</tr>
+						<tr>
+							<td>hidePreferencePanel</td>
+							<td>none</td>
+							<td>void</td>
+							<td>Hides the preferences panel view</td>
+						</tr>
+						<tr>
+							<td>removePreferencePanel</td>
+							<td>none</td>
+							<td>void</td>
+							<td>Removes the preference panel view</td>
+						</tr>
+				</tbody></table>
+				<a href="#how-to-contribute" id="how-to-contribute" style="color: inherit; text-decoration: none;">
+					<h4>How to contribute</h4>
+				</a>
+				<p>The script was developed in Typescript 4.1.2 and uses the npm-package manager.
+				The code can be found at <a href="https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/tree/master/src">src</a>.</p>
+				<pre><code><span style="color: #001080">npm</span><span style="color: #000000"> </span><span style="color: #001080">install</span><span style="color: #000000"> </span>
+</code></pre>
+				<p>Installs all project dependencies.</p>
+				<pre><code><span style="color: #001080">npm</span><span style="color: #000000"> </span><span style="color: #001080">run</span><span style="color: #000000"> </span><span style="color: #001080">build</span>
+</code></pre>
+				<p>Runs the tsc command to compile the TypeScript code to JS Code first and then runs browserify to bundle the JS code.    </p>
+				<pre><code><span style="color: #001080">npm</span><span style="color: #000000"> </span><span style="color: #001080">run</span><span style="color: #000000"> </span><span style="color: #001080">test</span>
+</code></pre>
+				<p>Runs jest to test the script.</p>
+				<pre><code><span style="color: #001080">npm</span><span style="color: #000000"> </span><span style="color: #001080">run</span><span style="color: #000000"> </span><span style="color: #001080">release</span>
+</code></pre>
+				<p>Runs the build process first, then copies the bundled JS code and stylesheet to the built folder and at the end uglifies the JS-File.</p>
+				<a href="#dependencies" id="dependencies" style="color: inherit; text-decoration: none;">
+					<h4>Dependencies</h4>
+				</a>
+				<ul>
+					<li><a href="https://www.typescriptlang.org">TypeScript 4.1.2</a></li>
+					<li><a href="https://www.npmjs.com">npm</a></li>
+					<li><a href="https://jestjs.io">Jest</a></li>
+					<li><a href="http://browserify.org">Browserify</a></li>
+					<li><a href="https://github.com/REMEXLabs/openape.js">OpenAPE Client</a></li>
+				</ul>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
 				<ul>
-					<li class="globals  ">
-						<a href="globals.html"><em>Globals</em></a>
+					<li class=" ">
+						<a href="modules.html">Exports</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_common_utility_.html">&quot;common/utility&quot;</a>
+						<a href="modules/common_utility.html">common/utility</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_coordinator_scriptcoordinator_.html">&quot;coordinator/<wbr>Script<wbr>Coordinator&quot;</a>
+						<a href="modules/coordinator_scriptcoordinator.html">coordinator/<wbr>Script<wbr>Coordinator</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_main_.html">&quot;main&quot;</a>
+						<a href="modules/main.html">main</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_model_factory_.html">&quot;model/<wbr>Factory&quot;</a>
+						<a href="modules/model_factory.html">model/<wbr>Factory</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_model_factory_spec_.html">&quot;model/<wbr>Factory.spec&quot;</a>
+						<a href="modules/model_model.html">model/<wbr>Model</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_model_model_.html">&quot;model/<wbr>Model&quot;</a>
+						<a href="modules/network_networkapi.html">network/<wbr>NetworkAPI</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_model_model_spec_.html">&quot;model/<wbr>Model.spec&quot;</a>
+						<a href="modules/network_personas_personas.html">network/<wbr>Personas/<wbr>Personas</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_network_networkapi_.html">&quot;network/<wbr>NetworkAPI&quot;</a>
+						<a href="modules/parser_csscodeparser.html">parser/CSSCode<wbr>Parser</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_network_networkapi_spec_.html">&quot;network/<wbr>NetworkAPI.spec&quot;</a>
+						<a href="modules/parser_codeparser.html">parser/<wbr>Code<wbr>Parser</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_network_personas_personas_.html">&quot;network/<wbr>Personas/<wbr>Personas&quot;</a>
+						<a href="modules/parser_jsvariableparser.html">parser/JSVariable<wbr>Parser</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_parser_csscodeparser_.html">&quot;parser/CSSCode<wbr>Parser&quot;</a>
+						<a href="modules/reader_cssreader.html">reader/CSSReader</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_parser_codeparser_.html">&quot;parser/<wbr>Code<wbr>Parser&quot;</a>
+						<a href="modules/user_userpreferenceprofile.html">user/<wbr>User<wbr>Preference<wbr>Profile</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_parser_jsvariableparser_.html">&quot;parser/JSVariable<wbr>Parser&quot;</a>
+						<a href="modules/view_userpreferencepresenter.html">view/<wbr>User<wbr>Preference<wbr>Presenter</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_parser_jsvariableparser_spec_.html">&quot;parser/JSVariable<wbr>Parser.spec&quot;</a>
+						<a href="modules/view_userpreferenceviewcontroller.html">view/<wbr>User<wbr>Preference<wbr>View<wbr>Controller</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_reader_cssreader_.html">&quot;reader/CSSReader&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_reader_cssreader_spec_.html">&quot;reader/CSSReader.spec&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_user_userpreferenceprofile_.html">&quot;user/<wbr>User<wbr>Preference<wbr>Profile&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_user_userpreferenceprofile_spec_.html">&quot;user/<wbr>User<wbr>Preference<wbr>Profile.spec&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_view_userpreferenceviewcontroller_.html">&quot;view/<wbr>User<wbr>Preference<wbr>View<wbr>Controller&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_view_userpreferenceviews_.html">&quot;view/<wbr>User<wbr>Preference<wbr>Views&quot;</a>
+						<a href="modules/view_userpreferenceviews.html">view/<wbr>User<wbr>Preference<wbr>Views</a>
 					</li>
 				</ul>
 			</nav>
@@ -150,9 +391,9 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
-				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
 				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>

@@ -1,5 +1,9 @@
 import {CommonTerm, Persona, SkipLinkValues, TableOfContentsValue, UserPreference} from "../model/Model";
-
+/**
+ * @interface IHTMLElementModel
+ *
+ * Represents the basic html element
+ */
 interface IHTMLElementModel<T> {
     type: string;
     id: string | null;
@@ -14,7 +18,7 @@ interface IHTMLElementModel<T> {
 /**
  * @class HTMLBasicElement
  *
- * Represents the basic html element and configures it
+ * Implements IHTMLElementModel as basic HTMLBasicElement and configures it
  */
 export class HTMLBasicElement implements  IHTMLElementModel<HTMLElement> {
     id: string | null = null;
@@ -60,7 +64,7 @@ export class HTMLBasicElement implements  IHTMLElementModel<HTMLElement> {
 /**
  * @class HTMLTextElement
  *
- * Represents a html text element. It extends the HTMLBasicElement class
+ * Implements IHTMLElementModel as html text element. It extends the HTMLBasicElement class
  */
 export class HTMLTextElement extends HTMLBasicElement {
     constructor(type: string, id: string | null, classString: string | null, text: string) {
@@ -94,7 +98,7 @@ export class HTMLImageElement extends HTMLBasicElement {
 /**
  * @class HTMLImageElement
  *
- * Represents a html user input element
+ * Represents a html user input element. Implements IHTMLElementModel
  */
 export class HTMLUserInputElement implements IHTMLElementModel<HTMLInputElement> {
     class: string | null = null;
@@ -156,6 +160,7 @@ export class HTMLUserInputElement implements IHTMLElementModel<HTMLInputElement>
     }
 }
 
+
 interface IPersonaView {
     element: HTMLBasicElement;
     name: Persona;
@@ -163,8 +168,11 @@ interface IPersonaView {
     unselect(): void;
 }
 
-
-
+/**
+ * @class PersonaView
+ *
+ * UIView of a persona. The picture and the name are displayed.
+ */
 class PersonaView implements IPersonaView {
     private imageElement: HTMLImageElement;
     private nameElement: HTMLTextElement;
@@ -204,6 +212,12 @@ export interface IPersonasWrapperView {
     unselectAllPersonas(): void;
 }
 
+/**
+ * @class PersonasWrapperView
+ *
+ * UIView of the persona section. It contains all personas from
+ * the MOOCAP project
+ */
 export class PersonasWrapperView implements IPersonasWrapperView {
     private alexanderODSView = new PersonaView(Persona.alexander, "https://gpii.eu/mq-5/assets/Alexander.png");
     private annaODSView = new PersonaView(Persona.anna, "https://gpii.eu/mq-5/assets/Anna.png");
@@ -256,6 +270,11 @@ export class PersonasWrapperView implements IPersonasWrapperView {
     }
 }
 
+/**
+ * @class SwitchControlView
+ *
+ * Switch control to active and deactivate.
+ */
 export class SwitchControlView {
     public element: HTMLBasicElement;
     private checkBoxElement: HTMLUserInputElement;
@@ -283,6 +302,11 @@ export class SwitchControlView {
     }
 }
 
+/**
+ * @class RadioButtonView
+ *
+ * Radio button control to choose a value of a set of values.
+ */
 export class RadioButtonView {
     public inputs: HTMLUserInputElement[];
     public element: HTMLBasicElement
@@ -324,6 +348,11 @@ export class RadioButtonView {
     }
 }
 
+/**
+ * @class ImageButtonView
+ *
+ * UIView with a image as button
+ */
 export class ImageButtonView extends HTMLBasicElement{
 
     constructor(id: string | null, classString: string | null, imagePath: string, altText: string, functionCall: () => void) {
@@ -337,6 +366,11 @@ export class ImageButtonView extends HTMLBasicElement{
 
 }
 
+/**
+ * @class LabelButtonView
+ *
+ * UIView with a label as button
+ */
 export class LabelButtonView extends HTMLBasicElement{
 
     constructor(id: string | null, classString: string | null, label: string, functionCall: () => void) {
@@ -362,6 +396,11 @@ export interface IApplyButtonWrapperView {
     hideButtons(): void;
 }
 
+/**
+ * @class ApplyButtonWrapperView
+ *
+ * UIView with confirm and cancel button
+ */
 export class ApplyButtonWrapperView implements IApplyButtonWrapperView {
     private applyButton = new LabelButtonView("apply-button", "button", "Apply Preferences", () => this.applyPreferences());
     private cancelButton = new LabelButtonView("cancel-button", "button", "Cancel", () => this.cancel());
@@ -395,7 +434,6 @@ export class ApplyButtonWrapperView implements IApplyButtonWrapperView {
 
 }
 
-// Nicht im Schaubild!
 export interface IHeaderWrapperView {
     element: HTMLBasicElement;
 
@@ -405,6 +443,11 @@ export interface HeaderViewDelegate {
     didPressHidePanel(from: IHeaderWrapperView): void;
 }
 
+/**
+ * @class ApplyButtonWrapperView
+ *
+ * Header view with title and close button
+ */
 export class HeaderWrapperView implements IHeaderWrapperView {
     element: HTMLBasicElement;
     private headline = new HTMLTextElement("h1", null, null, "User Preferences");
@@ -433,6 +476,12 @@ interface ICommonTermListEntry<T> {
     setValue(value: string): void;
 }
 
+/**
+ * @class CommonTermListEntryBooleanView
+ *
+ * Is a list entry with a switch control on the right side to active and
+ * deactivate.
+ */
 class CommonTermListEntryBooleanView implements ICommonTermListEntry<SwitchControlView>{
     private label: HTMLTextElement;
     private input: SwitchControlView
@@ -466,6 +515,11 @@ class CommonTermListEntryBooleanView implements ICommonTermListEntry<SwitchContr
 
 }
 
+/**
+ * @class CommonTermListEntryTextInputView
+ *
+ * Is a list entry with text input on the right side
+ */
 class CommonTermListEntryTextInputView implements ICommonTermListEntry<HTMLUserInputElement>{
     private label: HTMLTextElement;
     private input: HTMLUserInputElement;
@@ -494,6 +548,12 @@ class CommonTermListEntryTextInputView implements ICommonTermListEntry<HTMLUserI
     }
 }
 
+/**
+ * @class CommonTermListEntryTextInputView
+ *
+ * Is a list entry with radio button on the right side
+ * to choose a value of a set of values
+ */
 class CommonTermListEntryRadioInputView implements ICommonTermListEntry<RadioButtonView>{
     private label: HTMLTextElement;
     private input: RadioButtonView;
@@ -534,6 +594,11 @@ export interface ListWrapperDelegate {
     didEditPreferences(from: IListWrapperView): void;
 }
 
+/**
+ * @class ListWrapperView
+ *
+ * View which contains all list entries to set the user preferences
+ */
 export class ListWrapperView implements  IListWrapperView {
     private audioDescriptionListEntry = new CommonTermListEntryBooleanView("Audio Description Enabled", CommonTerm.audioDescriptionEnabled, () => this.editPreference());
     private captionsEnabledListEntry = new CommonTermListEntryBooleanView("Captions Enabled", CommonTerm.captionsEnabled, () => this.editPreference());
@@ -602,6 +667,11 @@ export interface LoginDelegate {
     didPressLogin(username: string, password: string, from: ILoginWrapperView): void;
 }
 
+/**
+ * @class LoginWrapperView
+ *
+ * Login wrapper view to log into an openAPE account
+ */
 export class LoginWrapperView implements  ILoginWrapperView {
     private usernameField = new HTMLUserInputElement("text", "openape-username", "text-input", "Username");
     private usernameLabel = new HTMLTextElement("label", null, "openape-label", "Username");
@@ -651,6 +721,11 @@ export interface OpenButtonViewDelegate {
     didPressShowPanel(from: IOpenButtonView): void;
 }
 
+/**
+ * @class LoginWrapperView
+ *
+ * Button view to open the user preference panel
+ */
 export class OpenButtonView implements IOpenButtonView {
     public element: HTMLBasicElement;
 
