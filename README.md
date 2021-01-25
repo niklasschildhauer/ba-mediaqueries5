@@ -21,9 +21,9 @@ Part of the Polyfill is a panel view, where the user can make his settings.
 A login to OpenAPE to load the user context is also possible.
 
 #### Demo Websites
-- [Text demo website](https://gpii.eu/mq-5/example/text-website/index.html)
+- [Text demo website](https://gpii.eu/mq-5/example/text/index.html)
 - [Video demo website](https://gpii.eu/mq-5/example/video/index.html)
-- [Registration demo website](https://gpii.eu/mq-5/example/registration-website/index.html)
+- [Registration demo website](https://gpii.eu/mq-5/example/registration/index.html)
 
 #### Operating Principle
 After the web page is loaded, the script fetch the external stylesheets to get the plain CSS text. 
