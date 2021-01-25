@@ -52,7 +52,8 @@ To use the polyfill in any website, the two files from [built](https://gitlab.mi
     </body>
 </html>
 ```
-It is important that the script is added to the body first, because the body element must be loaded in order to add the panel view.
+It is important that the script is added to the body, because the body element must be loaded in order to add the panel view.
+It is also important to note that CORS problems can occur when using the software locally on the computer. To avoid this, it is recommended to use a local server, for example through the WebStorm development environment. 
 
 #### How to use the candidates...
 ##### ... in a Media Query
