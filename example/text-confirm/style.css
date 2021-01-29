@@ -34,6 +34,10 @@
     font-size: smaller;
 }
 
+.picto {
+    height: 150px;
+}
+
 
 /* Tooltip for Pictograms Enabled */
 .tooltip {
@@ -43,7 +47,7 @@
 
 .tooltip .tooltipicto {
     visibility: hidden;
-    background-color: black;
+    background-color: floralwhite;
     color: #fff;
     padding: 5px 0;
     border-radius: 6px;
@@ -53,18 +57,24 @@
     /* Position the tooltip text - see examples below! */
     position: absolute;
     bottom: 100%;
-    left: 50%;
+    left: -50%;
     width: 160px;
-    padding-left: -80px;
+    padding-left: 0;
     z-index: 1;
 }
 
 @media (pictograms-enabled) {
     .tooltip {
-        border-top: 1px solid black;
+        border-top: 1.5px solid black;
+        cursor: help;
+
     }
     .tooltip:hover .tooltipicto {
         visibility: visible;
+    }
+
+    .passage {
+        line-height: 30px;
     }
 }
 
@@ -90,16 +100,16 @@
 }
 
 
-    .table-of-contents-list,
-    .show,
-    .hide:target {
-        display: none;
-    }
+.table-of-contents-list,
+.show,
+.hide:target {
+    display: none;
+}
 
-    .hide:target + .show,
-    .hide:target ~ .table-of-contents-list {
-        display: block;
-    }
+.hide:target + .show,
+.hide:target ~ .table-of-contents-list {
+    display: block;
+}
 
 
 @media(table-of-contents: hide) {
