@@ -5,7 +5,7 @@ import {INetworkAPI} from "../network/NetworkAPI";
 /**
  * @interface IUserPreferenceProfile
  *
- * Defines the Profile Class. It contains methods to check if the User Preferences matches
+ * Defines the Profile class. It contains methods to check if the User Preferences matches
  * and sets the current User Preferences.
  */
 export interface IUserPreferenceProfile {
@@ -34,7 +34,7 @@ export interface  UserPreferenceProfileDelegate {
 /**
  * @class UserPreferenceProfile
  *
- * The UserProfile is the only class in the Programm which uses the Network API.
+ * The UserProfile is the only class in the program which uses the Network API.
  * This is where user preferences are managed.
  */
 export class UserPreferenceProfile implements IUserPreferenceProfile {

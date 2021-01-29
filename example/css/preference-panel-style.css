@@ -45,7 +45,7 @@
     border-radius: var(--corner);
     right: -400px;
     top: var(--position);
-    bottom: var(--position);
+    height: var(--height);
     padding: 0 var(--padding);
     overflow-y: scroll;
     overflow-x: hidden;

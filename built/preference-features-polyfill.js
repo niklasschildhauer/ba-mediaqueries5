@@ -1573,7 +1573,7 @@ var CSSReader = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, fetch(link, {
-                            method: 'get'
+                            method: 'GET'
                         }).then(function (response) {
                             return response.text();
                         })];
@@ -1595,7 +1595,7 @@ var Model_1 = require("../model/Model");
 /**
  * @class UserPreferenceProfile
  *
- * The UserProfile is the only class in the Programm which uses the Network API.
+ * The UserProfile is the only class in the program which uses the Network API.
  * This is where user preferences are managed.
  */
 var UserPreferenceProfile = /** @class */ (function () {

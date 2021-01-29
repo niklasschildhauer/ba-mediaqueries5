@@ -66,25 +66,6 @@ export class CSSReader implements IReader<Model.IMediaDescriptor> {
      * Searchs in the HTML Document for CSS Code
      */
     private async readAutomatic(): Promise<void> {
-        //Vielleicht noch umbauen -> Effizienter machen
-            // // Query the document for any element that could have styles.
-            // var styleElements = document.querySelectorAll('style, link[rel="stylesheet"]');
-            // var styleArray: Element[] = [];
-            // styleElements.forEach((el) => {
-            //    styleArray.push(el);
-            // });
-            // // Fetch all styles and ensure the results are in document order.
-            // // Resolve with a single string of CSS text.
-            // Promise.all(styleArray.map((el) => {
-            //     if (el.href) {
-            //         return fetch(el.href).then((response) => response.text());
-            //     } else {
-            //         return el.innerHTML;
-            //     }
-            // })).then((stylesArray) => stylesArray.join('\n'));
-
-
-
         let stylesSheets = document.querySelectorAll('link');
         for (let i = stylesSheets.length; i--;) {
             if (stylesSheets[i].getAttribute('rel') === 'stylesheet') {
@@ -122,7 +103,7 @@ export class CSSReader implements IReader<Model.IMediaDescriptor> {
      */
     private async loadCSSFile(link: any) {
         return await fetch(link, {
-            method: 'get'
+            method: 'GET'
         }).then( function (response) {
             return response.text()
         })
