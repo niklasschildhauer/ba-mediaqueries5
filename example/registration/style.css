@@ -1,5 +1,5 @@
 html {
-    background-color: #2b91af;
+    background: linear-gradient(90deg, #00d2ff 0%, #3a47d5 100%);
 }
 
 body {
@@ -15,21 +15,34 @@ body {
     background-color: white;
     padding: 25px;
     border-radius: 20px;
+
 }
 
 .welcome {
     color: white;
-    padding: 120px 0 20px 0;
+    padding: 100px 0 20px 0;
     text-align: center;
+    font-style: italic;
+    font-weight: lighter;
 }
 
 .buttons {
     display: flex;
     justify-content: space-between;
+    margin-top: 20px;
 }
 
 .countdown-wrapper {
     display: none;
+}
+#form > label {
+    font-size: 0.8rem;
+}
+
+#form > input {
+    margin-bottom: 10px;
+    padding: 5px;
+    width: 305px;
 }
 
 #countdown {
@@ -43,14 +56,21 @@ body {
     right: 40px;
     background-color: white;
     border-radius: 10px;
-    padding: 20px;
+    padding: 10px;
     align-items: center;
     justify-content: center;
 }
 
+@media (min-height: 1000px) {
+    .welcome {
+        padding: 250px 0 20px 0;
+    }
+
+}
+
 @media(min-width: 1200px) {
     .countdown-wrapper {
-        right: 24em;
+        right: 26em;
     }
 }
 
