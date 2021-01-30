@@ -12,17 +12,17 @@ import {removeUnimportantCharactersFrom} from "../common/utility";
 /**
  * @class Factory
  *
- * The Faabrik class is designed according to the design pattern Factory method.
+ * The Factory class is designed according to the Factory design pattern.
  * It contains static methods, which create objects and configure them appropriately,
- * so that no new operator has to be used in the program.
+ * so that no new operator has to be used in the polyfill-script.
  */
 export class Factory {
 
     /**
-     * Static function to create a Array of MediaDescriptor objects of the IMediaDescriptor type.
+     * Static function to create an array of MediaDescriptor objects of IMediaDescriptor type.
      *
-     * @param cssCode  A string of css code.
-     * @returns A array of MediaDescriptor objects
+     * @param cssCode: string   (a string of css code)
+     * @returns IMediaDescriptor[]
      */
     public static createMediaDescriptorsFromCSSString(cssCode: string): IMediaDescriptor[] {
         const regex = new RegExp("@media.(.*?).\\{", "g")
@@ -46,11 +46,12 @@ export class Factory {
     }
 
     /**
-     * Static function to create a MediaDescriptor object of the IMediaDescriptor type. It will be called
+     * Static function to create a MediaDescriptor object of IMediaDescriptor type. It will be called
      * from the {@linkcode createMediaDescriptorsFromCSSString} function.
      *
-     * @param cssCode  A string of css code.
-     * @returns A array of MediaDescriptor objects
+     * @param mediaQuery: string
+     * @param body: string
+     * @returns IMediaDescriptor
      */
     public static createMediaDescriptorFromMQStringAndBodyString(mediaQuery: string, body: string): IMediaDescriptor {
         let query = mediaQuery;
@@ -83,10 +84,10 @@ export class Factory {
     }
 
     /**
-     * Static function to create a CommonTermList object of the ICommonTermList type.
+     * Static function to create a CommonTermList object of ICommonTermList type.
      *
-     * @param mediaQuery  A string of the media query.
-     * @returns A CommonTermList
+     * @param mediaQuery: string
+     * @returns ICommonTermList
      */
     public static createCommonTermListFromMQString(mediaQuery: string): ICommonTermList {
         let query = mediaQuery;
@@ -119,12 +120,12 @@ export class Factory {
     }
 
     /**
-     * Static function to create a Media Feature object of the IMediaFeature type. It will be called
+     * Static function to create a MediaFeature object of IMediaFeature type. It will be called
      * from the {@linkcode createMediaDescriptorsFromCSSString} function
      * and {@linkcode createCommonTermListFromMQString}.
      *
-     * @param mediaQuery  A string of the media query.
-     * @returns A CommonTermList
+     * @param condition: string
+     * @returns IMediaFeature
      */
     public static createMediaFeatureFrom(condition: string): IMediaFeature {
         let conditionString = removeUnimportantCharactersFrom(condition);
@@ -141,8 +142,6 @@ export class Factory {
             value = valueArray[1];
             conditionString = conditionString.replace(":" + value, "");
         }
-
-
 
         let mediaFeature = CommonTermUtil.containsCommonTermMediaFeature(conditionString)[1];
 

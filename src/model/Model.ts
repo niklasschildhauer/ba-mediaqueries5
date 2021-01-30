@@ -42,7 +42,7 @@ export interface IMediaFeature {
  * @interface IUserPreference
  *
  * The user context consists of various user preferences. In this case they representing
- * a Common Term media feature and the associated value.
+ * a common term media feature and the associated value.
  */
 export interface IUserPreference {
     mediaFeature: CommonTerm;
@@ -53,15 +53,15 @@ export interface IUserPreference {
 /**
  * @class CommonTermUtil
  *
- * Helper Class with static functions
+ * Helper class with static functions
  */
 export class CommonTermUtil {
     /**
      * Static function to check if a query contains a common term media feature
      *
-     * @param query  A string of a media query.
-     * @returns A tuple with a boolean if the query contains a common term media feature
-     * and the media feature if it does.
+     * @param query: string
+     * @returns [boolean, CommonTerm | null] (a tuple with a boolean if the query contains a common term media feature
+     * and the media feature if it does)
      */
     public static  containsCommonTermMediaFeature(query: string): [boolean, CommonTerm | null] {
         let result: [boolean, CommonTerm | null] = [false, null];
@@ -77,6 +77,8 @@ export class CommonTermUtil {
 
 /**
  * @class MediaQuery
+ *
+ * Implements IMediaQuery interface.
  */
 export class MediaQuery implements IMediaQuery {
     negated: boolean;
@@ -94,6 +96,8 @@ export class MediaQuery implements IMediaQuery {
 
 /**
  * @class MediaDescriptor
+ *
+ * Implements IMediaDescriptor interface.
  */
 export class MediaDescriptor implements IMediaDescriptor {
     mediaQuery: IMediaQuery;
@@ -108,7 +112,7 @@ export class MediaDescriptor implements IMediaDescriptor {
 /**
  * @interface ICommonTermList
  *
- * Is the implementation of the MediaList for the Common Term Media features. Like the MediaList,
+ * Is the implementation of the MediaList for the common term media features. Like the MediaList,
  * the CommonTermList should also be able to be queried in JS in order to be able to use
  * media queries there. An EventListener can be stored to be notified when the value of the media query changes.
  */
@@ -122,6 +126,8 @@ export interface ICommonTermList {
 
 /**
  * @class CommonTermList
+ *
+ * Implements ICommonTermList interface.
  */
 export class CommonTermList implements ICommonTermList {
     mediaQuery: IMediaQuery;
@@ -134,24 +140,23 @@ export class CommonTermList implements ICommonTermList {
     }
 
     /**
-     * Adds a Event Listener, which should be called, when the value changes
+     * Adds an event listener, which should be called when the value changes.
      *
-     * @param event   For example "change"
-     * @param callback   The function which should be executet.
+     * @param callback: () => any (the function which should be executed)
      */
     addListener(callback: () => any): void {
         this.callbackFunction = callback;
     }
 
     /**
-     * @returns True if the media query does match
+     * @returns boolean (true if the media query does match)
      */
     get matches():boolean {
         return this.matchValue;
     }
 
     /**
-     * @param value   Sets the match value.
+     * @param value: boolean
      */
     setMatchValue(value: boolean): void {
         this.matchValue = value;
@@ -161,6 +166,8 @@ export class CommonTermList implements ICommonTermList {
 
 /**
  * @class MediaFeature
+ *
+ * Implements IMediaFeature interface.
  */
 export class MediaFeature implements IMediaFeature {
     mediaFeature: CommonTerm;
@@ -176,6 +183,8 @@ export class MediaFeature implements IMediaFeature {
 
 /**
  * @class UserPreference
+ *
+ * Implements IUserPreference interface.
  */
 export class UserPreference implements IUserPreference {
     mediaFeature: CommonTerm;
@@ -209,7 +218,7 @@ export enum CommonTerm {
 /**
  * @enum Persona
  *
- * Contains all Personas from the 'A day in the life of …' descriptions
+ * Contains all personas from the 'A day in the life of …' descriptions
  * [MOOCAP](https://moocap.gpii.eu/?page_id=33).
  */
 export enum Persona {

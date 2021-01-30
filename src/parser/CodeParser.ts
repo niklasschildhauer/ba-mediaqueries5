@@ -1,8 +1,7 @@
 /**
  * @interface ICodeParser
  *
- * Defines Code Parser, which will be called when something has changed and
- * code needs to be parsed.
+ * Defines code parser class, which will be called to parse the code.
  */
 export interface ICodeParser {
     parse(): void;
@@ -11,7 +10,8 @@ export interface ICodeParser {
 /**
  * @class CodeParser
  *
- * This class bundles all code parser. At the moment there are two: CSS Code parser and JS Code Parser
+ * Implements ICodeParser interface.
+ * This class bundles all code parser. At the moment there are two: CSS code parser and JS code parser
  */
 export class CodeParser implements ICodeParser {
     private cssParser: ICodeParser

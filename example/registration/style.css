@@ -107,7 +107,7 @@ button:hover {
 
 @media (prefers-color-scheme: dark) {
     html {
-        background-color: #294281;
+        background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
     }
     .content {
         background-color: #333333;

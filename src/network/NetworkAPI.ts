@@ -4,7 +4,7 @@ import * as Personas from "./Personas/Personas"
 /**
  * @interface INetworkAPI
  *
- * Defines the Network API. It contains two methods to load User Preferences from a server.
+ * Defines the network API. It contains two methods to load user preferences from a server.
  */
 export interface INetworkAPI {
     loadPreferenceSetFromPersona(persona: Persona): Promise<INetworkResultUserPreference>;
@@ -14,7 +14,7 @@ export interface INetworkAPI {
 /**
  * @interface INetworkResultUserPreference
  *
- * Defines the Model of the Network Result. This is the return value of the NetworkAPI.
+ * Defines the model of the network result. This is the return value of the NetworkAPI methods.
  */
 export interface INetworkResultUserPreference {
     success: boolean
@@ -24,6 +24,8 @@ export interface INetworkResultUserPreference {
 
 /**
  * @class NetworkUserResultUserPreference
+ *
+ * Implements INetworkResultUserPreference interface.
  */
 export class NetworkUserResultUserPreference implements INetworkResultUserPreference{
     success: boolean
@@ -41,8 +43,8 @@ export class NetworkUserResultUserPreference implements INetworkResultUserPrefer
 /**
  * @class NetworkAPI
  *
- * This class uses the Javascript OpenAPEClient to load data from the client.
- * It shields the external code from the rest of the program so that it can be easily replaced if necessary.
+ * This class uses the Javascript OpenAPEClient class to load data from the server.
+ * It shields the external OpenAPEClient code from the rest of the polyfill-script so that it can be easily replaced if necessary.
  */
 export class NetworkAPI implements  INetworkAPI {
     private client: OpenAPEClient
@@ -59,9 +61,9 @@ export class NetworkAPI implements  INetworkAPI {
      * 4. it returns a NetworkUserResultUserPreference Object with either the UserPreferences or a error
      * message
      *
-     * @param username   the openAPE username
-     * @param passwort   the openAPE password
-     * @returns A Promise with the NetworkUserResultUserPreference Object.
+     * @param username: string   (the openAPE username)
+     * @param passwort: string   (the openAPE password)
+     * @returns Promise<INetworkResultUserPreference>
      */
     async loadUserContext(username: string, password: string): Promise<INetworkResultUserPreference> {
         try {
@@ -105,8 +107,8 @@ export class NetworkAPI implements  INetworkAPI {
      * Loads the user context of a Persona from the {@linkcode Persona}. For demo reasons the user context
      * is not loaded from the OpenApe server, instead it is loaded from constants
      *
-     * @param persona
-     * @returns A Promise with the NetworkUserResultUserPreference Object.
+     * @param persona: Persona
+     * @returns Promise<INetworkResultUserPreference>
      */
     loadPreferenceSetFromPersona(persona: Persona): Promise<INetworkResultUserPreference> {
         let userPreferences: IUserPreference[]
@@ -147,12 +149,11 @@ export class NetworkAPI implements  INetworkAPI {
 
 
     /**
-     * Private function which creates the UserPreference Array from OpenAPE returned JSON
+     * Private function which creates the UserPreference array from the returned JSON
      *
-     * @param json   From the openAPE Server
-     * @returns UserPreference Array
+     * @param json: any   (from the openAPE Server)
+     * @returns IUserPreference[]
      */
-    // hier muss noch gecheckt werden wie der Kontext heißt...
     private createUserPreferencesFromOpenAPEJSON(json: any): IUserPreference[] {
         let preferences = json;
         if(preferences["contexts"] !== undefined) {

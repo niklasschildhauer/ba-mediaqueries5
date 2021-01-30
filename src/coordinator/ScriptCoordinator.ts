@@ -21,7 +21,7 @@ export interface ICoordinator<T> {
  * @interface IScriptCoordinator
  *
  * Defines the ScriptCoordinator. It is the main coordinator, which is the only visible class for the web author.
- * It defines all methods which the web author can use to configure the program.
+ * It defines all methods which the web author can use to configure the polyfill script.
  */
 export interface IScriptCoordinator {
     addCSSCode(code: string): void;
@@ -74,94 +74,94 @@ export class ScriptCoordinator implements ICoordinator<IUserPreferencePresenter>
     }
 
     /**
-     * Can be called when the web author wants to add CSS code himself instead
+     * Can be called when the web author wants to add CSS code by himself instead
      * of letting CSSReader read it automatically.
      */
     public addCSSCode(string: string) {
         this.cssReader.read(string);
     }
     /**
-     * Changes the AudioDescriptionEnabled Value
+     * Changes the AudioDescriptionEnabled value.
      *
-     * @param value
+     * @param value: string
      */
     public setAudioDescriptionEnabledValue(value: string): void {
         this.userProfile.setUserPreference(new UserPreference(CommonTerm.audioDescriptionEnabled, value));
     }
     /**
-     * Changes the CaptionsEnabled Value
+     * Changes the CaptionsEnabled value.
      *
-     * @param value
+     * @param value: string
      */
     public setCaptionsEnabledValue(value: string): void{
         this.userProfile.setUserPreference(new UserPreference(CommonTerm.captionsEnabled, value));
     }
     /**
-     * Changes the SignLanguage Value
+     * Changes the SignLanguage value.
      *
-     * @param value
+     * @param value: string
      */
     public setSignLanguageValue(value: string): void {
         this.userProfile.setUserPreference(new UserPreference(CommonTerm.signLanguage, value));
     }
     /**
-     * Changes the SignLanguageEnabled Value
+     * Changes the SignLanguageEnabled value.
      *
-     * @param value
+     * @param value: string
      */
     public setSignLanguageEnabledValue(value: string): void {
         this.userProfile.setUserPreference(new UserPreference(CommonTerm.signLanguageEnabled, value));
     }
     /**
-     * Changes the PictogramsEnabled Value
+     * Changes the PictogramsEnabled value.
      *
-     * @param value
+     * @param value: string
      */
     public setPictogramsEnabledValue(value: string): void {
         this.userProfile.setUserPreference(new UserPreference(CommonTerm.pictogramsEnabled, value));
     }
     /**
-     * Changes the SelfVoicingEnabled Value
+     * Changes the SelfVoicingEnabled value.
      *
-     * @param value
+     * @param value: string
      */
     public setSelfVoicingEnabledValue(value: string): void {
         this.userProfile.setUserPreference(new UserPreference(CommonTerm.selfVoicingEnabled, value));
     }
     /**
-     * Changes the SessionTimeout Value
+     * Changes the SessionTimeout value.
      *
-     * @param value
+     * @param value: string
      */
     public setSessionTimeoutValue(value: string): void {
         this.userProfile.setUserPreference(new UserPreference(CommonTerm.sessionTimeout, value));
     }
     /**
-     * Changes the DisplaySkiplinks Value
+     * Changes the DisplaySkiplinks value.
      *
-     * @param value
+     * @param value: string
      */
     public setDisplaySkiplinksValue(value: string): void {
         this.userProfile.setUserPreference(new UserPreference(CommonTerm.displaySkiplinks, value));
     }
     /**
-     * Changes the TableOfContents Value
+     * Changes the TableOfContents value.
      *
-     * @param value
+     * @param value: string
      */
     public setTableOfContentsValue(value: string): void {
         this.userProfile.setUserPreference(new UserPreference(CommonTerm.tableOfContents, value));
     }
 
     /**
-     * Shows the preference Panel, if it's collapsed
+     * Shows the preference panel, if it's collapsed
      */
     public showPreferencePanel(): void {
         this.rootViewController.presenter.pressedShowPanel()
     }
 
     /**
-     * Hides the preference Panel, if it's expanded
+     * Hides the preference panel, if it's expanded
      */
     public hidePreferencePanel(): void {
         this.rootViewController.presenter.pressedHidePanel()
@@ -169,7 +169,7 @@ export class ScriptCoordinator implements ICoordinator<IUserPreferencePresenter>
 
 
     /**
-     * Removes the preference Panel from the HTML document
+     * Removes the preference panel from the HTML document
      */
     public removePreferencePanel(): void {
         this.rootViewController.removeView();
@@ -188,8 +188,8 @@ export class ScriptCoordinator implements ICoordinator<IUserPreferencePresenter>
     }
 
     /**
-     * Called from the IUserPreferenceProfile when the Profile has been updated.
-     * It tells the CodeParser to parse the code again and the ViewController to reload
+     * Called from the IUserPreferenceProfile when the profile has been updated.
+     * It tells the CodeParser to parse the code again and reloads the ViewController.
      *
      * @param IUserPreferenceProfile
      */
@@ -199,7 +199,7 @@ export class ScriptCoordinator implements ICoordinator<IUserPreferencePresenter>
     }
 
     /**
-     * Called from the IUserPreferenceProfile when the an error occurred until login to the openAPE Server
+     * Called from the IUserPreferenceProfile when an error occurred until login to the openAPE Server
      * It tells ViewController to show an error Message.
      *
      * @param IUserPreferenceProfile
@@ -209,7 +209,7 @@ export class ScriptCoordinator implements ICoordinator<IUserPreferencePresenter>
     }
 
     /**
-     * Called from the IUserPreferenceProfile when the an Persona is selected
+     * Called from the IUserPreferenceProfile when a Persona is selected.
      * It tells ViewController to show that a Persona is selected.
      *
      * @param IUserPreferenceProfile

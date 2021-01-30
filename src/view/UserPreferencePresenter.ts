@@ -42,6 +42,7 @@ export class UserPreferencePresenter implements IUserPreferencePresenter {
     viewDidLoad(): void {
         this.reload();
     }
+
     /**
      * Calls the refreshView method to reset the view.
      */
@@ -50,23 +51,25 @@ export class UserPreferencePresenter implements IUserPreferencePresenter {
     }
 
     /**
+     * Is called when the cancel button is pressed.
      * Calls the reload method to reset the view.
      */
     pressedCancel(): void {
         this.reload();
     }
     /**
-     * Is called when the user does edit a preference. Then no persona should be selected.
+     * Is called when the user does edit a preference.
+     * Then no persona should be selected.
      */
     editPreferences(): void {
         this.view.unselectAllPersona();
         this.pressedApplyPreferences();
     }
     /**
-     * Calls the User Profile to log a user in
+     * Calls the user profile to log in a user
      *
-     * @param username   the openAPE username
-     * @param passwort   the openAPE password
+     * @param username: string   (openAPE username)
+     * @param passwort: string   (openAPE password)
      */
     pressedLogin(username: string, password: string): void {
         this.userProfile.login(username, password);
@@ -74,33 +77,39 @@ export class UserPreferencePresenter implements IUserPreferencePresenter {
     }
     /**
      * Applies the user preferences set from the user.
-     * First the UserPreferenceProfil is updated, after the reload function is executed.
+     * First the UserPreferenceProfil is updated, after that the reload function is executed.
      */
     pressedApplyPreferences(): void {
         this.userProfile.setUserPreferences(this.view.getAllSetPreferences());
         this.reload();
     }
     /**
-     * Calls the showPanel method of the view
+     * Is called when the show panel button is pressed.
+     * Calls the showPanel method of the view.
      */
     pressedShowPanel(): void {
         this.view.showPanel();
     }
     /**
-     * Calls the hidePanel method of the view
+     * Is called when the hide panel is pressed.
+     * Calls the hidePanel method of the view.
      */
     pressedHidePanel(): void {
         this.view.hidePanel();
         this.reload();
     }
     /**
-     * Tells the UserPreferenceProfile that a persona is selected
+     * Tells the UserPreferenceProfile that a persona is selected.
+     *
+     * @param: persona: Persona
      */
     selectPersona(persona: Persona): void {
         this.userProfile.selectPersona(persona);
     }
     /**
-     * Update the view to show that a persona is selcted
+     * Updates the view to show that a persona is selected.
+     *
+     * @param persona: Persona
      */
     selectedPersona(persona: Persona): void {
         this.view.unselectAllPersona();
@@ -108,14 +117,16 @@ export class UserPreferencePresenter implements IUserPreferencePresenter {
         this.reload();
     }
     /**
-     * Tells the view to show a login error message
+     * Tells the view to show a login error message.
+     *
+     * @param: message: string
      */
     showLoginErrorMessage(message: string): void {
         this.view.showLoginErrorMessage(message);
     }
 
     /**
-     * Refreshs the view
+     * Refreshes the view
      */
     private refreshView() {
         this.view.selectUserPreferences(this.userProfile.getUserPreferences());

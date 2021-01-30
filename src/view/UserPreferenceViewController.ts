@@ -23,7 +23,7 @@ import {IUserPreferencePresenter, UserPreferencePresenter} from "./UserPreferenc
 /**
  * @interface IUserPreferenceViewController
  *
- * Defines the UserPreferenceViewController. The function will be called from the
+ * Defines the UserPreferenceViewController. The functions will be called from the
  * {@linkcode IUserPreferencePresenter} which contains the logic of the view.
  */
 export interface IUserPreferenceViewController {
@@ -39,7 +39,7 @@ export interface IUserPreferenceViewController {
 /**
  * @interface IViewController<T>
  *
- * Defines a ViewControllers lifecycle methods.
+ * Defines the lifecycle methods of a ViewController.
  */
 export interface IViewController<T> {
     presenter: T;
@@ -51,23 +51,20 @@ export interface IViewController<T> {
 /**
  * @class UserPreferenceViewController
  *
- * This View Controller creates all views for the User Preference Panel.
+ * Implements IViewController<IUserPreferencePresenter> interface.
+ * This view controller creates all views for the user preference panel.
  */
 export class UserPreferenceViewController implements IViewController<IUserPreferencePresenter>, IUserPreferenceViewController, PersonasWrapperDelegate, ApplyButtonWrapperDelegate, ListWrapperDelegate, LoginDelegate, HeaderViewDelegate, OpenButtonViewDelegate {
     presenter: IUserPreferencePresenter;
 
     private element = new HTMLBasicElement("div", "wrapper", null);
-
     private panelWrapper = new HTMLBasicElement("div", "panel-wrapper", null);
 
-    // nicht im Schaubild // Button muss auf den Server zum download!
     private headerWrapper = new HeaderWrapperView(this)
     private personaWrapper = new PersonasWrapperView(this);
     private listWrapper = new ListWrapperView(this);
     private applyButtonWrapper = new ApplyButtonWrapperView(this);
     private loginWrapper = new LoginWrapperView(this);
-
-    // nicht im Schaubild // Button muss auf den Server zum download!
     private showPanelButton = new OpenButtonView(this);
 
     public constructor(userProfile: IUserPreferenceProfile) {
@@ -87,12 +84,13 @@ export class UserPreferenceViewController implements IViewController<IUserPrefer
         this.element.appendChild(this.showPanelButton.element);
         this.element.appendChild(this.panelWrapper);
     }
+
     /**
      * Lifecycle method
-     * Inserts the view in the current HTML document
+     * Inserts the view into the current HTML document
      */
     parseView(): void {
-        // View is only shown, if the script is embeed at the bottom of the body and not in the header.
+        // View is only shown, if the script is embed at the bottom of the body and not in the header.
         if(document.body != null || document.body != undefined) {
             document.body.appendChild(this.element.element);
         }
@@ -113,7 +111,7 @@ export class UserPreferenceViewController implements IViewController<IUserPrefer
     }
 
     /**
-     * Changes the right Attribute of the panel to show the panel
+     * Changes the CSS "right" attribute of the panel to show the panel
      */
     showPanel(): void {
         this.panelWrapper.element.style.right = "2vh";
@@ -121,7 +119,7 @@ export class UserPreferenceViewController implements IViewController<IUserPrefer
     }
 
     /**
-     * Changes the right Attribute of the panel to hide the panel
+     * Changes the CSS "right" attribute of the panel to hide the panel
      */
     hidePanel(): void {
         this.panelWrapper.element.style.right =  "-400px";
@@ -130,7 +128,9 @@ export class UserPreferenceViewController implements IViewController<IUserPrefer
 
     /**
      * Shows the current user preferences. For that the values in the
-     * ListWrapperView will be set
+     * ListWrapperView will be set.
+     *
+     * @param userPreferences: IUserPreference[]
      */
     selectUserPreferences(userPreferences: IUserPreference[]): void {
         for (let i = 0; i < userPreferences.length; i++) {
@@ -139,7 +139,9 @@ export class UserPreferenceViewController implements IViewController<IUserPrefer
     }
 
     /**
-     * Shows a error message in the LoginWrapperView
+     * Shows a error message in the LoginWrapperView.
+     *
+     * @param message: string
      */
     showLoginErrorMessage(message: string): void {
         this.loginWrapper.showErrorMessage(message);
@@ -147,13 +149,15 @@ export class UserPreferenceViewController implements IViewController<IUserPrefer
 
     /**
      * Shows that a persona is selected.
+     *
+     * @param persona: Persona
      */
     selectPersona(persona: Persona): void {
         this.personaWrapper.selectPersona(persona);
     }
 
     /**
-     * Unselect all Personas
+     * Unselects all Personas.
      */
     unselectAllPersona(): void {
         this.personaWrapper.unselectAllPersonas();
@@ -169,63 +173,66 @@ export class UserPreferenceViewController implements IViewController<IUserPrefer
 
     // DELEGATE FUNCTIONS
     /**
-     * Called from the PersonasWrapperView when a persona is selected
+     * Called from the PersonasWrapperView when a persona is selected.
      *
-     * @param IApplyButtonWrapperView, Persona
+     * @param from: PersonasWrapperView
+     * @param persona: Persona
      */
     didSelectPersona(persona: Persona, from: PersonasWrapperView): void {
         this.presenter.selectPersona(persona);
     }
 
     /**
-     * Called from the IApplyButtonWrapperView when apply is pressed
+     * Called from the IApplyButtonWrapperView when the apply button is pressed.
      *
-     * @param IApplyButtonWrapperView
+     * @param from: IApplyButtonWrapperView
      */
     didPressApply(from: IApplyButtonWrapperView): void {
         this.presenter.pressedApplyPreferences();
     }
 
     /**
-     * Called from the IApplyButtonWrapperView when cancel is pressed
+     * Called from the IApplyButtonWrapperView when the cancel button is pressed
      *
-     * @param IApplyButtonWrapperView
+     * @param from: IApplyButtonWrapperView
      */
     didPressCancel(from: IApplyButtonWrapperView): void {
         this.presenter.pressedCancel();
     }
 
     /**
-     * Called from the IListWrapperView when a preference is edited
+     * Called from the IListWrapperView when a preference is edited.
      *
-     * @param IHeaderWrapperView
+     * @param from: IHeaderWrapperView
      */
     didEditPreferences(from: IListWrapperView): void {
         this.presenter.editPreferences();
     }
 
     /**
-     * Called from the ILoginWrapperView when to login the user
+     * Called from the ILoginWrapperView to login a user.
      *
-     * @param IHeaderWrapperView, password: string, username: string
+     * @param from: IHeaderWrapperView
+     * @param password: string
+     * @param username: string
      */
     didPressLogin(username: string, password: string, from: ILoginWrapperView): void {
         this.presenter.pressedLogin(username, password);
     }
 
     /**
-     * Called from the IHeaderWrapperView when the button is pressed to hide the panel
+     * Called from the IHeaderWrapperView when the hide button is pressed.
      *
-     * @param IHeaderWrapperView
+     * @param from: IHeaderWrapperView
      */
     didPressHidePanel(from: IHeaderWrapperView): void {
         this.presenter.pressedHidePanel();
     }
 
     /**
-     * Called from the IOpenButtonView when the button is pressed to show the panel
+     * Called from the IOpenButtonView when the show button is pressed.
      *
-     * @param IOpenButtonView
+     * @param from: IOpenButtonView
      */
     didPressShowPanel(from: IOpenButtonView): void {
         this.presenter.pressedShowPanel();

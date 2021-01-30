@@ -4,7 +4,7 @@ import * as Factory from '../model/Factory'
 /**
  * @interface IReader<T>
  *
- * Defines a Reader class with the two methods read and get.
+ * Defines a reader class with the two methods read and get.
  */
 export interface IReader<T> {
     read(string: string): void
@@ -26,7 +26,8 @@ export interface CSSReaderDelegate {
 /**
  * @class UserPreferenceProfile
  *
- * The class manges the media descriptors and reads CSS Code
+ * Implements the IReader<Model.IMediaDescriptor> interface.
+ * The class manages the media descriptors and reads CSS Code.
  */
 export class CSSReader implements IReader<Model.IMediaDescriptor> {
     private mediaDescriptors: Model.IMediaDescriptor[] = [];
@@ -41,16 +42,16 @@ export class CSSReader implements IReader<Model.IMediaDescriptor> {
     /**
      * Returns the current media descriptors
      *
-     * @returns An array of the media descriptors
+     * @returns Model.IMediaDescriptor[]
      */
     public get(): Model.IMediaDescriptor[] {
         return this.mediaDescriptors;
     }
 
     /**
-     * Reads CSS Code.
+     * Reads CSS code.
      *
-     * @param string   plain CSS Code to read
+     * @param string   (plain CSS Code to read)
      */
     public read(string: string): void {
         if (!this.plainCSS.includes(string)) {
@@ -63,7 +64,7 @@ export class CSSReader implements IReader<Model.IMediaDescriptor> {
 
 
     /**
-     * Searchs in the HTML Document for CSS Code
+     * Searchs in the HTML document for CSS Code and calls the read method.
      */
     private async readAutomatic(): Promise<void> {
         let stylesSheets = document.querySelectorAll('link');
@@ -81,7 +82,7 @@ export class CSSReader implements IReader<Model.IMediaDescriptor> {
 
     /**
      * Refresh method to create new media descriptors and to inform the delegate that
-     * the media descriptors has changed.
+     * the media descriptors has changed. It is called from the read method.
      */
     private refresh(): void {
         if(this.plainCSS.length != 0) {
@@ -99,7 +100,7 @@ export class CSSReader implements IReader<Model.IMediaDescriptor> {
     }
 
     /**
-     * Loads a CSS File
+     * Loads an external CSS file.
      */
     private async loadCSSFile(link: any) {
         return await fetch(link, {

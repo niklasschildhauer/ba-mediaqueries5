@@ -149,3 +149,11 @@
         color-adjust: white;
     }
 }
+
+@media (prefers-color-scheme: dark) and (pictograms-enabled: true) {
+    .tooltip {
+        border-top: 1.5px solid white;
+    }
+}
+
+

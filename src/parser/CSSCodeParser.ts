@@ -6,8 +6,9 @@ import {ICodeParser} from "./CodeParser";
 /**
  * @class CSSCodeParser
  *
- * It is responsible to insert the correct CSS Code. It contains the CSS Reader
- * to get the current media descriptor and the User Profile to get the current user preferences
+ * Implements ICodeParser interface.
+ * It is responsible to insert the correct CSS code. It contains the CSSReader
+ * to get the current media descriptor and the UserProfile to get the current user preferences
  */
 export class CSSCodeParser implements ICodeParser {
     private userProfile: Profile.IUserPreferenceProfile;
@@ -33,7 +34,7 @@ export class CSSCodeParser implements ICodeParser {
     /**
      * Creates the appropriate CSS code by evaluating user preferences and media descriptors.
      *
-     * @returns A string with the appropriate CSS Code
+     * @returns string
      */
     private createCSSCode(): string {
         let cssStyle: string[] = []
@@ -56,6 +57,8 @@ export class CSSCodeParser implements ICodeParser {
 
     /**
      * Inserts the CSS code into the page.
+     *
+     * @param cssCode: string
      */
     private parseCSSCode(cssCode: string): void {
         const style = document.createElement('style');
@@ -77,6 +80,8 @@ export class CSSCodeParser implements ICodeParser {
 
     /**
      * Creates CSS Variables
+     *
+     * @returns string
      */
     private createCSSVariables(): string {
         const variables = ["--audio-description-enabled: " + this.userProfile.getValueForMediaFeature(CommonTerm.audioDescriptionEnabled),
