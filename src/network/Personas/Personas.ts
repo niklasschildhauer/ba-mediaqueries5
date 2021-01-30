@@ -46,7 +46,7 @@ export const larsPreferences = {
             "preferences": {
                 "http://registry.gpii.eu/common/captionsEnabled": true,
                 "http://registry.gpii.eu/common/signLanguageEnabled": true,
-                "http://registry.gpii.eu/common/signLanguage": "gsg"
+                "http://registry.gpii.eu/common/signLanguage": "nsl"
             }
         }
     }
