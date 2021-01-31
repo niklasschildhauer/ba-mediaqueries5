@@ -2,8 +2,8 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/blob/master/LICENSE)
 
-In the scope of this bachelor thesis, the new prefers- media features from the Media Queries Level 5 were examined. 
-In addition, further user preference media features were investigated. These are taken from the [List](https://www.w3.org/WAI/APA/wiki/Media_features_use_cases_for_personalization) of personalization media features.
+In the scope of my bachelor thesis about 'CSS Media Queries Level 5 - Potentials for personalisation and implementation as polyfill' , the new prefers- media features from the Media Queries Level 5 were examined. 
+In addition, further user preference media features were investigated. These are taken from the [List](https://www.w3.org/WAI/APA/wiki/Media_features_use_cases_for_personalization) of personalization media features of the W3C APA working group.
 
 The candidates are:
 * [Captions Enabled](https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/wikis/Captions-Enabled)
@@ -15,7 +15,7 @@ The candidates are:
 * [Table of Contents](https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/wikis/Table-of-Contents)
 * [Session Timeout & Extended ession Timeout](https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/wikis/Session-Timeout-und-Extended-Session-Timeout)
 
-The advantages of these candidates are described at the [Wiki](https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/wikis/Wiki) of this repositoy. 
+The advantages of these candidates are described at the [Wiki](https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/wikis/Wiki) of this repository. 
 This CSS Polyfill offers the possibility to use these media features. 
 Part of the Polyfill is a panel view, where the user can make his settings.
 A login to OpenAPE to load the user context is also possible.
@@ -26,13 +26,13 @@ A login to OpenAPE to load the user context is also possible.
 - [Registration demo website](https://gpii.eu/mq-5/example/registration/index.html)
 
 #### Operating Principle
-After the web page is loaded, the script fetch the external stylesheets to get the plain CSS text. 
+After the web page is loaded, the script fetchs the external stylesheets to get the plain CSS text. 
 Then it searches for media queries that contain media feature candidates. 
 These would actually be ignored by the browser. 
 The script runs its own algorithm to evaluate them. 
-Afterwards a modified CSS code is generated, which is inserted into the HTML document as style-element. 
+Afterwards a modified CSS code is generated, which is inserted into the HTML document as a style-element. 
 Each time a preference is changed, the process is triggered again.
-In addition, the scirpt also makes the media feature candidates available in JS as a media query list, as well variables. 
+In addition, the scirpt also makes the media feature candidates available in JS as a media query list, as well as variables. 
 
 #### How to setup the polyfill
 To use the polyfill in any website, the two files from [built](https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/tree/master/built) must be embedded in the HTML document as follows:
@@ -53,7 +53,7 @@ To use the polyfill in any website, the two files from [built](https://gitlab.mi
 </html>
 ```
 It is important that the script is added to the body, because the body element must be loaded in order to add the panel view.
-It is also important to note that CORS problems can occur when using the software locally on the computer. To avoid this, it is recommended to use a local server, for example through the WebStorm development environment. 
+It is also important to note that CORS problems can occur when using the software locally on the computer. To avoid this, it is recommended to use a local server, for example through the WebStorm development environment (see [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Learn/Common_questions/set_up_a_local_testing_server)).
 
 #### How to use the candidates...
 ##### ... in a Media Query
@@ -173,6 +173,7 @@ window.userPreferenceSettings.showPreferencePanel();
 #### How to contribute
 The script was developed in Typescript 4.1.2 and uses the npm-package manager.
 The code can be found at [src](https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/tree/master/src).
+A UML diagram can be found [here](https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/blob/master/docs/UML-class-diagram.pdf).
 ```
 npm install 
 ```
