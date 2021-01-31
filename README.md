@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://gitlab.mi.hdm-stuttgart.de/ns107/ba-mq5/-/blob/master/LICENSE)
 
-In the scope of my bachelor thesis about 'CSS Media Queries Level 5 - Potentials for personalisation and implementation as polyfill' , the new prefers- media features from the Media Queries Level 5 were examined. 
+In the scope of my bachelor thesis about 'CSS Media Queries Level 5 - Potentials for personalisation and implementation as polyfill', the new prefers- media features from the Media Queries Level 5 were examined. 
 In addition, further user preference media features were investigated. These are taken from the [List](https://www.w3.org/WAI/APA/wiki/Media_features_use_cases_for_personalization) of personalization media features of the W3C APA working group.
 
 The candidates are:
